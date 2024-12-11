@@ -180,7 +180,7 @@
                                 class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
                                 rows="8" placeholder="Enter your text here (max 2000 characters)"></textarea>
                             <div class="flex justify-between text-sm text-gray-500">
-                                <<span>Characters: <span id="charCount">0</span>/2000</span>
+                                <span>Characters: <span id="charCount">0</span>/2000</span>
                                 <span id="textError" class="error-message text-right">Text exceeds maximum length</span>
                             </div>
                         </div>
@@ -332,6 +332,7 @@
             </div>
         </div>
     </div>
+    </div>
 
     <!-- Blog Promotion Float -->
     <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
@@ -396,6 +397,7 @@
     </div>
 
     <script>
+        // Supabase initialization
         const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
         const supabase = createClient(supabaseUrl, supabaseKey);
@@ -437,78 +439,138 @@
             });
 
             // Form submission handler
-form.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    
-    const inputType = inputTypeSelect.value;
-    const youtubeLink = document.getElementById('youtubeLink').value;
-    let isValid = true;
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                
+                const inputType = inputTypeSelect.value;
+                const youtubeLink = document.getElementById('youtubeLink').value;
+                let isValid = true;
 
-    if (inputType === 'youtube') {
-        if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-            youtubeLinkError.style.display = 'block';
-            isValid = false;
-        } else {
-            youtubeLinkError.style.display = 'none';
-        }
-    } else {
-        if (customText.value.length > 2000) {
-            textError.style.display = 'block';
-            isValid = false;
-        }
-    }
+                if (inputType === 'youtube') {
+                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
+                        youtubeLinkError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        youtubeLinkError.style.display = 'none';
+                    }
+                } else {
+                    if (customText.value.length > 2000) {
+                        textError.style.display = 'block';
+                        isValid = false;
+                    }
+                }
 
-    if (isValid) {
-        const data = {
-            type: inputType,
-            content: inputType === 'youtube' ? youtubeLink : customText.value
-        };
-        localStorage.setItem('mindmapContent', JSON.stringify(data));
-        goToPage(2);
-    }
-});
+                if (isValid) {
+                    const data = {
+                        type: inputType,
+                        content: inputType === 'youtube' ? youtubeLink : customText.value
+                    };
+                    localStorage.setItem('mindmapContent', JSON.stringify(data));
+                    goToPage(2);
+                }
+            });
 
-// Email form submission
-emailForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    localStorage.setItem('userEmail', email);
+            // Email form submission
+            emailForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                localStorage.setItem('userEmail', email);
 
-    try {
-        const { data, error } = await supabase.from('mindmap_requests').insert([
-            {
-                email: email,
-                content_type: JSON.parse(localStorage.getItem('mindmapContent')).type,
-                content: JSON.parse(localStorage.getItem('mindmapContent')).content,
-                version: localStorage.getItem('selectedVersion') || 'v2'
+                try {
+                    const { data, error } = await supabase.from('mindmap_requests').insert([
+                        {
+                            email: email,
+                            content_type: data.type,
+                            content: data.content,
+                            version: localStorage.getItem('selectedVersion') || 'v2'
+                        }
+                    ]);
+
+                    if (error) {
+                        console.error('Error submitting to Supabase:', error);
+                        // Handle error case
+                    } else {
+                        successModal.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error submitting to Supabase:', error);
+                    // Handle error case
+                }
+            });
+
+            // Got it button handler
+            gotItButton.addEventListener('click', function() {
+                successModal.classList.add('hidden');
+            });
+
+            // Close modal when clicking outside
+            successModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    successModal.classList.add('hidden');
+                }
+            });
+
+            // Version selection handler
+            document.querySelector('.disabled').addEventListener('click', function() {
+                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
+            });
+        });
+
+        function selectVersion(version) {
+            if (version === 'v2') {
+                localStorage.setItem('selectedVersion', 'v2');
+                goToPage(3);
             }
-        ]);
-
-        if (error) {
-            console.error('Error submitting to Supabase:', error);
-            // Handle error case
-        } else {
-            successModal.classList.remove('hidden');
         }
-    } catch (error) {
-        console.error('Error submitting to Supabase:', error);
-        // Handle error case
-    }
-});
 
-// Got it button handler
-gotItButton.addEventListener('click', function() {
-    successModal.classList.add('hidden');
-});
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll('.section');
+            const dots = document.querySelectorAll('.dot');
 
-// Close modal when clicking outside
-successModal.addEventListener('click', function(e) {
-    if (e.target === this) {
-        successModal.classList.add('hidden');
-    }
-});
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                    dots[index].classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                    dots[index].classList.remove('active');
+                }
+            });
 
-// Version selection handler
-document.querySelector('.disabled').addEventListener('click', function() {
-    alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-});
+            // Show blog float only on page 3
+            const blogFloat = document.getElementById('blogFloat');
+            if (pageNumber === 3) {
+                blogFloat.classList.add('active');
+            } else {
+                blogFloat.classList.remove('active');
+            }
+        }
+
+        function closeBlogFloat() {
+            document.getElementById('blogFloat').style.display = 'none';
+        }
+
+        // Function to create Supabase client
+        function createClient(url, key) {
+            return {
+                from: (table) => ({
+                    insert: async (data) => {
+                        const { data: insertedData, error } = await fetch(`${url}/rest/v1/${table}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': key,
+                                'Authorization': `Bearer ${key}`
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.json());
+
+                        return { data: insertedData, error };
+                    }
+                })
+            };
+        }
+    </script>
+</body>
+
+</html>
