@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mindmap Creation Process</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         .error-message {
             color: #dc2626;
@@ -333,6 +332,7 @@
             </div>
         </div>
     </div>
+    </div>
 
     <!-- Blog Promotion Float -->
     <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
@@ -414,7 +414,6 @@
             const successModal = document.getElementById('successModal');
             const gotItButton = document.getElementById('gotItButton');
             const emailForm = document.getElementById('emailForm');
-            const emailInput = document.getElementById('email');
 
             // Input type change handler
             inputTypeSelect.addEventListener('change', function () {
@@ -445,7 +444,6 @@
                 
                 const inputType = inputTypeSelect.value;
                 const youtubeLink = document.getElementById('youtubeLink').value;
-                const selectedVersion = localStorage.getItem('selectedVersion') || 'v2';
                 let isValid = true;
 
                 if (inputType === 'youtube') {
@@ -463,38 +461,40 @@
                 }
 
                 if (isValid) {
-                    const { data, error } = await supabase.from('mindmap_requests').insert([
-                        {
-                            content_type: inputType,
-                            content: inputType === 'youtube' ? youtubeLink : customText.value,
-                            version: selectedVersion,
-                            status: 'pending'
-                        }
-                    ]);
-
-                    if (error) {
-                        console.error('Error saving to Supabase:', error);
-                    } else {
-                        localStorage.setItem('mindmapContent', JSON.stringify({ type: inputType, content: inputType === 'youtube' ? youtubeLink : customText.value }));
-                        goToPage(2);
-                    }
+                    const data = {
+                        type: inputType,
+                        content: inputType === 'youtube' ? youtubeLink : customText.value
+                    };
+                    localStorage.setItem('mindmapContent', JSON.stringify(data));
+                    goToPage(2);
                 }
             });
 
             // Email form submission
             emailForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
-                const email = emailInput.value;
+                const email = document.getElementById('email').value;
                 localStorage.setItem('userEmail', email);
 
-                const { data, error } = await supabase.from('mindmap_requests')
-                    .update({ email: email })
-                    .match({ status: 'pending' });
+                try {
+                    const { data, error } = await supabase.from('mindmap_requests').insert([
+                        {
+                            email: email,
+                            content_type: data.type,
+                            content: data.content,
+                            version: localStorage.getItem('selectedVersion') || 'v2'
+                        }
+                    ]);
 
-                if (error) {
-                    console.error('Error updating Supabase:', error);
-                } else {
-                    successModal.classList.remove('hidden');
+                    if (error) {
+                        console.error('Error submitting to Supabase:', error);
+                        // Handle error case
+                    } else {
+                        successModal.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error submitting to Supabase:', error);
+                    // Handle error case
                 }
             });
 
@@ -549,7 +549,68 @@
         function closeBlogFloat() {
             document.getElementById('blogFloat').style.display = 'none';
         }
+
+        // Function to create Supabase client
+        function createClient(url, key) {
+            return {
+                from: (table) => ({
+                    insert: async (data) => {
+                        const { data: insertedData, error } = await fetch(`${url}/rest/v1/${table}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': key,
+                                'Authorization': `Bearer ${key}`
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.json());
+
+                        return { data: insertedData, error };
+                    }
+                })
+            };
+        }
     </script>
 </body>
 
 </html>
+```
+
+The key changes made to integrate Supabase are:
+
+1. Added the Supabase initialization code at the beginning of the script section:
+```javascript
+const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+const supabase = createClient(supabaseUrl, supabaseKey);
+```
+
+2. Added the `createClient` function to create a Supabase client instance.
+3. Modified the email form submission event handler to insert the form data into the Supabase `mindmap_requests` table:
+```javascript
+emailForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    localStorage.setItem('userEmail', email);
+
+    try {
+        const { data, error } = await supabase.from('mindmap_requests').insert([
+            {
+                email: email,
+                content_type: data.type,
+                content: data.content,
+                version: localStorage.getItem('selectedVersion') || 'v2'
+            }
+        ]);
+
+        if (error) {
+            console.error('Error submitting to Supabase:', error);
+            // Handle error case
+        } else {
+            successModal.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error submitting to Supabase:', error);
+        // Handle error case
+    }
+});
