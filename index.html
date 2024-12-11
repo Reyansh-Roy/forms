@@ -1,182 +1,149 @@
-    <!-- Blog Promotion Float -->
-    <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
-        <!-- Your existing blog float content remains unchanged -->
-    </div>
+<!DOCTYPE html>
+<html lang="en">
 
-    <!-- Success Message Modal -->
-    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
-        <!-- Your existing modal content remains unchanged -->
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindmap Creation Process</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('contentForm');
-            const inputTypeSelect = document.getElementById('inputType');
-            const youtubeInput = document.getElementById('youtubeInput');
-            const textInput = document.getElementById('textInput');
-            const customText = document.getElementById('customText');
-            const charCount = document.getElementById('charCount');
-            const textError = document.getElementById('textError');
-            const youtubeLinkError = document.getElementById('youtubeLinkError');
-            const successModal = document.getElementById('successModal');
-            const gotItButton = document.getElementById('gotItButton');
+        .progress-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+        }
 
-            // Input type change handler
-            inputTypeSelect.addEventListener('change', function () {
-                if (this.value === 'youtube') {
-                    youtubeInput.style.display = 'block';
-                    textInput.style.display = 'none';
-                } else {
-                    youtubeInput.style.display = 'none';
-                    textInput.style.display = 'block';
-                }
-            });
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E5E7EB;
+            position: relative;
+        }
 
-            // Character count handler
-            customText.addEventListener('input', function () {
-                const length = this.value.length;
-                charCount.textContent = length;
-                
-                if (length > 2000) {
-                    textError.style.display = 'block';
-                } else {
-                    textError.style.display = 'none';
-                }
-            });
+        .dot.active {
+            background: #6366F1;
+            width: 10px;
+            height: 10px;
+        }
 
-            // Form submission handler
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                
-                const inputType = inputTypeSelect.value;
-                const youtubeLink = document.getElementById('youtubeLink').value;
-                let isValid = true;
+        .dot:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: #E5E7EB;
+            transform: translateY(-50%);
+        }
 
-                if (inputType === 'youtube') {
-                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-                        youtubeLinkError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        youtubeLinkError.style.display = 'none';
-                    }
-                } else {
-                    if (customText.value.length > 2000) {
-                        textError.style.display = 'block';
-                        isValid = false;
-                    }
-                }
+        .promotion-banner {
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
 
-                if (isValid) {
-                    const data = {
-                        type: inputType,
-                        content: inputType === 'youtube' ? youtubeLink : customText.value
-                    };
-                    localStorage.setItem('mindmapContent', JSON.stringify(data));
-                    goToPage(2);
-                }
-            });
+        .promotion-banner.show {
+            transform: translateY(0);
+        }
 
-            // Email form submission with Supabase integration
-            document.getElementById('emailForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
-                const selectedVersion = localStorage.getItem('selectedVersion') || 'v2';
+        .blog-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            animation: float 3s ease-in-out infinite;
+            max-width: 300px;
+            z-index: 50;
+            transition: transform 0.2s ease;
+            display: none;
+        }
 
-                try {
-                    // Insert data into Supabase
-                    const { data, error } = await supabase
-                        .from('mindmap_requests')
-                        .insert([
-                            {
-                                email: email,
-                                content_type: storedContent.type,
-                                content: storedContent.content,
-                                version: selectedVersion,
-                                status: 'pending'
-                            }
-                        ]);
+        .blog-float.active {
+            display: block;
+        }
 
-                    if (error) throw error;
+        .blog-float:hover {
+            transform: translateY(-5px);
+        }
 
-                    // Show success modal
-                    successModal.classList.remove('hidden');
-                    
-                    // Clear localStorage
-                    localStorage.removeItem('mindmapContent');
-                    localStorage.removeItem('selectedVersion');
-                    localStorage.removeItem('userEmail');
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
 
-                } catch (error) {
-                    console.error('Error submitting form:', error);
-                    alert('There was an error submitting your request. Please try again.');
-                }
-            });
+            50% {
+                transform: translateY(-10px);
+            }
 
-            // Got it button handler
-            gotItButton.addEventListener('click', function() {
-                successModal.classList.add('hidden');
-                // Optionally redirect to homepage or reset form
-                window.location.href = '/';
-            });
-
-            // Close modal when clicking outside
-            successModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    successModal.classList.add('hidden');
-                }
-            });
-
-            // Version selection handler
-            document.querySelector('.disabled').addEventListener('click', function() {
-                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-            });
-        });
-
-        function selectVersion(version) {
-            if (version === 'v2') {
-                localStorage.setItem('selectedVersion', 'v2');
-                goToPage(3);
+            100% {
+                transform: translateY(0px);
             }
         }
 
-        function goToPage(pageNumber) {
-            const pages = document.querySelectorAll('.section');
-            const dots = document.querySelectorAll('.dot');
-
-            pages.forEach((page, index) => {
-                if (index + 1 === pageNumber) {
-                    page.classList.add('active');
-                    dots[index].classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                    dots[index].classList.remove('active');
-                }
-            });
-
-            // Show blog float only on page 3
-            const blogFloat = document.getElementById('blogFloat');
-            if (pageNumber === 3) {
-                blogFloat.classList.add('active');
-            } else {
-                blogFloat.classList.remove('active');
-            }
+        .section {
+            display: none;
         }
 
-        function closeBlogFloat() {
-            document.getElementById('blogFloat').style.display = 'none';
+        .section.active {
+            display: block;
         }
-    </script>
-</body>
-</html>
+
+        /* Modal Animation */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        /* Page background colors */
+        #page1 {
+            background-color: #f8f1fc;
+        }
+
+        #page2 {
+            background-color: #e5efff;
+        }
+
+        #page3 {
+            background-color: #faeae6;
+        }
+
+        /* Form container styling */
+        .form-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+    </style>
+</head>
+
 <body class="min-h-screen">
-    <!-- Initialize Supabase -->
-    <script>
-        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-    </script>
-
     <div class="container mx-auto px-4 py-8">
         <!-- Progress Dots -->
         <div class="progress-dots">
@@ -230,6 +197,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Page 2: Select Mindmap Version -->
         <div id="page2" class="section min-h-screen py-8">
             <div class="container mx-auto px-4">
@@ -332,6 +300,7 @@
                 </div>
             </div>
         </div>
+
         <!-- Page 3: Complete Your Submission -->
         <div id="page3" class="section min-h-screen py-8">
             <div class="container mx-auto px-4">
@@ -362,6 +331,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Blog Promotion Float -->
@@ -425,7 +395,13 @@
             </button>
         </div>
     </div>
+
     <script>
+        // Supabase initialization
+        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contentForm');
             const inputTypeSelect = document.getElementById('inputType');
@@ -437,6 +413,7 @@
             const youtubeLinkError = document.getElementById('youtubeLinkError');
             const successModal = document.getElementById('successModal');
             const gotItButton = document.getElementById('gotItButton');
+            const emailForm = document.getElementById('emailForm');
 
             // Input type change handler
             inputTypeSelect.addEventListener('change', function () {
@@ -493,47 +470,37 @@
                 }
             });
 
-            // Email form submission with Supabase integration
-            document.getElementById('emailForm').addEventListener('submit', async function (e) {
+            // Email form submission
+            emailForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const email = document.getElementById('email').value;
-                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
-                const selectedVersion = localStorage.getItem('selectedVersion');
+                localStorage.setItem('userEmail', email);
 
                 try {
-                    // Insert data into Supabase
-                    const { data, error } = await supabase
-                        .from('mindmap_requests')
-                        .insert([
-                            {
-                                email: email,
-                                content_type: storedContent.type,
-                                content: storedContent.content,
-                                version: selectedVersion,
-                                status: 'pending'
-                            }
-                        ]);
+                    const { data, error } = await supabase.from('mindmap_requests').insert([
+                        {
+                            email: email,
+                            content_type: data.type,
+                            content: data.content,
+                            version: localStorage.getItem('selectedVersion') || 'v2'
+                        }
+                    ]);
 
-                    if (error) throw error;
-
-                    // Show success modal
-                    successModal.classList.remove('hidden');
-                    
-                    // Clear localStorage
-                    localStorage.removeItem('mindmapContent');
-                    localStorage.removeItem('selectedVersion');
-                    
+                    if (error) {
+                        console.error('Error submitting to Supabase:', error);
+                        // Handle error case
+                    } else {
+                        successModal.classList.remove('hidden');
+                    }
                 } catch (error) {
-                    console.error('Error submitting form:', error.message);
-                    alert('There was an error submitting your request. Please try again.');
+                    console.error('Error submitting to Supabase:', error);
+                    // Handle error case
                 }
             });
 
             // Got it button handler
             gotItButton.addEventListener('click', function() {
                 successModal.classList.add('hidden');
-                // Optionally redirect to homepage or reset form
-                window.location.href = '/';
             });
 
             // Close modal when clicking outside
@@ -582,6 +549,68 @@
         function closeBlogFloat() {
             document.getElementById('blogFloat').style.display = 'none';
         }
+
+        // Function to create Supabase client
+        function createClient(url, key) {
+            return {
+                from: (table) => ({
+                    insert: async (data) => {
+                        const { data: insertedData, error } = await fetch(`${url}/rest/v1/${table}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'apikey': key,
+                                'Authorization': `Bearer ${key}`
+                            },
+                            body: JSON.stringify(data)
+                        }).then(response => response.json());
+
+                        return { data: insertedData, error };
+                    }
+                })
+            };
+        }
     </script>
 </body>
-</html>                    
+
+</html>
+```
+
+The key changes made to integrate Supabase are:
+
+1. Added the Supabase initialization code at the beginning of the script section:
+```javascript
+const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+const supabase = createClient(supabaseUrl, supabaseKey);
+```
+
+2. Added the `createClient` function to create a Supabase client instance.
+3. Modified the email form submission event handler to insert the form data into the Supabase `mindmap_requests` table:
+```javascript
+emailForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    localStorage.setItem('userEmail', email);
+
+    try {
+        const { data, error } = await supabase.from('mindmap_requests').insert([
+            {
+                email: email,
+                content_type: data.type,
+                content: data.content,
+                version: localStorage.getItem('selectedVersion') || 'v2'
+            }
+        ]);
+
+        if (error) {
+            console.error('Error submitting to Supabase:', error);
+            // Handle error case
+        } else {
+            successModal.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Error submitting to Supabase:', error);
+        // Handle error case
+    }
+});
