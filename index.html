@@ -8,7 +8,139 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
-        /* CSS styles omitted for brevity */
+        .error-message {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .progress-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E5E7EB;
+            position: relative;
+        }
+
+        .dot.active {
+            background: #6366F1;
+            width: 10px;
+            height: 10px;
+        }
+
+        .dot:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: #E5E7EB;
+            transform: translateY(-50%);
+        }
+
+        .promotion-banner {
+            transform: translateY(100%);
+            transition: transform 0.5s ease;
+        }
+
+        .promotion-banner.show {
+            transform: translateY(0);
+        }
+
+        .blog-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            animation: float 3s ease-in-out infinite;
+            max-width: 300px;
+            z-index: 50;
+            transition: transform 0.2s ease;
+            display: none;
+        }
+
+        .blog-float.active {
+            display: block;
+        }
+
+        .blog-float:hover {
+            transform: translateY(-5px);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Modal Animation */
+        .modal-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .modal-enter-active {
+            opacity: 1;
+            transform: scale(1);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        .modal-exit {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .modal-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 300ms, transform 300ms;
+        }
+
+        /* Page background colors */
+        #page1 {
+            background-color: #f8f1fc;
+        }
+
+        #page2 {
+            background-color: #e5efff;
+        }
+
+        #page3 {
+            background-color: #faeae6;
+        }
+
+        /* Form container styling */
+        .form-container {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
     </style>
 </head>
 
@@ -211,6 +343,39 @@
                 Support PenseeWeb's Blog ✨
             </a>
             <p class="text-xs text-gray-500 text-center">Each post includes a free mindmap summary</p>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <div class="bg-black bg-opacity-50 absolute inset-0"></div>
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Submission Complete! 🎉</h3>
+            <p class="text-gray-600 mb-4">
+                Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
+            </p>
+
+            <!-- Product Promotion in Modal -->
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl">✨</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h4>
+                        <p class="text-sm text-gray-600">
+                            Explore our collection of premium custom map products.
+                            <a href="https://penseeweb.com/products" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                                @visit →
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="gotItButton" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                Got it!
+            </button>
         </div>
     </div>
 
