@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Your Mindmap</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         .error-message {
             color: #dc2626;
@@ -94,16 +93,11 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-b from-purple-50 to-purple-100 bg-gradient-to-b from-indigo-50 to-indigo-100 min-h-screen">
-    <div class="min-h-screen flex items-center justify-center p-4 container mx-auto px-4 py-8">
-        <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto bg-white rounded-2xl shadow-xl p-8">
-            <div class="progress-dots">
-                <div class="dot active"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-            </div>
-
-            <div id="page1">
+<body class="bg-gradient-to-b from-purple-50 to-purple-100">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+            <!-- Page 1 -->
+            <div id="page1" class="space-y-6">
                 <h1 class="text-3xl font-bold text-purple-800 mb-4">Create Your Mindmap</h1>
                 <p class="text-gray-600 mb-8">Transform your content into an amazing mindmap ✨</p>
 
@@ -127,13 +121,21 @@
 
                     <div id="textInput" style="display: none;" class="space-y-2">
                         <textarea id="customText"
-                                class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                                rows="8"
-                                placeholder="Enter your text here (max 2000 characters)"></textarea>
+                                  class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                  rows="8"
+                                  placeholder="Enter your text here (max 2000 characters)"></textarea>
                         <div class="flex justify-between text-sm text-gray-500">
                             <span>Characters: <span id="charCount">0</span>/2000</span>
                             <span id="textError" class="error-message text-right">Text exceeds maximum length</span>
                         </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <input type="email" 
+                               id="email"
+                               class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                               placeholder="Enter your email address">
+                        <div id="emailError" class="error-message">Please enter a valid email address</div>
                     </div>
 
                     <button type="submit"
@@ -147,8 +149,15 @@
                 </form>
             </div>
 
+            <!-- Page 2 -->
             <div id="page2" style="display: none;">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">What version would you like to use?</h1>
+                <div class="progress-dots">
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                </div>
+
+                <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">What version would you like to use?</h1>
                 <p class="text-gray-600 mb-8 text-center">Choose the mindmap generation version that suits your needs</p>
 
                 <div class="grid md:grid-cols-2 gap-8">
@@ -224,10 +233,10 @@
                 </div>
 
                 <div class="flex justify-between mt-8">
-                    <button onclick="goBack()" class="text-indigo-600 font-medium hover:text-indigo-700">
+                    <button onclick="goToPage1()" class="text-indigo-600 font-medium hover:text-indigo-700">
                         ← Back
                     </button>
-                    <button onclick="proceed()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                    <button onclick="proceedToPage3()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
                         Continue →
                     </button>
                 </div>
@@ -237,48 +246,61 @@
                 </p>
             </div>
 
+            <!-- Page 3 -->
             <div id="page3" style="display: none;">
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                    <p class="text-sm text-yellow-700">
-                        Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏
-                    </p>
+                <div class="progress-dots">
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot active"></div>
                 </div>
 
-                <form id="emailForm" class="space-y-6">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="your@email.com">
+                <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
+                    <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
+                    
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                        <p class="text-sm text-yellow-700">
+                            Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏
+                        </p>
                     </div>
 
-                    <button type="submit"
-                        class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
-                        Complete Submission
-                    </button>
-                </form>
+                    <form id="emailForm" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="email" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="your@email.com">
+                        </div>
 
-                <div id="subtlePromo" class="subtle-promo mt-6">
-                    <div class="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg p-5 border border-indigo-200">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <span class="text-2xl">✨</span>
-                                <div>
-                                    <h3 class="font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h3>
-                                    <p class="text-sm text-gray-600">
-                                        Explore our collection of premium custom map products
-                                    </p>
+                        <button type="submit"
+                                class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            Complete Submission
+                        </button>
+                    </form>
+
+                    <div id="subtlePromo" class="subtle-promo mt-6">
+                        <div class="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg p-5 border border-indigo-200">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <span class="text-2xl">✨</span>
+                                    <div>
+                                        <h3 class="font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h3>
+                                        <p class="text-sm text-gray-600">
+                                            Explore our collection of premium custom map products
+                                        </p>
+                                    </div>
                                 </div>
+                                <a href="https://penseeweb.com/products" target="_blank" 
+                                   class="flex-shrink-0 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                                    @visit →
+                                </a>
                             </div>
-                            <a href="https://penseeweb.com/products" target="_blank" 
-                               class="flex-shrink-0 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
-                                @visit →
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Blog Promotion Float -->
             <div class="blog-float bg-white rounded-xl shadow-lg p-4">
                 <div class="flex items-start space-x-3 mb-3">
                     <div class="flex-shrink-0">
@@ -300,6 +322,7 @@
                 </div>
             </div>
 
+            <!-- Success Message Modal with Blog Promotion -->
             <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
                 <div class="bg-black bg-opacity-50 absolute inset-0"></div>
                 <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
@@ -308,6 +331,7 @@
                         Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
                     </p>
 
+                    <!-- Blog Promotion in Modal -->
                     <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
                         <div class="flex items-start space-x-3">
                             <div class="flex-shrink-0">
@@ -335,11 +359,11 @@
     </div>
 
     <script>
+        // Import Supabase library
+        const { createClient } = supabase;
         const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        let mindmapData = JSON.parse(localStorage.getItem('mindmapContent')) || {};
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('contentForm');
@@ -350,6 +374,8 @@
             const charCount = document.getElementById('charCount');
             const textError = document.getElementById('textError');
             const youtubeLinkError = document.getElementById('youtubeLinkError');
+            const emailInput = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
 
             inputTypeSelect.addEventListener('change', function() {
                 if (this.value === 'youtube') {
@@ -377,6 +403,7 @@
                 
                 const inputType = inputTypeSelect.value;
                 const youtubeLink = document.getElementById('youtubeLink').value;
+                const email = emailInput.value;
                 let isValid = true;
 
                 if (inputType === 'youtube') {
@@ -393,116 +420,77 @@
                     }
                 }
 
+                if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+                    emailError.style.display = 'block';
+                    isValid = false;
+                } else {
+                    emailError.style.display = 'none';
+                }
+
                 if (isValid) {
-                    const content = inputType === 'youtube' ? youtubeLink : customText.value;
-                    
-                    try {
-                        const tempData = {
+                    // Store the input data in Supabase
+                    const selectedVersion = localStorage.getItem('selectedVersion') || 'v1';
+                    const { data, error } = await supabase.from('mindmap_requests').insert([
+                        {
+                            email: email,
                             content_type: inputType,
-                            content: content,
-                            version: 'v2', // Default version
-                            email: '', // Will be collected in page 3
+                            content: inputType === 'youtube' ? youtubeLink : customText.value,
+                            version: selectedVersion,
                             status: 'pending'
-                        };
+                        }
+                    ]);
+
+                    if (error) {
+                        console.error('Error storing data:', error);
+                        alert('An error occurred. Please try again later.');
+                    } else {
+                        // Show success modal
+                        document.getElementById('successModal').classList.remove('hidden');
                         
-                        localStorage.setItem('mindmapContent', JSON.stringify(tempData));
-                        document.getElementById('page1').style.display = 'none';
-                        document.getElementById('page2').style.display = 'block';
-                        document.querySelectorAll('.dot')[0].classList.remove('active');
-                        document.querySelectorAll('.dot')[1].classList.add('active');
-                    } catch (error) {
-                        console.error('Error:', error.message);
-                        alert('An error occurred. Please try again.');
+                        // Show subtle promotion after short delay
+                        setTimeout(() => {
+                            document.getElementById('subtlePromo').classList.add('show');
+                        }, 2000);
                     }
                 }
             });
 
-            // Check if user came from previous pages
-            if (mindmapData.version && mindmapData.content) {
+            function selectVersion(version) {
+                if (version === 'v2') {
+                    localStorage.setItem('selectedVersion', 'v2');
+                    proceedToPage3();
+                }
+            }
+
+            function showComingSoonMessage() {
+                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
+            }
+
+            // Add event listener to V3 card
+            document.querySelector('.disabled').addEventListener('click', showComingSoonMessage);
+
+            function goToPage1() {
+                document.getElementById('page1').style.display = 'block';
+                document.getElementById('page2').style.display = 'none';
+                document.getElementById('page3').style.display = 'none';
+            }
+
+            function proceedToPage3() {
                 document.getElementById('page1').style.display = 'none';
                 document.getElementById('page2').style.display = 'none';
                 document.getElementById('page3').style.display = 'block';
-                document.querySelectorAll('.dot')[0].classList.remove('active');
-                document.querySelectorAll('.dot')[1].classList.remove('active');
-                document.querySelectorAll('.dot')[2].classList.add('active');
-
-                setTimeout(() => {
-                    document.getElementById('subtlePromo').classList.add('show');
-                }, 2000);
             }
-        });
 
-        function selectVersion(version) {
-            if (version === 'v2') {
-                mindmapData.version = 'v2';
-                localStorage.setItem('mindmapContent', JSON.stringify(mindmapData));
-                document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'block';
-                document.querySelectorAll('.dot')[1].classList.remove('active');
-                document.querySelectorAll('.dot')[2].classList.add('active');
+            function closeSuccessModal() {
+                document.getElementById('successModal').classList.add('hidden');
             }
-        }
 
-        function showComingSoonMessage() {
-            alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-        }
-
-        document.querySelector('.disabled').addEventListener('click', showComingSoonMessage);
-
-        function goBack() {
-            document.getElementById('page2').style.display = 'none';
-            document.getElementById('page1').style.display = 'block';
-            document.querySelectorAll('.dot')[0].classList.add('active');
-            document.querySelectorAll('.dot')[1].classList.remove('active');
-        }
-
-        function proceed() {
-            if (mindmapData.version) {
-                document.getElementById('page2').style.display = 'none';
-                document.getElementById('page3').style.display = 'block';
-                document.querySelectorAll('.dot')[1].classList.remove('active');
-                document.querySelectorAll('.dot')[2].classList.add('active');
-            } else {
-                alert('Please select a version to continue.');
-            }
-        }
-
-        document.getElementById('emailForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            
-            mindmapData.email = email;
-            localStorage.setItem('mindmapContent', JSON.stringify(mindmapData));
-            
-            try {
-                // Save data to Supabase
-                const { error } = await supabase.from('mindmap_submissions').insert([mindmapData]);
-                if (error) {
-                    console.error('Error saving to Supabase:', error.message);
-                    alert('An error occurred. Please try again.');
-                } else {
-                    document.getElementById('successModal').classList.remove('hidden');
-                    
-                    setTimeout(() => {
-                        document.getElementById('subtlePromo').classList.add('show');
-                    }, 2000);
+            // Close modal when clicking outside
+            document.getElementById('successModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSuccessModal();
                 }
-            } catch (error) {
-                console.error('Error:', error.message);
-                alert('An error occurred. Please try again.');
-            }
-        });
-
-        function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
-            // Optional: Redirect to homepage or thank you page
-            // window.location.href = 'index.html';
-        }
-
-        document.getElementById('successModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSuccessModal();
-            }
+            });
         });
     </script>
 </body>
