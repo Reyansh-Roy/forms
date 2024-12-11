@@ -1,199 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindmap Creation Process</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Added Supabase Script -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .progress-dots {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #E5E7EB;
-            position: relative;
-        }
-
-        .dot.active {
-            background: #6366F1;
-            width: 10px;
-            height: 10px;
-        }
-
-        .dot:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            width: 40px;
-            height: 2px;
-            background: #E5E7EB;
-            transform: translateY(-50%);
-        }
-
-        .promotion-banner {
-            transform: translateY(100%);
-            transition: transform 0.5s ease;
-        }
-
-        .promotion-banner.show {
-            transform: translateY(0);
-        }
-
-        .blog-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            animation: float 3s ease-in-out infinite;
-            max-width: 300px;
-            z-index: 50;
-            transition: transform 0.2s ease;
-            display: none;
-        }
-
-        .blog-float.active {
-            display: block;
-        }
-
-        .blog-float:hover {
-            transform: translateY(-5px);
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .modal-enter {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-
-        .modal-enter-active {
-            opacity: 1;
-            transform: scale(1);
-            transition: opacity 300ms, transform 300ms;
-        }
-
-        .modal-exit {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .modal-exit-active {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 300ms, transform 300ms;
-        }
-
-        #page1 {
-            background-color: #f8f1fc;
-        }
-
-        #page2 {
-            background-color: #e5efff;
-        }
-
-        #page3 {
-            background-color: #faeae6;
-        }
-
-        .form-container {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-        }
-    </style>
-</head>
-
-<body class="min-h-screen">
-<div class="container mx-auto px-4 py-8">
-    <!-- Progress Dots -->
-    <div class="progress-dots">
-        <div class="dot active" id="dot1"></div>
-        <div class="dot" id="dot2"></div>
-        <div class="dot" id="dot3"></div>
+    <!-- Blog Promotion Float -->
+    <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
+        <!-- Your existing blog float content remains unchanged -->
     </div>
 
-    <!-- Page 1: Create Your Mindmap -->
-    [Your existing Page 1 HTML remains exactly the same]
-
-    <!-- Page 2: Select Mindmap Version -->
-    [Your existing Page 2 HTML remains exactly the same]
-
-    <!-- Page 3: Complete Your Submission -->
-    [Your existing Page 3 HTML remains exactly the same]
-
-    <!-- Blog Promotion Float -->
-    [Your existing Blog Float HTML remains exactly the same]
-
     <!-- Success Message Modal -->
-    [Your existing Success Modal HTML remains exactly the same]
-
-    <!-- Supabase Integration -->
-    <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        // Function to submit data to Supabase
-        async function submitToSupabase(formData) {
-            try {
-                const { data, error } = await supabase
-                    .from('mindmap_requests')
-                    .insert([{
-                        email: formData.email,
-                        content_type: formData.type,
-                        content: formData.content,
-                        version: formData.version,
-                        status: 'pending'
-                    }]);
-
-                if (error) throw error;
-                return { success: true, data };
-            } catch (error) {
-                console.error('Error submitting to Supabase:', error);
-                return { success: false, error: error.message };
-            }
-        }
-    </script>
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <!-- Your existing modal content remains unchanged -->
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -208,43 +21,567 @@
             const successModal = document.getElementById('successModal');
             const gotItButton = document.getElementById('gotItButton');
 
-            [Your existing event listeners and functions remain exactly the same until the email form submission]
+            // Input type change handler
+            inputTypeSelect.addEventListener('change', function () {
+                if (this.value === 'youtube') {
+                    youtubeInput.style.display = 'block';
+                    textInput.style.display = 'none';
+                } else {
+                    youtubeInput.style.display = 'none';
+                    textInput.style.display = 'block';
+                }
+            });
 
-            // Updated Email form submission with Supabase
+            // Character count handler
+            customText.addEventListener('input', function () {
+                const length = this.value.length;
+                charCount.textContent = length;
+                
+                if (length > 2000) {
+                    textError.style.display = 'block';
+                } else {
+                    textError.style.display = 'none';
+                }
+            });
+
+            // Form submission handler
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                
+                const inputType = inputTypeSelect.value;
+                const youtubeLink = document.getElementById('youtubeLink').value;
+                let isValid = true;
+
+                if (inputType === 'youtube') {
+                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
+                        youtubeLinkError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        youtubeLinkError.style.display = 'none';
+                    }
+                } else {
+                    if (customText.value.length > 2000) {
+                        textError.style.display = 'block';
+                        isValid = false;
+                    }
+                }
+
+                if (isValid) {
+                    const data = {
+                        type: inputType,
+                        content: inputType === 'youtube' ? youtubeLink : customText.value
+                    };
+                    localStorage.setItem('mindmapContent', JSON.stringify(data));
+                    goToPage(2);
+                }
+            });
+
+            // Email form submission with Supabase integration
             document.getElementById('emailForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const email = document.getElementById('email').value;
-                
-                // Get stored data from localStorage
-                const mindmapContent = JSON.parse(localStorage.getItem('mindmapContent'));
-                const selectedVersion = localStorage.getItem('selectedVersion');
+                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
+                const selectedVersion = localStorage.getItem('selectedVersion') || 'v2';
 
-                const formData = {
-                    email: email,
-                    type: mindmapContent.type,
-                    content: mindmapContent.content,
-                    version: selectedVersion
-                };
+                try {
+                    // Insert data into Supabase
+                    const { data, error } = await supabase
+                        .from('mindmap_requests')
+                        .insert([
+                            {
+                                email: email,
+                                content_type: storedContent.type,
+                                content: storedContent.content,
+                                version: selectedVersion,
+                                status: 'pending'
+                            }
+                        ]);
 
-                // Submit to Supabase
-                const result = await submitToSupabase(formData);
+                    if (error) throw error;
 
-                if (result.success) {
-                    localStorage.setItem('userEmail', email);
+                    // Show success modal
                     successModal.classList.remove('hidden');
                     
-                    // Clear form data after successful submission
+                    // Clear localStorage
                     localStorage.removeItem('mindmapContent');
                     localStorage.removeItem('selectedVersion');
-                } else {
+                    localStorage.removeItem('userEmail');
+
+                } catch (error) {
+                    console.error('Error submitting form:', error);
                     alert('There was an error submitting your request. Please try again.');
                 }
             });
 
-            [Your existing gotItButton and other event listeners remain exactly the same]
+            // Got it button handler
+            gotItButton.addEventListener('click', function() {
+                successModal.classList.add('hidden');
+                // Optionally redirect to homepage or reset form
+                window.location.href = '/';
+            });
+
+            // Close modal when clicking outside
+            successModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    successModal.classList.add('hidden');
+                }
+            });
+
+            // Version selection handler
+            document.querySelector('.disabled').addEventListener('click', function() {
+                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
+            });
         });
 
-        [Your existing functions (selectVersion, goToPage, closeBlogFloat) remain exactly the same]
+        function selectVersion(version) {
+            if (version === 'v2') {
+                localStorage.setItem('selectedVersion', 'v2');
+                goToPage(3);
+            }
+        }
+
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll('.section');
+            const dots = document.querySelectorAll('.dot');
+
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                    dots[index].classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                    dots[index].classList.remove('active');
+                }
+            });
+
+            // Show blog float only on page 3
+            const blogFloat = document.getElementById('blogFloat');
+            if (pageNumber === 3) {
+                blogFloat.classList.add('active');
+            } else {
+                blogFloat.classList.remove('active');
+            }
+        }
+
+        function closeBlogFloat() {
+            document.getElementById('blogFloat').style.display = 'none';
+        }
     </script>
 </body>
 </html>
+<body class="min-h-screen">
+    <!-- Initialize Supabase -->
+    <script>
+        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+    </script>
+
+    <div class="container mx-auto px-4 py-8">
+        <!-- Progress Dots -->
+        <div class="progress-dots">
+            <div class="dot active" id="dot1"></div>
+            <div class="dot" id="dot2"></div>
+            <div class="dot" id="dot3"></div>
+        </div>
+
+        <!-- Page 1: Create Your Mindmap -->
+        <div id="page1" class="section active min-h-screen py-8">
+            <div class="container mx-auto px-4">
+                <div class="max-w-md mx-auto form-container rounded-xl p-8">
+                    <h1 class="text-3xl font-bold text-purple-800 mb-4">Create Your Mindmap</h1>
+                    <p class="text-gray-600 mb-8">Transform your content into an amazing mindmap ✨</p>
+
+                    <form id="contentForm" class="space-y-6">
+                        <div>
+                            <label class="block text-lg font-medium text-gray-700 mb-3">Choose Your Input Type</label>
+                            <select id="inputType" class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
+                                <option value="youtube">YouTube Video Link</option>
+                                <option value="text">Custom Text</option>
+                            </select>
+                        </div>
+
+                        <div id="youtubeInput" class="space-y-2">
+                            <input type="url" id="youtubeLink"
+                                class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                placeholder="Paste your YouTube video URL here">
+                            <div id="youtubeLinkError" class="error-message">Please enter a valid YouTube URL</div>
+                        </div>
+
+                        <div id="textInput" style="display: none;" class="space-y-2">
+                            <textarea id="customText"
+                                class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                rows="8" placeholder="Enter your text here (max 2000 characters)"></textarea>
+                            <div class="flex justify-between text-sm text-gray-500">
+                                <span>Characters: <span id="charCount">0</span>/2000</span>
+                                <span id="textError" class="error-message text-right">Text exceeds maximum length</span>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-200 font-medium">
+                            Continue →
+                        </button>
+
+                        <p class="text-sm text-gray-500 text-center">
+                            ✨ Free & Privacy Protected
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- Page 2: Select Mindmap Version -->
+        <div id="page2" class="section min-h-screen py-8">
+            <div class="container mx-auto px-4">
+                <div class="max-w-4xl mx-auto form-container rounded-xl p-8">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">What version would you like to use?</h1>
+                    <p class="text-gray-600 mb-8 text-center">Choose the mindmap generation version that suits your needs</p>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- V2 Version Card -->
+                        <div onclick="selectVersion('v2')"
+                            class="version-card bg-white rounded-xl shadow-lg p-6 border-2 border-indigo-100 hover:border-indigo-300 cursor-pointer">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-bold text-indigo-600">Version 2.0</h2>
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-medium">Available</span>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div class="bg-indigo-50 rounded-lg p-4">
+                                    <h3 class="font-semibold text-indigo-800 mb-3">Performance Level</h3>
+                                    <div class="h-2 bg-indigo-100 rounded-full">
+                                        <div class="h-2 bg-indigo-500 rounded-full" style="width: 60%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-600 mt-2">Equivalent to Basic LLM Capabilities</p>
+                                </div>
+
+                                <div>
+                                    <h3 class="font-semibold text-gray-700 mb-3">Features</h3>
+                                    <ul class="space-y-2 text-gray-600">
+                                        <li class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                                            </svg>
+                                            Basic Mindmap Generation
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                                            </svg>
+                                            Standard Processing Speed
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- V3 Version Card (Disabled) -->
+                        <div class="version-card disabled bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100">
+                            <div class="flex justify-between items-center mb-6">
+                                <h2 class="text-2xl font-bold text-gray-400">Version 3.0</h2>
+                                <span class="bg-yellow-50 text-yellow-600 px-3 py-1 rounded-full text-sm font-medium">Coming Soon</span>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div class="bg-gray-50 rounded-lg p-4">
+                                    <h3 class="font-semibold text-gray-400 mb-3">Performance Level</h3>
+                                    <div class="h-2 bg-gray-100 rounded-full">
+                                        <div class="h-2 bg-gray-300 rounded-full" style="width: 85%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mt-2">Equivalent to Mid-Level LLM Capabilities</p>
+                                </div>
+
+                                <div>
+                                    <h3 class="font-semibold text-gray-400 mb-3">Features</h3>
+                                    <ul class="space-y-2 text-gray-400">
+                                        <li class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                                            </svg>
+                                            Advanced Mindmap Generation
+                                        </li>
+                                        <li class="flex items-center">
+                                            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" />
+                                            </svg>
+                                            Enhanced Processing Speed
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between mt-8">
+                        <button onclick="goToPage(1)" class="text-indigo-600 font-medium hover:text-indigo-700">
+                            ← Back
+                        </button>
+                        <button onclick="goToPage(3)"
+                            class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            Continue →
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-gray-500 text-center mt-6">
+                        Powered by PenseeWeb's Custom LLM Technology
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- Page 3: Complete Your Submission -->
+        <div id="page3" class="section min-h-screen py-8">
+            <div class="container mx-auto px-4">
+                <div class="max-w-md mx-auto form-container rounded-xl p-8">
+                    <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
+                    <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
+
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                        <p class="text-sm text-yellow-700">
+                            Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely
+                            apologize for any delay or inconvenience. 🙏
+                        </p>
+                    </div>
+
+                    <form id="emailForm" class="space-y-6">
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="email" required
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="your@email.com">
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            Complete Submission
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Blog Promotion Float -->
+    <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
+        <div class="flex justify-between items-start mb-3">
+            <div class="flex items-start space-x-3">
+                <div class="flex-shrink-0">
+                    <span class="text-2xl">📚</span>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">PenseeWeb Blog</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Explore our blog posts with ready-to-use mindmaps for quick understanding!
+                    </p>
+                </div>
+            </div>
+            <button onclick="closeBlogFloat()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">
+                ×
+            </button>
+        </div>
+        <div class="space-y-2">
+            <a href="https://penseeweb.com/blog" target="_blank"
+                class="block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:from-purple-700 hover:to-indigo-700 transition duration-200 text-sm font-medium">
+                Support PenseeWeb's Blog ✨
+            </a>
+            <p class="text-xs text-gray-500 text-center">Each post includes a free mindmap summary</p>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <div class="bg-black bg-opacity-50 absolute inset-0"></div>
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Submission Complete! 🎉</h3>
+            <p class="text-gray-600 mb-4">
+                Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
+            </p>
+
+            <!-- Product Promotion in Modal -->
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl">✨</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h4>
+                        <p class="text-sm text-gray-600">
+                            Explore our collection of premium custom map products.
+                            <a href="https://penseeweb.com/products" target="_blank"
+                                class="text-indigo-600 hover:text-indigo-700 font-medium">
+                                @visit →
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="gotItButton"
+                class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                Got it!
+            </button>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contentForm');
+            const inputTypeSelect = document.getElementById('inputType');
+            const youtubeInput = document.getElementById('youtubeInput');
+            const textInput = document.getElementById('textInput');
+            const customText = document.getElementById('customText');
+            const charCount = document.getElementById('charCount');
+            const textError = document.getElementById('textError');
+            const youtubeLinkError = document.getElementById('youtubeLinkError');
+            const successModal = document.getElementById('successModal');
+            const gotItButton = document.getElementById('gotItButton');
+
+            // Input type change handler
+            inputTypeSelect.addEventListener('change', function () {
+                if (this.value === 'youtube') {
+                    youtubeInput.style.display = 'block';
+                    textInput.style.display = 'none';
+                } else {
+                    youtubeInput.style.display = 'none';
+                    textInput.style.display = 'block';
+                }
+            });
+
+            // Character count handler
+            customText.addEventListener('input', function () {
+                const length = this.value.length;
+                charCount.textContent = length;
+                
+                if (length > 2000) {
+                    textError.style.display = 'block';
+                } else {
+                    textError.style.display = 'none';
+                }
+            });
+
+            // Form submission handler
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                
+                const inputType = inputTypeSelect.value;
+                const youtubeLink = document.getElementById('youtubeLink').value;
+                let isValid = true;
+
+                if (inputType === 'youtube') {
+                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
+                        youtubeLinkError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        youtubeLinkError.style.display = 'none';
+                    }
+                } else {
+                    if (customText.value.length > 2000) {
+                        textError.style.display = 'block';
+                        isValid = false;
+                    }
+                }
+
+                if (isValid) {
+                    const data = {
+                        type: inputType,
+                        content: inputType === 'youtube' ? youtubeLink : customText.value
+                    };
+                    localStorage.setItem('mindmapContent', JSON.stringify(data));
+                    goToPage(2);
+                }
+            });
+
+            // Email form submission with Supabase integration
+            document.getElementById('emailForm').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
+                const selectedVersion = localStorage.getItem('selectedVersion');
+
+                try {
+                    // Insert data into Supabase
+                    const { data, error } = await supabase
+                        .from('mindmap_requests')
+                        .insert([
+                            {
+                                email: email,
+                                content_type: storedContent.type,
+                                content: storedContent.content,
+                                version: selectedVersion,
+                                status: 'pending'
+                            }
+                        ]);
+
+                    if (error) throw error;
+
+                    // Show success modal
+                    successModal.classList.remove('hidden');
+                    
+                    // Clear localStorage
+                    localStorage.removeItem('mindmapContent');
+                    localStorage.removeItem('selectedVersion');
+                    
+                } catch (error) {
+                    console.error('Error submitting form:', error.message);
+                    alert('There was an error submitting your request. Please try again.');
+                }
+            });
+
+            // Got it button handler
+            gotItButton.addEventListener('click', function() {
+                successModal.classList.add('hidden');
+                // Optionally redirect to homepage or reset form
+                window.location.href = '/';
+            });
+
+            // Close modal when clicking outside
+            successModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    successModal.classList.add('hidden');
+                }
+            });
+
+            // Version selection handler
+            document.querySelector('.disabled').addEventListener('click', function() {
+                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
+            });
+        });
+
+        function selectVersion(version) {
+            if (version === 'v2') {
+                localStorage.setItem('selectedVersion', 'v2');
+                goToPage(3);
+            }
+        }
+
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll('.section');
+            const dots = document.querySelectorAll('.dot');
+
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                    dots[index].classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                    dots[index].classList.remove('active');
+                }
+            });
+
+            // Show blog float only on page 3
+            const blogFloat = document.getElementById('blogFloat');
+            if (pageNumber === 3) {
+                blogFloat.classList.add('active');
+            } else {
+                blogFloat.classList.remove('active');
+            }
+        }
+
+        function closeBlogFloat() {
+            document.getElementById('blogFloat').style.display = 'none';
+        }
+    </script>
+</body>
+</html>                    
