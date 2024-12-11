@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mindmap Creation Process</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         .error-message {
             color: #dc2626;
@@ -334,276 +335,221 @@
     </div>
 
     <!-- Blog Promotion Float -->
-<div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
-    <div class="flex justify-between items-start mb-3">
-        <div class="flex items-start space-x-3">
-            <div class="flex-shrink-0">
-                <span class="text-2xl">📚</span>
-            </div>
-            <div>
-                <h3 class="text-sm font-medium text-gray-800 mb-1">PenseeWeb Blog</h3>
-                <p class="text-sm text-gray-600 leading-relaxed">
-                    Explore our blog posts with ready-to-use mindmaps for quick understanding!
-                </p>
-            </div>
-        </div>
-        <button onclick="closeBlogFloat()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">
-            ×
-        </button>
-    </div>
-    <div class="space-y-2">
-        <a href="https://penseeweb.com/blog" target="_blank"
-            class="block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:from-purple-700 hover:to-indigo-700 transition duration-200 text-sm font-medium">
-            Support PenseeWeb's Blog ✨
-        </a>
-        <p class="text-xs text-gray-500 text-center">Each post includes a free mindmap summary</p>
-    </div>
-</div>
-
-<!-- Success Message Modal -->
-<div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
-    <div class="bg-black bg-opacity-50 absolute inset-0"></div>
-    <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
-        <h3 class="text-xl font-bold text-gray-800 mb-4">Submission Complete! 🎉</h3>
-        <p class="text-gray-600 mb-4">
-            Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
-        </p>
-
-        <!-- Product Promotion in Modal -->
-        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
+    <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
+        <div class="flex justify-between items-start mb-3">
             <div class="flex items-start space-x-3">
                 <div class="flex-shrink-0">
-                    <span class="text-xl">✨</span>
+                    <span class="text-2xl">📚</span>
                 </div>
                 <div>
-                    <h4 class="text-sm font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h4>
-                    <p class="text-sm text-gray-600">
-                        Explore our collection of premium custom map products.
-                        <a href="https://penseeweb.com/products" target="_blank"
-                            class="text-indigo-600 hover:text-indigo-700 font-medium">
-                            @visit →
-                        </a>
+                    <h3 class="text-sm font-medium text-gray-800 mb-1">PenseeWeb Blog</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Explore our blog posts with ready-to-use mindmaps for quick understanding!
                     </p>
                 </div>
             </div>
+            <button onclick="closeBlogFloat()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">
+                ×
+            </button>
         </div>
-
-        <button type="button" id="gotItButton"
-            class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-            Got it!
-        </button>
+        <div class="space-y-2">
+            <a href="https://penseeweb.com/blog" target="_blank"
+                class="block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:from-purple-700 hover:to-indigo-700 transition duration-200 text-sm font-medium">
+                Support PenseeWeb's Blog ✨
+            </a>
+            <p class="text-xs text-gray-500 text-center">Each post includes a free mindmap summary</p>
+        </div>
     </div>
-</div>
 
-<script>
-    // Supabase initialization
-    const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    <!-- Success Message Modal -->
+    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
+        <div class="bg-black bg-opacity-50 absolute inset-0"></div>
+        <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Submission Complete! 🎉</h3>
+            <p class="text-gray-600 mb-4">
+                Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
+            </p>
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('contentForm');
-        const inputTypeSelect = document.getElementById('inputType');
-        const youtubeInput = document.getElementById('youtubeInput');
-        const textInput = document.getElementById('textInput');
-        const customText = document.getElementById('customText');
-        const charCount = document.getElementById('charCount');
-        const textError = document.getElementById('textError');
-        const youtubeLinkError = document.getElementById('youtubeLinkError');
-        const successModal = document.getElementById('successModal');
-        const gotItButton = document.getElementById('gotItButton');
-        const emailForm = document.getElementById('emailForm');
+            <!-- Product Promotion in Modal -->
+            <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
+                <div class="flex items-start space-x-3">
+                    <div class="flex-shrink-0">
+                        <span class="text-xl">✨</span>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h4>
+                        <p class="text-sm text-gray-600">
+                            Explore our collection of premium custom map products.
+                            <a href="https://penseeweb.com/products" target="_blank"
+                                class="text-indigo-600 hover:text-indigo-700 font-medium">
+                                @visit →
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
 
-        // Input type change handler
-        inputTypeSelect.addEventListener('change', function () {
-            if (this.value === 'youtube') {
-                youtubeInput.style.display = 'block';
-                textInput.style.display = 'none';
-            } else {
-                youtubeInput.style.display = 'none';
-                textInput.style.display = 'block';
-            }
-        });
+            <button type="button" id="gotItButton"
+                class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                Got it!
+            </button>
+        </div>
+    </div>
 
-        // Character count handler
-        customText.addEventListener('input', function () {
-            const length = this.value.length;
-            charCount.textContent = length;
-            
-            if (length > 2000) {
-                textError.style.display = 'block';
-            } else {
-                textError.style.display = 'none';
-            }
-        });
+    <script>
+        // Supabase initialization
+        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
-        // Form submission handler
-        form.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            
-            const inputType = inputTypeSelect.value;
-            const youtubeLink = document.getElementById('youtubeLink').value;
-            let isValid = true;
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('contentForm');
+            const inputTypeSelect = document.getElementById('inputType');
+            const youtubeInput = document.getElementById('youtubeInput');
+            const textInput = document.getElementById('textInput');
+            const customText = document.getElementById('customText');
+            const charCount = document.getElementById('charCount');
+            const textError = document.getElementById('textError');
+            const youtubeLinkError = document.getElementById('youtubeLinkError');
+            const successModal = document.getElementById('successModal');
+            const gotItButton = document.getElementById('gotItButton');
+            const emailForm = document.getElementById('emailForm');
+            const emailInput = document.getElementById('email');
 
-            if (inputType === 'youtube') {
-                if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-                    youtubeLinkError.style.display = 'block';
-                    isValid = false;
+            // Input type change handler
+            inputTypeSelect.addEventListener('change', function () {
+                if (this.value === 'youtube') {
+                    youtubeInput.style.display = 'block';
+                    textInput.style.display = 'none';
                 } else {
-                    youtubeLinkError.style.display = 'none';
+                    youtubeInput.style.display = 'none';
+                    textInput.style.display = 'block';
                 }
-            } else {
-                if (customText.value.length > 2000) {
+            });
+
+            // Character count handler
+            customText.addEventListener('input', function () {
+                const length = this.value.length;
+                charCount.textContent = length;
+                
+                if (length > 2000) {
                     textError.style.display = 'block';
-                    isValid = false;
+                } else {
+                    textError.style.display = 'none';
                 }
-            }
+            });
 
-            if (isValid) {
-                const data = {
-                    type: inputType,
-                    content: inputType === 'youtube' ? youtubeLink : customText.value
-                };
-                localStorage.setItem('mindmapContent', JSON.stringify(data));
-                goToPage(2);
-            }
-        });
+            // Form submission handler
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                
+                const inputType = inputTypeSelect.value;
+                const youtubeLink = document.getElementById('youtubeLink').value;
+                const selectedVersion = localStorage.getItem('selectedVersion') || 'v2';
+                let isValid = true;
 
-        // Email form submission
-        emailForm.addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            localStorage.setItem('userEmail', email);
-
-            try {
-                const data = JSON.parse(localStorage.getItem('mindmapContent'));
-                const { data: insertedData, error } = await supabase.from('mindmap_requests').insert([
-                    {
-                        email: email,
-                        content_type: data.type,
-                        content: data.content,
-                        version: localStorage.getItem('selectedVersion') || 'v2'
+                if (inputType === 'youtube') {
+                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
+                        youtubeLinkError.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        youtubeLinkError.style.display = 'none';
                     }
-                ]);
+                } else {
+                    if (customText.value.length > 2000) {
+                        textError.style.display = 'block';
+                        isValid = false;
+                    }
+                }
+
+                if (isValid) {
+                    const { data, error } = await supabase.from('mindmap_requests').insert([
+                        {
+                            content_type: inputType,
+                            content: inputType === 'youtube' ? youtubeLink : customText.value,
+                            version: selectedVersion,
+                            status: 'pending'
+                        }
+                    ]);
+
+                    if (error) {
+                        console.error('Error saving to Supabase:', error);
+                    } else {
+                        localStorage.setItem('mindmapContent', JSON.stringify({ type: inputType, content: inputType === 'youtube' ? youtubeLink : customText.value }));
+                        goToPage(2);
+                    }
+                }
+            });
+
+            // Email form submission
+            emailForm.addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const email = emailInput.value;
+                localStorage.setItem('userEmail', email);
+
+                const { data, error } = await supabase.from('mindmap_requests')
+                    .update({ email: email })
+                    .match({ status: 'pending' });
 
                 if (error) {
-                    console.error('Error submitting to Supabase:', error);
-                    // Handle error case
+                    console.error('Error updating Supabase:', error);
                 } else {
                     successModal.classList.remove('hidden');
                 }
-            } catch (error) {
-                console.error('Error submitting to Supabase:', error);
-                // Handle error case
-            }
-        });
+            });
 
-        // Got it button handler
-        gotItButton.addEventListener('click', function() {
-            successModal.classList.add('hidden');
-        });
-
-        // Close modal when clicking outside
-        successModal.addEventListener('click', function(e) {
-            if (e.target === this) {
+            // Got it button handler
+            gotItButton.addEventListener('click', function() {
                 successModal.classList.add('hidden');
-            }
-        });
+            });
 
-        // Version selection handler
-        document.querySelector('.disabled').addEventListener('click', function() {
-            alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-        });
-    });
-
-    function selectVersion(version) {
-        if (version === 'v2') {
-            localStorage.setItem('selectedVersion', 'v2');
-            goToPage(3);
-        }
-    }
-
-    function goToPage(pageNumber) {
-        const pages = document.querySelectorAll('.section');
-        const dots = document.querySelectorAll('.dot');
-
-        pages.forEach((page, index) => {
-            if (index + 1 === pageNumber) {
-                page.classList.add('active');
-                dots[index].classList.add('active');
-            } else {
-                page.classList.remove('active');
-                dots[index].classList.remove('active');
-            }
-        });
-
-        // Show blog float only on page 3
-        const blogFloat = document.getElementById('blogFloat');
-        if (pageNumber === 3) {
-            blogFloat.classList.add('active');
-        } else {
-            blogFloat.classList.remove('active');
-        }
-    }
-
-    function closeBlogFloat() {
-        document.getElementById('blogFloat').style.display = 'none';
-    }
-
-    // Function to create Supabase client
-    function createClient(url, key) {
-        return {
-            from: (table) => ({
-                insert: async (data) => {
-                    const { data: insertedData, error } = await fetch(`${url}/rest/v1/${table}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'apikey': key,
-                            'Authorization': `Bearer ${key}`
-                        },
-                        body: JSON.stringify(data)
-                    }).then(response => response.json());
-
-                    return { data: insertedData, error };
+            // Close modal when clicking outside
+            successModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    successModal.classList.add('hidden');
                 }
-            })
-        };
-    }
-</script>
+            });
+
+            // Version selection handler
+            document.querySelector('.disabled').addEventListener('click', function() {
+                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
+            });
+        });
+
+        function selectVersion(version) {
+            if (version === 'v2') {
+                localStorage.setItem('selectedVersion', 'v2');
+                goToPage(3);
+            }
+        }
+
+        function goToPage(pageNumber) {
+            const pages = document.querySelectorAll('.section');
+            const dots = document.querySelectorAll('.dot');
+
+            pages.forEach((page, index) => {
+                if (index + 1 === pageNumber) {
+                    page.classList.add('active');
+                    dots[index].classList.add('active');
+                } else {
+                    page.classList.remove('active');
+                    dots[index].classList.remove('active');
+                }
+            });
+
+            // Show blog float only on page 3
+            const blogFloat = document.getElementById('blogFloat');
+            if (pageNumber === 3) {
+                blogFloat.classList.add('active');
+            } else {
+                blogFloat.classList.remove('active');
+            }
+        }
+
+        function closeBlogFloat() {
+            document.getElementById('blogFloat').style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>
-```
-
-The key changes in the continued code are:
-
-1. Implemented the email form submission event handler to insert the form data into the Supabase `mindmap_requests` table:
-```javascript
-emailForm.addEventListener('submit', async function (e) {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    localStorage.setItem('userEmail', email);
-
-    try {
-        const data = JSON.parse(localStorage.getItem('mindmapContent'));
-        const { data: insertedData, error } = await supabase.from('mindmap_requests').insert([
-            {
-                email: email,
-                content_type: data.type,
-                content: data.content,
-                version: localStorage.getItem('selectedVersion') || 'v2'
-            }
-        ]);
-
-        if (error) {
-            console.error('Error submitting to Supabase:', error);
-            // Handle error case
-        } else {
-            successModal.classList.remove('hidden');
-        }
-    } catch (error) {
-        console.error('Error submitting to Supabase:', error);
-        // Handle error case
-    }
-});
