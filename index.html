@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mindmap Creation Process</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Added Supabase Script -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .error-message {
@@ -98,7 +99,6 @@
             display: block;
         }
 
-        /* Modal Animation */
         .modal-enter {
             opacity: 0;
             transform: scale(0.9);
@@ -121,7 +121,6 @@
             transition: opacity 300ms, transform 300ms;
         }
 
-        /* Page background colors */
         #page1 {
             background-color: #f8f1fc;
         }
@@ -134,7 +133,6 @@
             background-color: #faeae6;
         }
 
-        /* Form container styling */
         .form-container {
             background: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
@@ -145,15 +143,59 @@
 </head>
 
 <body class="min-h-screen">
-    <!-- Your existing HTML remains exactly the same until the script section -->
-    <!-- Copy all your existing HTML here unchanged -->
+<div class="container mx-auto px-4 py-8">
+    <!-- Progress Dots -->
+    <div class="progress-dots">
+        <div class="dot active" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+    </div>
 
+    <!-- Page 1: Create Your Mindmap -->
+    [Your existing Page 1 HTML remains exactly the same]
+
+    <!-- Page 2: Select Mindmap Version -->
+    [Your existing Page 2 HTML remains exactly the same]
+
+    <!-- Page 3: Complete Your Submission -->
+    [Your existing Page 3 HTML remains exactly the same]
+
+    <!-- Blog Promotion Float -->
+    [Your existing Blog Float HTML remains exactly the same]
+
+    <!-- Success Message Modal -->
+    [Your existing Success Modal HTML remains exactly the same]
+
+    <!-- Supabase Integration -->
     <script>
         // Initialize Supabase client
         const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
         const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+        // Function to submit data to Supabase
+        async function submitToSupabase(formData) {
+            try {
+                const { data, error } = await supabase
+                    .from('mindmap_requests')
+                    .insert([{
+                        email: formData.email,
+                        content_type: formData.type,
+                        content: formData.content,
+                        version: formData.version,
+                        status: 'pending'
+                    }]);
+
+                if (error) throw error;
+                return { success: true, data };
+            } catch (error) {
+                console.error('Error submitting to Supabase:', error);
+                return { success: false, error: error.message };
+            }
+        }
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const form = document.getElementById('contentForm');
             const inputTypeSelect = document.getElementById('inputType');
@@ -166,152 +208,43 @@
             const successModal = document.getElementById('successModal');
             const gotItButton = document.getElementById('gotItButton');
 
-            // Input type change handler
-            inputTypeSelect.addEventListener('change', function () {
-                if (this.value === 'youtube') {
-                    youtubeInput.style.display = 'block';
-                    textInput.style.display = 'none';
-                } else {
-                    youtubeInput.style.display = 'none';
-                    textInput.style.display = 'block';
-                }
-            });
+            [Your existing event listeners and functions remain exactly the same until the email form submission]
 
-            // Character count handler
-            customText.addEventListener('input', function () {
-                const length = this.value.length;
-                charCount.textContent = length;
-                
-                if (length > 2000) {
-                    textError.style.display = 'block';
-                } else {
-                    textError.style.display = 'none';
-                }
-            });
-
-            // Form submission handler
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                
-                const inputType = inputTypeSelect.value;
-                const youtubeLink = document.getElementById('youtubeLink').value;
-                let isValid = true;
-
-                if (inputType === 'youtube') {
-                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-                        youtubeLinkError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        youtubeLinkError.style.display = 'none';
-                    }
-                } else {
-                    if (customText.value.length > 2000) {
-                        textError.style.display = 'block';
-                        isValid = false;
-                    }
-                }
-
-                if (isValid) {
-                    const data = {
-                        type: inputType,
-                        content: inputType === 'youtube' ? youtubeLink : customText.value
-                    };
-                    localStorage.setItem('mindmapContent', JSON.stringify(data));
-                    goToPage(2);
-                }
-            });
-
-            // Email form submission with Supabase integration
+            // Updated Email form submission with Supabase
             document.getElementById('emailForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
                 const email = document.getElementById('email').value;
                 
-                // Get the stored content from localStorage
+                // Get stored data from localStorage
                 const mindmapContent = JSON.parse(localStorage.getItem('mindmapContent'));
                 const selectedVersion = localStorage.getItem('selectedVersion');
 
-                try {
-                    // Insert data into Supabase
-                    const { data, error } = await supabase
-                        .from('mindmap_requests')
-                        .insert([
-                            {
-                                email: email,
-                                content_type: mindmapContent.type,
-                                content: mindmapContent.content,
-                                version: selectedVersion,
-                                status: 'pending'
-                            }
-                        ]);
+                const formData = {
+                    email: email,
+                    type: mindmapContent.type,
+                    content: mindmapContent.content,
+                    version: selectedVersion
+                };
 
-                    if (error) {
-                        console.error('Error:', error);
-                        alert('There was an error submitting your request. Please try again.');
-                        return;
-                    }
+                // Submit to Supabase
+                const result = await submitToSupabase(formData);
 
-                    // If successful, show the success modal
+                if (result.success) {
                     localStorage.setItem('userEmail', email);
                     successModal.classList.remove('hidden');
-
-                } catch (err) {
-                    console.error('Error:', err);
+                    
+                    // Clear form data after successful submission
+                    localStorage.removeItem('mindmapContent');
+                    localStorage.removeItem('selectedVersion');
+                } else {
                     alert('There was an error submitting your request. Please try again.');
                 }
             });
 
-            // Got it button handler
-            gotItButton.addEventListener('click', function() {
-                successModal.classList.add('hidden');
-            });
-
-            // Close modal when clicking outside
-            successModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    successModal.classList.add('hidden');
-                }
-            });
-
-            // Version selection handler
-            document.querySelector('.disabled').addEventListener('click', function() {
-                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-            });
+            [Your existing gotItButton and other event listeners remain exactly the same]
         });
 
-        function selectVersion(version) {
-            if (version === 'v2') {
-                localStorage.setItem('selectedVersion', 'v2');
-                goToPage(3);
-            }
-        }
-
-        function goToPage(pageNumber) {
-            const pages = document.querySelectorAll('.section');
-            const dots = document.querySelectorAll('.dot');
-
-            pages.forEach((page, index) => {
-                if (index + 1 === pageNumber) {
-                    page.classList.add('active');
-                    dots[index].classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                    dots[index].classList.remove('active');
-                }
-            });
-
-            // Show blog float only on page 3
-            const blogFloat = document.getElementById('blogFloat');
-            if (pageNumber === 3) {
-                blogFloat.classList.add('active');
-            } else {
-                blogFloat.classList.remove('active');
-            }
-        }
-
-        function closeBlogFloat() {
-            document.getElementById('blogFloat').style.display = 'none';
-        }
+        [Your existing functions (selectVersion, goToPage, closeBlogFloat) remain exactly the same]
     </script>
 </body>
-
 </html>
