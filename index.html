@@ -1,305 +1,338 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindmap Creation Process</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <style>
-        .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .progress-dots {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #E5E7EB;
-            position: relative;
-        }
-
-        .dot.active {
-            background: #6366F1;
-            width: 10px;
-            height: 10px;
-        }
-
-        .dot:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            width: 40px;
-            height: 2px;
-            background: #E5E7EB;
-            transform: translateY(-50%);
-        }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        .blog-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            animation: float 3s ease-in-out infinite;
-            max-width: 300px;
-            z-index: 50;
-            transition: transform 0.2s ease;
-            display: none;
-        }
-
-        .blog-float.active {
-            display: block;
-        }
-
-        .blog-float:hover {
-            transform: translateY(-5px);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Mindmap Generator</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="https://www.google.com/recaptcha/api.js"></script>
+<style>
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+}
+.modal.active {
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.captcha-container {
+display: flex;
+justify-content: center;
+margin: 1rem 0;
+}
+.error-message {
+color: #dc2626;
+font-size: 0.875rem;
+margin-top: 0.5rem;
+text-align: center;
+visibility: hidden;
+}
+.error-message.visible {
+visibility: visible;
+}
+.success-modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+align-items: center;
+justify-content: center;
+}
+.success-content {
+background: white;
+padding: 2rem;
+border-radius: 1rem;
+max-width: 500px;
+width: 90%;
+text-align: center;
+position: relative;
+}
+.checkmark {
+width: 80px;
+height: 80px;
+border-radius: 50%;
+display: block;
+margin: 0 auto 1rem;
+background-color: #4CAF50;
+padding: 1rem;
+}
+.checkmark::after {
+content: '';
+display: block;
+width: 25px;
+height: 50px;
+border: solid white;
+border-width: 0 5px 5px 0;
+transform: rotate(45deg);
+margin: 0 auto;
+}
+.countdown {
+font-size: 0.9rem;
+color: #666;
+margin-top: 1rem;
+}
+@keyframes fadeIn {
+from { opacity: 0; }
+to { opacity: 1; }
+}
+.fade-in {
+animation: fadeIn 0.3s ease-in;
+}
+</style>
 </head>
+<body>
+<div class="container min-h-screen bg-gradient-to-b from-purple-400 to-purple-600">
+<div class="max-w-2xl mx-auto pt-20 p-8">
+<div class="bg-white rounded-3xl shadow-xl p-8">
+<h1 class="text-4xl font-bold mb-6 text-purple-700 text-center">AI Mindmap Generator</h1>
 
-<body class="bg-gradient-to-b from-indigo-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8">
-        <div class="progress-dots">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+<form id="linkForm" class="mb-6">
+<div class="relative">
+<input
+type="url"
+id="youtubeLink"
+class="w-full px-4 py-3 rounded-full border-2 border-purple-300 focus:outline-none focus:border-purple-500"
+placeholder="Enter YouTube Link"
+required
+/>
+<div id="youtubeLinkError" class="error-message">Please enter a valid YouTube video URL</div>
+</div>
 
-        <!-- Page 1: Content Input -->
-        <div class="section active">
-            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
-                <h1 class="text-3xl font-bold text-gray-800 mb-4">Create Your Mindmap</h1>
-                <p class="text-gray-600 mb-8">Transform your content into an amazing mindmap ✨</p>
+<div class="captcha-container">
+<div class="g-recaptcha"
+data-sitekey="6LcSam0qAAAAADtoVsg8TZ_t38IVU6t0cY6RW06U"
+data-callback="onCaptchaVerified"
+data-expired-callback="onCaptchaExpired">
+</div>
+</div>
+<div id="captchaError" class="error-message text-center">Please verify that you are not a robot</div>
 
-                <form id="contentForm" class="space-y-6">
-                    <div>
-                        <label class="block text-lg font-medium text-gray-700 mb-3">Choose Your Input Type</label>
-                        <select id="inputType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="youtube">YouTube Video Link</option>
-                            <option value="text">Custom Text</option>
-                        </select>
-                    </div>
+<button
+type="submit"
+id="generateButton"
+class="w-full mt-4 bg-purple-600 text-white px-6 py-3 rounded-full font-semibold hover:bg-purple-700 transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+disabled
+>
+Generate Now
+</button>
+</form>
 
-                    <div id="youtubeInput">
-                        <input type="url" id="youtubeLink" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Paste your YouTube video URL here">
-                        <div id="youtubeLinkError" class="error-message">Please enter a valid YouTube URL</div>
-                    </div>
+<div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+<div class="p-4 bg-purple-50 rounded-xl">
+<h3 class="font-semibold text-purple-700">Unlimited Free Mindmaps!</h3>
+</div>
+<div class="p-4 bg-purple-50 rounded-xl">
+<h3 class="font-semibold text-purple-700">No Credit Card Needed</h3>
+</div>
+<div class="p-4 bg-purple-50 rounded-xl">
+<h3 class="font-semibold text-purple-700">YouTube Integration</h3>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-                    <div id="textInput" style="display: none;">
-                        <textarea id="customText" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" rows="8" placeholder="Enter your text here (max 2000 characters)"></textarea>
-                        <div class="flex justify-between text-sm text-gray-500">
-                            <span>Characters: <span id="charCount">0</span>/2000</span>
-                            <span id="textError" class="error-message">Text exceeds maximum length</span>
-                        </div>
-                    </div>
+<!-- Email Modal -->
+<div id="emailModal" class="modal">
+<div class="bg-white p-8 rounded-2xl max-w-md w-full mx-4">
+<h2 class="text-2xl font-bold mb-4 text-purple-700">Enter Your Email</h2>
+<form id="emailForm">
+<input
+type="email"
+id="emailInput"
+class="w-full px-4 py-2 mb-4 border-2 rounded-full text-purple-900 focus:outline-none focus:border-purple-500"
+placeholder="Your email address"
+required
+/>
+<div id="emailError" class="error-message"></div>
+<button type="submit" class="w-full bg-purple-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-purple-700 transition duration-300">
+Submit
+</button>
+<button type="button" id="closeModal" class="w-full mt-2 bg-gray-200 text-gray-700 px-6 py-2 rounded-full font-semibold hover:bg-gray-300 transition duration-300">
+Cancel
+</button>
+</form>
+</div>
+</div>
 
-                    <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">Continue →</button>
-                </form>
-            </div>
-        </div>
+<!-- Success Modal -->
+<div id="successModal" class="success-modal fade-in">
+<div class="success-content">
+<div class="checkmark"></div>
+<h2 class="text-2xl font-bold text-gray-800 mb-4">Success!</h2>
+<p class="text-gray-600 mb-4">Thank you for using our AI Mindmap Generator!</p>
+<p class="text-gray-600 mb-6">Your mindmap is being generated and will be sent to your email shortly. Please check your inbox (and spam folder) in the next few minutes.</p>
+<div class="countdown" id="countdown">
+Redirecting to homepage in <span id="timer">10</span> seconds...
+</div>
+</div>
+</div>
 
-        <!-- Page 2: Version Selection -->
-        <div class="section">
-            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Select Version</h2>
-                <div class="space-y-4">
-                    <button onclick="selectVersion('v2')" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">Version 2.0</button>
-                    <button class="w-full bg-gray-200 text-gray-500 px-6 py-3 rounded-lg cursor-not-allowed disabled">Version 3.0 (Coming Soon)</button>
-                </div>
-            </div>
-        </div>
+<script>
+// Global variables
+let isCaptchaVerified = false;
+let isValidUrl = false;
 
-        <!-- Page 3: Email Form -->
-        <div class="section">
-            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Complete Submission</h2>
-                <form id="emailForm" class="space-y-6">
-                    <div>
-                        <label for="email" class="block text-lg font-medium text-gray-700 mb-3">Email Address</label>
-                        <input type="email" id="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" placeholder="your@email.com">
-                    </div>
-                    <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">Submit</button>
-                </form>
-            </div>
-        </div>
-    </div>
+// Initialize Supabase
+const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-    <!-- Success Modal -->
-    <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
-        <div class="bg-black bg-opacity-50 absolute inset-0"></div>
-        <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Success! 🎉</h3>
-            <p class="text-gray-600 mb-6">Your mindmap request has been submitted successfully.</p>
-            <button id="gotItButton" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Got it!</button>
-        </div>
-    </div>
+// reCAPTCHA callback functions
+function onCaptchaVerified() {
+    isCaptchaVerified = true;
+    document.getElementById('captchaError').classList.remove('visible');
+    updateGenerateButton();
+}
 
-    <script>
-        // Initialize Supabase client
-        const supabaseClient = supabase.createClient(
-            'https://rgccooiyalkqiugaxzbk.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0'
-        );
+function onCaptchaExpired() {
+    isCaptchaVerified = false;
+    document.getElementById('captchaError').classList.add('visible');
+    updateGenerateButton();
+}
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.getElementById('contentForm');
-            const inputTypeSelect = document.getElementById('inputType');
-            const youtubeInput = document.getElementById('youtubeInput');
-            const textInput = document.getElementById('textInput');
-            const customText = document.getElementById('customText');
-            const charCount = document.getElementById('charCount');
-            const textError = document.getElementById('textError');
-            const youtubeLinkError = document.getElementById('youtubeLinkError');
-            const successModal = document.getElementById('successModal');
-            const gotItButton = document.getElementById('gotItButton');
+function updateGenerateButton() {
+    const generateButton = document.getElementById('generateButton');
+    generateButton.disabled = !(isCaptchaVerified && isValidUrl);
+}
 
-            // Input type change handler
-            inputTypeSelect.addEventListener('change', function() {
-                if (this.value === 'youtube') {
-                    youtubeInput.style.display = 'block';
-                    textInput.style.display = 'none';
-                } else {
-                    youtubeInput.style.display = 'none';
-                    textInput.style.display = 'block';
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    const linkForm = document.getElementById('linkForm');
+    const emailModal = document.getElementById('emailModal');
+    const emailForm = document.getElementById('emailForm');
+    const closeModal = document.getElementById('closeModal');
+    const youtubeLinkInput = document.getElementById('youtubeLink');
+    const youtubeLinkError = document.getElementById('youtubeLinkError');
 
-            // Character count handler
-            customText.addEventListener('input', function() {
-                const length = this.value.length;
-                charCount.textContent = length;
-                if (length > 2000) {
-                    textError.style.display = 'block';
-                } else {
-                    textError.style.display = 'none';
-                }
-            });
-
-            // Form submission handler
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const inputType = inputTypeSelect.value;
-                const youtubeLink = document.getElementById('youtubeLink').value;
-                let isValid = true;
-
-                if (inputType === 'youtube') {
-                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-                        youtubeLinkError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        youtubeLinkError.style.display = 'none';
-                    }
-                } else {
-                    if (customText.value.length > 2000) {
-                        textError.style.display = 'block';
-                        isValid = false;
-                    }
-                }
-
-                if (isValid) {
-                    const data = {
-                        type: inputType,
-                        content: inputType === 'youtube' ? youtubeLink : customText.value
-                    };
-                    localStorage.setItem('mindmapContent', JSON.stringify(data));
-                    goToPage(2);
-                }
-            });
-
-            // Email form submission with Supabase
-            document.getElementById('emailForm').addEventListener('submit', async function(e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
-
-                try {
-                    const { data, error } = await supabaseClient
-                        .from('mindmap_requests')
-                        .insert([{
-                            email: email,
-                            content_type: storedContent.type,
-                            content: storedContent.content,
-                            version: 'v2',
-                            status: 'pending'
-                        }]);
-
-                    if (error) {
-                        console.error('Supabase error:', error);
-                        alert('There was an error submitting your request. Please try again.');
-                        return;
-                    }
-
-                    successModal.classList.remove('hidden');
-                    localStorage.removeItem('mindmapContent');
-
-                } catch (error) {
-                    console.error('Error submitting to Supabase:', error);
-                    alert('There was an error submitting your request. Please try again.');
-                }
-            });
-
-            // Got it button handler
-            gotItButton.addEventListener('click', function() {
-                successModal.classList.add('hidden');
-                window.location.href = '/';
-            });
-
-            // Close modal when clicking outside
-            successModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    successModal.classList.add('hidden');
-                }
-            });
-        });
-
-        function selectVersion(version) {
-            if (version === 'v2') {
-                localStorage.setItem('selectedVersion', 'v2');
-                goToPage(3);
+    function isValidYouTubeUrl(url) {
+        try {
+            const urlObj = new URL(url);
+            if (urlObj.hostname === 'youtu.be') {
+                return urlObj.pathname.length > 1;
             }
+            if (urlObj.hostname === 'youtube.com' || urlObj.hostname === 'www.youtube.com') {
+                const videoId = urlObj.searchParams.get('v');
+                return !!videoId;
+            }
+            return false;
+        } catch (e) {
+            return false;
+        }
+    }
+
+    youtubeLinkInput.addEventListener('input', function() {
+        isValidUrl = isValidYouTubeUrl(this.value);
+        if (isValidUrl) {
+            youtubeLinkError.classList.remove('visible');
+            this.classList.remove('border-red-500');
+        } else {
+            youtubeLinkError.classList.add('visible');
+            this.classList.add('border-red-500');
+        }
+        updateGenerateButton();
+    });
+
+    linkForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        if (!isCaptchaVerified) {
+            document.getElementById('captchaError').classList.add('visible');
+            return;
         }
 
-        function goToPage(pageNumber) {
-            const pages = document.querySelectorAll('.section');
-            const dots = document.querySelectorAll('.dot');
+        if (!isValidUrl) {
+            youtubeLinkError.classList.add('visible');
+            return;
+        }
 
-            pages.forEach((page, index) => {
-                if (index + 1 === pageNumber) {
-                    page.classList.add('active');
-                    dots[index].classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                    dots[index].classList.remove('active');
+        emailModal.classList.add('active');
+    });
+
+    closeModal.addEventListener('click', function() {
+        emailModal.classList.remove('active');
+        grecaptcha.reset();
+        isCaptchaVerified = false;
+        updateGenerateButton();
+    });
+
+    emailForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const email = document.getElementById('emailInput').value;
+        const youtubeLink = youtubeLinkInput.value;
+
+        try {
+            const { data, error } = await supabaseClient
+                .from('mindmap_requests')
+                .insert([
+                    {
+                        email: email,
+                        youtube_link: youtubeLink,
+                        status: 'pending'
+                    }
+                ]);
+
+            if (error) throw error;
+
+            // Hide email modal
+            emailModal.classList.remove('active');
+
+            // Show success modal
+            const successModal = document.getElementById('successModal');
+            successModal.style.display = 'flex';
+
+            // Start countdown
+            let timeLeft = 10;
+            const timerElement = document.getElementById('timer');
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                timerElement.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    window.location.href = 'https://penseeweb.site';
                 }
-            });
-        }
-    </script>
-</body>
+            }, 1000);
 
+            // Reset forms
+            emailForm.reset();
+            linkForm.reset();
+            grecaptcha.reset();
+            isCaptchaVerified = false;
+            isValidUrl = false;
+            updateGenerateButton();
+        } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error submitting your request. Please try again.');
+        }
+    });
+
+    document.getElementById('successModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.style.display = 'none';
+            window.location.href = 'https://penseeweb.site';
+        }
+    });
+
+    emailModal.addEventListener('click', function(e) {
+        if (e.target === emailModal) {
+            emailModal.classList.remove('active');
+            grecaptcha.reset();
+            isCaptchaVerified = false;
+            updateGenerateButton();
+        }
+    });
+});
+</script>
+</body>
 </html>
