@@ -1,63 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mindmap Creation Process</title>
+    <title>Complete Your Submission</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Add Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js"></script>
     <style>
-        .error-message {
-            color: #dc2626;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        .progress-dots {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 2rem;
-        }
-
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #E5E7EB;
-            position: relative;
-        }
-
-        .dot.active {
-            background: #6366F1;
-            width: 10px;
-            height: 10px;
-        }
-
-        .dot:not(:last-child)::after {
-            content: '';
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            width: 40px;
-            height: 2px;
-            background: #E5E7EB;
-            transform: translateY(-50%);
-        }
-
         .promotion-banner {
             transform: translateY(100%);
             transition: transform 0.5s ease;
         }
-
         .promotion-banner.show {
             transform: translateY(0);
         }
-
         .blog-float {
             position: fixed;
             bottom: 20px;
@@ -66,234 +22,103 @@
             max-width: 300px;
             z-index: 50;
             transition: transform 0.2s ease;
-            display: none;
         }
-
-        .blog-float.active {
-            display: block;
-        }
-
         .blog-float:hover {
             transform: translateY(-5px);
         }
-
         @keyframes float {
-            0% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-10px);
-            }
-
-            100% {
-                transform: translateY(0px);
-            }
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
         }
-
-        .section {
-            display: none;
-        }
-
-        .section.active {
-            display: block;
-        }
-
-        /* Modal Animation */
-        .modal-enter {
+        .subtle-promo {
             opacity: 0;
-            transform: scale(0.9);
+            transition: opacity 0.5s ease;
         }
-
-        .modal-enter-active {
+        .subtle-promo.show {
             opacity: 1;
-            transform: scale(1);
-            transition: opacity 300ms, transform 300ms;
-        }
-
-        .modal-exit {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .modal-exit-active {
-            opacity: 0;
-            transform: scale(0.9);
-            transition: opacity 300ms, transform 300ms;
-        }
-
-        /* Page background colors */
-        #page1 {
-            background-color: #f8f1fc;
-        }
-
-        #page2 {
-            background-color: #e5efff;
-        }
-
-        #page3 {
-            background-color: #faeae6;
-        }
-
-        /* Form container styling */
-        .form-container {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="bg-gradient-to-b from-indigo-50 to-indigo-100 min-h-screen">
     <div class="container mx-auto px-4 py-8">
         <!-- Progress Dots -->
-        <div class="progress-dots">
-            <div class="dot active" id="dot1"></div>
-            <div class="dot" id="dot2"></div>
-            <div class="dot" id="dot3"></div>
+        <div class="flex justify-center gap-4 mb-8">
+            <div class="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div class="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div class="w-2 h-2 rounded-full bg-indigo-600"></div>
         </div>
 
-        <!-- Page 1: Create Your Mindmap -->
-        <div id="page1" class="section active min-h-screen py-8">
-            <div class="container mx-auto px-4">
-                <div class="max-w-md mx-auto form-container rounded-xl p-8">
-                    <h1 class="text-3xl font-bold text-purple-800 mb-4">Create Your Mindmap</h1>
-                    <p class="text-gray-600 mb-8">Transform your content into an amazing mindmap ✨</p>
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
+            <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                <p class="text-sm text-yellow-700">
+                    Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏
+                </p>
+            </div>
 
-                    <form id="contentForm" class="space-y-6">
-                        <div>
-                            <label class="block text-lg font-medium text-gray-700 mb-3">Choose Your Input Type</label>
-                            <select id="inputType" class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
-                                <option value="youtube">YouTube Video Link</option>
-                                <option value="text">Custom Text</option>
-                            </select>
-                        </div>
+            <form id="emailForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="your@email.com">
+                </div>
 
-                        <div id="youtubeInput" class="space-y-2">
-                            <input type="url" id="youtubeLink"
-                                class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                                placeholder="Paste your YouTube video URL here">
-                            <div id="youtubeLinkError" class="error-message">Please enter a valid YouTube URL</div>
-                        </div>
+                <button type="submit"
+                    class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+                    Complete Submission
+                </button>
+            </form>
 
-                        <div id="textInput" style="display: none;" class="space-y-2">
-                            <textarea id="customText"
-                                class="w-full px-4 py-3 border border-purple-200 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                                rows="8" placeholder="Enter your text here (max 2000 characters)"></textarea>
-                            <div class="flex justify-between text-sm text-gray-500">
-                                <span>Characters: <span id="charCount">0</span>/2000</span>
-                                <span id="textError" class="error-message text-right">Text exceeds maximum length</span>
+            <!-- Enhanced Product Promotion -->
+            <div id="subtlePromo" class="subtle-promo mt-6">
+                <div class="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg p-5 border border-indigo-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✨</span>
+                            <div>
+                                <h3 class="font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h3>
+                                <p class="text-sm text-gray-600">
+                                    Explore our collection of premium custom map products
+                                </p>
                             </div>
                         </div>
-
-                        <button type="submit"
-                            class="w-full bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition duration-200 font-medium">
-                            Continue →
-                        </button>
-
-                        <p class="text-sm text-gray-500 text-center">
-                            ✨ Free & Privacy Protected
-                        </p>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 2: Select Mindmap Version -->
-        <div id="page2" class="section min-h-screen py-8">
-            <div class="container mx-auto px-4">
-                <div class="max-w-4xl mx-auto form-container rounded-xl p-8">
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2 text-center">What version would you like to use?</h1>
-                    <p class="text-gray-600 mb-8 text-center">Choose the mindmap generation version that suits your needs</p>
-
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <!-- V2 Version Card -->
-                        <div onclick="selectVersion('v2')"
-                            class="version-card bg-white rounded-xl shadow-lg p-6 border-2 border-indigo-100 hover:border-indigo-300 cursor-pointer">
-                            <!-- [Previous V2 card content remains exactly the same] -->
-                        </div>
-
-                        <!-- V3 Version Card (Disabled) -->
-                        <div class="version-card disabled bg-white rounded-xl shadow-lg p-6 border-2 border-gray-100">
-                            <!-- [Previous V3 card content remains exactly the same] -->
-                        </div>
+                        <a href="https://penseeweb.com/products" target="_blank" 
+                           class="flex-shrink-0 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                            @visit →
+                        </a>
                     </div>
-
-                    <div class="flex justify-between mt-8">
-                        <button onclick="goToPage(1)" class="text-indigo-600 font-medium hover:text-indigo-700">
-                            ← Back
-                        </button>
-                        <button onclick="goToPage(3)"
-                            class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
-                            Continue →
-                        </button>
-                    </div>
-
-                    <p class="text-sm text-gray-500 text-center mt-6">
-                        Powered by PenseeWeb's Custom LLM Technology
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div id="page3" class="section min-h-screen py-8">
-            <div class="container mx-auto px-4">
-                <div class="max-w-md mx-auto form-container rounded-xl p-8">
-                    <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
-                    <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
-
-                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                        <p class="text-sm text-yellow-700">
-                            Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely
-                            apologize for any delay or inconvenience. 🙏
-                        </p>
-                    </div>
-
-                    <form id="emailForm" class="space-y-6">
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                            <input type="email" id="email" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                                placeholder="your@email.com">
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
-                            Complete Submission
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Blog Promotion Float -->
-    <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
-        <div class="flex justify-between items-start mb-3">
-            <div class="flex items-start space-x-3">
-                <div class="flex-shrink-0">
-                    <span class="text-2xl">📚</span>
-                </div>
-                <div>
-                    <h3 class="text-sm font-medium text-gray-800 mb-1">PenseeWeb Blog</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Explore our blog posts with ready-to-use mindmaps for quick understanding!
-                    </p>
-                </div>
+    <div class="blog-float bg-white rounded-xl shadow-lg p-4">
+        <div class="flex items-start space-x-3 mb-3">
+            <div class="flex-shrink-0">
+                <span class="text-2xl">📚</span>
             </div>
-            <button onclick="closeBlogFloat()" class="text-gray-400 hover:text-gray-600 text-xl font-bold">
-                ×
-            </button>
+            <div>
+                <h3 class="text-sm font-medium text-gray-800 mb-1">PenseeWeb Blog</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Explore our blog posts with ready-to-use mindmaps for quick understanding!
+                </p>
+            </div>
         </div>
         <div class="space-y-2">
             <a href="https://penseeweb.com/blog" target="_blank"
-                class="block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:from-purple-700 hover:to-indigo-700 transition duration-200 text-sm font-medium">
+               class="block bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-2 rounded-lg text-center hover:from-purple-700 hover:to-indigo-700 transition duration-200 text-sm font-medium">
                 Support PenseeWeb's Blog ✨
             </a>
             <p class="text-xs text-gray-500 text-center">Each post includes a free mindmap summary</p>
         </div>
     </div>
 
-    <!-- Success Message Modal -->
+    <!-- Success Message Modal with Blog Promotion -->
     <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="bg-black bg-opacity-50 absolute inset-0"></div>
         <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
@@ -302,203 +127,73 @@
                 Your mindmap will be sent to your email within 24 hours. Don't forget to check your spam folder!
             </p>
 
-            <!-- Product Promotion in Modal -->
+            <!-- Blog Promotion in Modal -->
             <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-lg p-4 mb-4">
                 <div class="flex items-start space-x-3">
                     <div class="flex-shrink-0">
-                        <span class="text-xl">✨</span>
+                        <span class="text-xl">📚</span>
                     </div>
                     <div>
-                        <h4 class="text-sm font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h4>
+                        <h4 class="text-sm font-medium text-indigo-800 mb-1">While You Wait...</h4>
                         <p class="text-sm text-gray-600">
-                            Explore our collection of premium custom map products.
-                            <a href="https://penseeweb.com/products" target="_blank"
-                                class="text-indigo-600 hover:text-indigo-700 font-medium">
-                                @visit →
+                            Explore our blog posts with ready-made mindmaps! Each article comes with a downloadable mindmap summary.
+                            <a href="https://penseeweb.com/blog" target="_blank" class="text-indigo-600 hover:text-indigo-700 font-medium">
+                                Visit Blog →
                             </a>
                         </p>
                     </div>
                 </div>
             </div>
 
-            <button type="button" id="gotItButton"
-                class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+            <button onclick="closeSuccessModal()" 
+                    class="w-full bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
                 Got it!
             </button>
         </div>
     </div>
 
     <script>
-        // Initialize Supabase client
-        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const SUPABASE_URL = "https://your-supabase-url.supabase.co";
+        const SUPABASE_KEY = "your-supabase-anon-key";
+        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('contentForm');
-            const inputTypeSelect = document.getElementById('inputType');
-            const youtubeInput = document.getElementById('youtubeInput');
-            const textInput = document.getElementById('textInput');
-            const customText = document.getElementById('customText');
-            const charCount = document.getElementById('charCount');
-            const textError = document.getElementById('textError');
-            const youtubeLinkError = document.getElementById('youtubeLinkError');
-            const successModal = document.getElementById('successModal');
-            const gotItButton = document.getElementById('gotItButton');
-
-            // Input type change handler
-            inputTypeSelect.addEventListener('change', function () {
-                if (this.value === 'youtube') {
-                    youtubeInput.style.display = 'block';
-                    textInput.style.display = 'none';
-                } else {
-                    youtubeInput.style.display = 'none';
-                    textInput.style.display = 'block';
-                }
-            });
-
-            // Character count handler
-            customText.addEventListener('input', function () {
-                const length = this.value.length;
-                charCount.textContent = length;
-                
-                if (length > 2000) {
-                    textError.style.display = 'block';
-                } else {
-                    textError.style.display = 'none';
-                }
-            });
-
-            // Form submission handler
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                
-                const inputType = inputTypeSelect.value;
-                const youtubeLink = document.getElementById('youtubeLink').value;
-                let isValid = true;
-
-                if (inputType === 'youtube') {
-                    if (!youtubeLink.includes('youtube.com') && !youtubeLink.includes('youtu.be')) {
-                        youtubeLinkError.style.display = 'block';
-                        isValid = false;
-                    } else {
-                        youtubeLinkError.style.display = 'none';
-                    }
-                } else {
-                    if (customText.value.length > 2000) {
-                        textError.style.display = 'block';
-                        isValid = false;
-                    }
-                }
-
-                if (isValid) {
-                    const data = {
-                        type: inputType,
-                        content: inputType === 'youtube' ? youtubeLink : customText.value
-                    };
-                    localStorage.setItem('mindmapContent', JSON.stringify(data));
-                    goToPage(2);
-                }
-            });
-
-            // Email form submission with Supabase integration
-            document.getElementById('emailForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const email = document.getElementById('email').value;
-                const mindmapContent = JSON.parse(localStorage.getItem('mindmapContent'));
-                const selectedVersion = localStorage.getItem('selectedVersion');
-
-                try {
-                    // Show loading state
-                    const submitButton = this.querySelector('button[type="submit"]');
-                    submitButton.disabled = true;
-                    submitButton.textContent = 'Submitting...';
-
-                    // Insert data into Supabase
-                    const { data, error } = await supabase
-                        .from('mindmap_requests')
-                        .insert([
-                            {
-                                email: email,
-                                content_type: mindmapContent.type,
-                                content: mindmapContent.content,
-                                version: selectedVersion,
-                                status: 'pending',
-                                youtube_link: mindmapContent.type === 'youtube' ? mindmapContent.content : null,
-                                custom_text: mindmapContent.type === 'text' ? mindmapContent.content : null
-                            }
-                        ]);
-
-                    if (error) throw error;
-
-                    // Clear localStorage
-                    localStorage.removeItem('mindmapContent');
-                    localStorage.removeItem('selectedVersion');
-                    localStorage.setItem('userEmail', email);
-                    
-                    // Show success modal
-                    successModal.classList.remove('hidden');
-
-                } catch (error) {
-                    console.error('Error:', error);
-                    alert('An error occurred while submitting your request. Please try again.');
-                } finally {
-                    // Reset button state
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Complete Submission';
-                }
-            });
-
-            // Got it button handler
-            gotItButton.addEventListener('click', function() {
-                successModal.classList.add('hidden');
-            });
-
-            // Close modal when clicking outside
-            successModal.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    successModal.classList.add('hidden');
-                }
-            });
-
-            // Version selection handler
-            document.querySelector('.disabled').addEventListener('click', function() {
-                alert('Thanks for your interest! Version 3.0 is coming soon to public use.');
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show subtle promo after 3 seconds of page load
+            setTimeout(() => {
+                document.getElementById('subtlePromo').classList.add('show');
+            }, 3000);
         });
 
-        function selectVersion(version) {
-            if (version === 'v2') {
-                localStorage.setItem('selectedVersion', 'v2');
-                goToPage(3);
+        document.getElementById('emailForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+
+            try {
+                // Save email to Supabase
+                const { data, error } = await supabase
+                    .from('submissions')
+                    .insert([{ email: email }]);
+
+                if (error) throw error;
+
+                // Show success modal
+                document.getElementById('successModal').classList.remove('hidden');
+            } catch (error) {
+                console.error('Error saving to Supabase:', error);
+                alert('There was an issue submitting your email. Please try again later.');
             }
+        });
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
         }
 
-        function goToPage(pageNumber) {
-            const pages = document.querySelectorAll('.section');
-            const dots = document.querySelectorAll('.dot');
-
-            pages.forEach((page, index) => {
-                if (index + 1 === pageNumber) {
-                    page.classList.add('active');
-                    dots[index].classList.add('active');
-                } else {
-                    page.classList.remove('active');
-                    dots[index].classList.remove('active');
-                }
-            });
-
-            const blogFloat = document.getElementById('blogFloat');
-            if (pageNumber === 3) {
-                blogFloat.classList.add('active');
-            } else {
-                blogFloat.classList.remove('active');
+        // Close modal when clicking outside
+        document.getElementById('successModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeSuccessModal();
             }
-        }
-
-        function closeBlogFloat() {
-            document.getElementById('blogFloat').style.display = 'none';
-        }
+        });
     </script>
 </body>
 </html>
