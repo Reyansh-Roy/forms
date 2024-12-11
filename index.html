@@ -5,7 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complete Your Submission</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js"></script>
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const supabaseUrl = 'https://your-supabase-url.supabase.co';
+        const supabaseKey = 'your-supabase-anon-key';
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const emailForm = document.getElementById('emailForm');
+            const successModal = document.getElementById('successModal');
+
+            emailForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const emailInput = document.getElementById('email');
+                const email = emailInput.value;
+
+                try {
+                    const { data, error } = await supabase.from('submissions').insert([{ email }]);
+
+                    if (error) {
+                        console.error('Error saving email:', error);
+                        alert('An error occurred while saving your submission. Please try again.');
+                        return;
+                    }
+
+                    console.log('Submission saved:', data);
+                    successModal.classList.remove('hidden');
+
+                } catch (err) {
+                    console.error('Unexpected error:', err);
+                    alert('An unexpected error occurred. Please try again.');
+                }
+            });
+
+            successModal.addEventListener('click', (e) => {
+                if (e.target === successModal) {
+                    successModal.classList.add('hidden');
+                }
+            });
+        });
+    </script>
     <style>
         .promotion-banner {
             transform: translateY(100%);
@@ -151,49 +192,5 @@
             </button>
         </div>
     </div>
-
-    <script>
-        const SUPABASE_URL = "https://your-supabase-url.supabase.co";
-        const SUPABASE_KEY = "your-supabase-anon-key";
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Show subtle promo after 3 seconds of page load
-            setTimeout(() => {
-                document.getElementById('subtlePromo').classList.add('show');
-            }, 3000);
-        });
-
-        document.getElementById('emailForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-
-            try {
-                // Save email to Supabase
-                const { data, error } = await supabase
-                    .from('submissions')
-                    .insert([{ email: email }]);
-
-                if (error) throw error;
-
-                // Show success modal
-                document.getElementById('successModal').classList.remove('hidden');
-            } catch (error) {
-                console.error('Error saving to Supabase:', error);
-                alert('There was an issue submitting your email. Please try again later.');
-            }
-        });
-
-        function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('successModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeSuccessModal();
-            }
-        });
-    </script>
 </body>
 </html>
