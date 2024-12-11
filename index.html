@@ -395,7 +395,12 @@
 </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+    const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
     document.addEventListener('DOMContentLoaded', function () {
         // [All your existing code remains the same]
 
