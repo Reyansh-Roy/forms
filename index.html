@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PenseeWeb Mindmap Generator</title>
+    <title>PenseeWeb - Create Your Mindmap</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <style>
         .promotion-banner {
             transform: translateY(100%);
@@ -37,120 +38,63 @@
         .subtle-promo.show {
             opacity: 1;
         }
-        .page {
-            display: none;
-        }
-        .page.active {
-            display: block;
-        }
-        #loadingOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
     </style>
 </head>
 <body class="bg-gradient-to-b from-indigo-50 to-indigo-100 min-h-screen">
-    <div id="loadingOverlay" class="flex">
-        <div class="bg-white p-6 rounded-lg shadow-xl">
-            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-            <p class="mt-4 text-gray-600">Processing your request...</p>
-        </div>
-    </div>
-
     <div class="container mx-auto px-4 py-8">
         <!-- Progress Dots -->
         <div class="flex justify-center gap-4 mb-8">
-            <div id="dot1" class="w-2 h-2 rounded-full bg-indigo-600"></div>
-            <div id="dot2" class="w-2 h-2 rounded-full bg-indigo-200"></div>
-            <div id="dot3" class="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div class="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div class="w-2 h-2 rounded-full bg-indigo-200"></div>
+            <div class="w-2 h-2 rounded-full bg-indigo-600"></div>
         </div>
 
-        <!-- Page 1 -->
-        <div id="page1" class="page active">
-            <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Mindmap Generator</h1>
-                <p class="text-gray-600 mb-6 text-center">Enter your text below to generate a mindmap</p>
-
-                <form id="textForm" class="space-y-6">
-                    <div>
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Your Text</label>
-                        <textarea id="content" rows="6" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="Paste your text here..."></textarea>
-                    </div>
-
-                    <button type="submit"
-                        class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
-                        Continue
-                    </button>
-                </form>
+        <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
+            <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
+            <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
+            
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                <p class="text-sm text-yellow-700">
+                    Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏
+                </p>
             </div>
-        </div>
 
-        <!-- Page 2 -->
-        <div id="page2" class="page">
-            <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Choose Style</h1>
-                <p class="text-gray-600 mb-6 text-center">Select your preferred mindmap style</p>
-
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="style-option cursor-pointer p-4 border rounded-lg hover:border-indigo-500 transition-colors"
-                         data-style="modern">
-                        <img src="modern-style.jpg" alt="Modern Style" class="w-full rounded-lg mb-2">
-                        <h3 class="text-center font-medium">Modern</h3>
-                    </div>
-                    <div class="style-option cursor-pointer p-4 border rounded-lg hover:border-indigo-500 transition-colors"
-                         data-style="classic">
-                        <img src="classic-style.jpg" alt="Classic Style" class="w-full rounded-lg mb-2">
-                        <h3 class="text-center font-medium">Classic</h3>
-                    </div>
+            <form id="emailForm" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                    <input type="email" id="email" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="your@email.com">
                 </div>
 
-                <button id="continueToEmail" disabled
-                    class="w-full bg-gray-400 text-white px-6 py-3 rounded-lg transition duration-200">
-                    Continue
+                <button type="submit"
+                    class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
+                    Complete Submission
                 </button>
-            </div>
-        </div>
+            </form>
 
-        <!-- Page 3 -->
-        <div id="page3" class="page">
-            <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl p-8">
-                <h1 class="text-2xl font-bold text-gray-800 mb-2 text-center">Complete Submission</h1>
-                <p class="text-gray-600 mb-6 text-center">Thanks for taking the time to complete this form.</p>
-                
-                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
-                    <p class="text-sm text-yellow-700">
-                        Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏
-                    </p>
-                </div>
-
-                <form id="emailForm" class="space-y-6">
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input type="email" id="email" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                            placeholder="your@email.com">
+            <div id="subtlePromo" class="subtle-promo mt-6">
+                <div class="bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg p-5 border border-indigo-200">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✨</span>
+                            <div>
+                                <h3 class="font-medium text-indigo-800 mb-1">PenseeWeb Free Custom Maps</h3>
+                                <p class="text-sm text-gray-600">
+                                    Explore our collection of premium custom map products
+                                </p>
+                            </div>
+                        </div>
+                        <a href="https://penseeweb.com/products" target="_blank" 
+                           class="flex-shrink-0 text-indigo-600 hover:text-indigo-700 text-sm font-medium">
+                            @visit →
+                        </a>
                     </div>
-
-                    <button type="submit"
-                        class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700 transition duration-200">
-                        Complete Submission
-                    </button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Blog Promotion Float -->
     <div class="blog-float bg-white rounded-xl shadow-lg p-4">
         <div class="flex items-start space-x-3 mb-3">
             <div class="flex-shrink-0">
@@ -172,7 +116,6 @@
         </div>
     </div>
 
-    <!-- Success Message Modal -->
     <div id="successModal" class="fixed inset-0 flex items-center justify-center hidden z-50">
         <div class="bg-black bg-opacity-50 absolute inset-0"></div>
         <div class="bg-white rounded-xl p-6 max-w-md mx-4 relative z-10">
@@ -205,129 +148,53 @@
         </div>
     </div>
 
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        // Initialize Supabase Client
-        const supabaseUrl = 'https://rgccooiyalkqiugaxzbk.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        // Supabase initialization
+        const supabaseUrl = 'https://your-supabase-url.supabase.co';
+        const supabaseKey = 'your-supabase-public-key';
+        const supabase = supabaseClient(supabaseUrl, supabaseKey);
 
-        let currentPage = 1;
-        let selectedStyle = null;
+        let mindmapData = JSON.parse(localStorage.getItem('mindmapContent')) || {};
 
-        function showPage(pageNumber) {
-            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-            document.getElementById(`page${pageNumber}`).classList.add('active');
-            
-            // Update progress dots
-            document.querySelectorAll('[id^="dot"]').forEach(dot => dot.classList.remove('bg-indigo-600'));
-            document.querySelectorAll('[id^="dot"]').forEach(dot => dot.classList.add('bg-indigo-200'));
-            document.getElementById(`dot${pageNumber}`).classList.remove('bg-indigo-200');
-            document.getElementById(`dot${pageNumber}`).classList.add('bg-indigo-600');
-            
-            currentPage = pageNumber;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                document.getElementById('subtlePromo').classList.add('show');
+            }, 3000);
 
-        // Page 1 Form Submission
-        document.getElementById('textForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const content = document.getElementById('content').value;
-
-            document.getElementById('loadingOverlay').style.display = 'flex';
-
-            try {
-                // Create initial record in Supabase
-                const { data, error } = await supabase
-                    .from('mindmap_requests')
-                    .insert([
-                        { 
-                            content: content,
-                            status: 'pending',
-                            email: 'pending'
-                        }
-                    ])
-                    .select();
-
-                if (error) throw error;
-
-                localStorage.setItem('mindmapContent', JSON.stringify({
-                    content: content,
-                    requestId: data[0].id
-                }));
-
-                showPage(2);
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            } finally {
-                document.getElementById('loadingOverlay').style.display = 'none';
+            // Check if user came from previous pages
+            if (!mindmapData.version || !mindmapData.content) {
+                window.location.href = 'index.html';
             }
         });
 
-        // Page 2 Style Selection
-        document.querySelectorAll('.style-option').forEach(option => {
-            option.addEventListener('click', function() {
-                document.querySelectorAll('.style-option').forEach(opt => 
-                    opt.classList.remove('border-indigo-500'));
-                this.classList.add('border-indigo-500');
-                selectedStyle = this.dataset.style;
-                document.getElementById('continueToEmail').disabled = false;
-                document.getElementById('continueToEmail').classList.remove('bg-gray-400');
-                document.getElementById('continueToEmail').classList.add('bg-indigo-600');
-            });
-        });
-
-        document.getElementById('continueToEmail').addEventListener('click', async function() {
-            if (selectedStyle) {
-                const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
-                if (storedContent && storedContent.requestId) {
-                    try {
-                        const { error } = await supabase
-                            .from('mindmap_requests')
-                            .update({ style: selectedStyle })
-                            .eq('id', storedContent.requestId);
-
-                        if (error) throw error;
-                        showPage(3);
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again.');
-                    }
-                }
-            }
-        });
-
-        // Page 3 Email Submission
         document.getElementById('emailForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const email = document.getElementById('email').value;
-            const storedContent = JSON.parse(localStorage.getItem('mindmapContent'));
-
-            try {
-                if (storedContent && storedContent.requestId) {
-                    const { error } = await supabase
-                        .from('mindmap_requests')
-                        .update({ 
-                            email: email,
-                            status: 'submitted',
-                            updated_at: new Date().toISOString()
-                        })
-                        .eq('id', storedContent.requestId);
-
-                    if (error) throw error;
-
-                    document.getElementById('successModal').classList.remove('hidden');
-                    localStorage.removeItem('mindmapContent');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+            
+            mindmapData.email = email;
+            localStorage.setItem('mindmapContent', JSON.stringify(mindmapData));
+            
+            // Save mindmap data to Supabase
+            const { error } = await supabase.from('mindmaps').insert([mindmapData]);
+            if (error) {
+                console.error('Error saving mindmap:', error);
+                return;
             }
+            
+            document.getElementById('successModal').classList.remove('hidden');
+            
+            setTimeout(() => {
+                document.getElementById('subtlePromo').classList.add('show');
+            }, 2000);
+
+            // Optionally, you can send an email to the user here
+            console.log('Final submission data:', mindmapData);
         });
 
         function closeSuccessModal() {
             document.getElementById('successModal').classList.add('hidden');
-            window.location.href = 'index.html';
+            // Optional: Redirect to homepage or thank you page
+            // window.location.href = 'index.html';
         }
 
         document.getElementById('successModal').addEventListener('click', function(e) {
