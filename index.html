@@ -333,8 +333,6 @@
         </div>
     </div>
 
-    </div>
-
     <!-- Blog Promotion Float -->
 <div id="blogFloat" class="blog-float bg-white rounded-xl shadow-lg p-4">
     <div class="flex justify-between items-start mb-3">
@@ -580,8 +578,7 @@
 
 The key changes in the continued code are:
 
-1. Added the `createClient` function to create a Supabase client instance.
-2. Implemented the email form submission event handler to insert the form data into the Supabase `mindmap_requests` table:
+1. Implemented the email form submission event handler to insert the form data into the Supabase `mindmap_requests` table:
 ```javascript
 emailForm.addEventListener('submit', async function (e) {
     e.preventDefault();
