@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PenseeWeb - Craft Your Mind's Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif}
+        body{background-color:#e5efff;min-height:100vh;display:flex;flex-direction:column}
+        .container{max-width:1200px;margin:40px auto;padding:0 20px}
+        .header{text-align:center;margin-bottom:50px}
+        .header h1{color:#1a1a1a;font-size:2.5em;margin-bottom:15px;font-weight:600}
+        .header p{color:#2d3436;font-size:1.2em;font-style:italic}
+        .model-selection{display:flex;justify-content:center;gap:30px;margin-bottom:40px}
+        .model-card{background:#fff;border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .3s ease;position:relative}
+        .model-card:hover{transform:translateY(-5px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+        .model-card.disabled{opacity:.7;pointer-events:none}
+        .coming-soon-badge{position:absolute;top:20px;right:20px;background:#ff4757;color:#fff;padding:5px 15px;border-radius:20px;font-size:.9em}
+        .model-title{font-size:1.8em;color:#2d3436;margin-bottom:20px}
+        .power-bar{background:#eee;height:20px;border-radius:10px;margin:15px 0}
+        .power-indicator{height:100%;border-radius:10px;transition:width .3s ease}
+        .power-label{font-size:.9em;color:#636e72;margin-top:5px;text-align:right;font-style:italic}
+        .v2-power{width:40%;background:linear-gradient(90deg,#74b9ff,#0984e3)}
+        .v3-power{width:75%;background:linear-gradient(90deg,#55efc4,#00b894)}
+        .feature-list{list-style:none;margin-bottom:25px}
+        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4}
+        .feature-list li:before{content:"•";color:#0984e3;font-weight:700;margin-right:10px}
+        .select-button{background:#0984e3;color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1.1em;cursor:pointer;width:100%;transition:all .3s ease;position:relative;overflow:hidden}
+        .select-button:hover{background:#0873c7;transform:translateY(-2px);box-shadow:0 4px 15px rgba(9,132,227,.3)}
+        .select-button:active{transform:translateY(0)}
+        .continue-section{text-align:center;margin-top:40px}
+        .continue-btn{background:#00b894;color:#fff;border:none;padding:15px 40px;border-radius:30px;font-size:1.2em;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px}
+        .continue-btn:after{content:"→";font-size:1.4em;transition:transform .3s ease;display:inline-block;margin-left:5px}
+        .continue-btn:hover{background:#00a382;transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,184,148,.3)}
+        .continue-btn:hover:after{transform:translateX(5px)}
+        .continue-btn:active{transform:translateY(0)}
+        .footer{text-align:center;margin-top:auto;padding:20px;color:#636e72;font-style:italic}
+        #loadingMessage {
+            display: none;
+            text-align: center;
+            color: #0984e3;
+            font-size: 1.1em;
+            margin-top: 20px;
+        }
+        .error-message {
+            display: none;
+            text-align: center;
+            color: #ff4757;
+            font-size: 1.1em;
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(255,71,87,0.1);
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Unleash Your Mind's Potential</h1>
+            <p>Where thoughts transform into masterpieces of clarity</p>
+        </div>
+        <div class="model-selection">
+            <div class="model-card">
+                <h2 class="model-title">Version 2.0</h2>
+                <div class="power-bar">
+                    <div class="power-indicator v2-power"></div>
+                </div>
+                <div class="power-label">Elegant Simplicity</div>
+                <ul class="feature-list">
+                    <li>Crafts your thoughts with precise elegance</li>
+                    <li>Transforms ideas into structured beauty</li>
+                    <li>Perfect for those who seek clarity in simplicity</li>
+                    <li>Your thoughts, carefully curated</li>
+                </ul>
+                <button class="select-button">Selected</button>
+            </div>
+            <div class="model-card disabled">
+                <span class="coming-soon-badge">Coming Soon</span>
+                <h2 class="model-title">Version 3.0</h2>
+                <div class="power-bar">
+                    <div class="power-indicator v3-power"></div>
+                </div>
+                <div class="power-label">Intense Sophistication</div>
+                <ul class="feature-list">
+                    <li>Unleashes the full power of your imagination</li>
+                    <li>Creates mindmaps with passionate precision</li>
+                    <li>For those who demand perfection</li>
+                    <li>Your vision, intensely realized</li>
+                </ul>
+                <button class="select-button" disabled>Select</button>
+            </div>
+        </div>
+        <div class="continue-section">
+            <button class="continue-btn" onclick="proceedToPage3()">Continue</button>
+        </div>
+        <div id="loadingMessage">Processing your request...</div>
+        <div id="errorMessage" class="error-message"></div>
+    </div>
+    <footer class="footer">
+        <p>PenseeWeb - Where Obsession Meets Perfection</p>
+    </footer>
+
+    <script>
+        // Check for data when page loads
+        window.onload = function() {
+            const formData = localStorage.getItem('penseewebFormData');
+            if (!formData) {
+                document.getElementById('errorMessage').textContent = 'No input data found. Please start from the beginning.';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.querySelector('.continue-btn').disabled = true;
+                
+                // Redirect back to page1 after 3 seconds
+                setTimeout(() => {
+                    window.location.href = 'page1.html';
+                }, 3000);
+            }
+        }
+
+        function proceedToPage3() {
+            const formData = localStorage.getItem('penseewebFormData');
+            if (formData) {
+                document.getElementById('loadingMessage').style.display = 'block';
+                // Add a small delay to show the loading message
+                setTimeout(() => {
+                    window.location.href = 'page3.html';
+                }, 800);
+            } else {
+                document.getElementById('errorMessage').textContent = 'Please complete the first step before continuing.';
+                document.getElementById('errorMessage').style.display = 'block';
+                setTimeout(() => {
+                    window.location.href = 'page1.html';
+                }, 2000);
+            }
+        }
+
+        // Disable back button
+        history.pushState(null, null, location.href);
+        window.onpopstate = function() {
+            history.go(1);
+        };
+    </script>
+</body>
+</html>

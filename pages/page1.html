@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --text-color: #2c003e;
+        }
+        body {
+            background-color: var(--primary-color);
+            font-family: Montserrat, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+        .form-container {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .input-field {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+            font-family: Montserrat, sans-serif;
+        }
+        .input-field:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+        .input-field:invalid {
+            border-color: #ff4444;
+        }
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+            font-family: Montserrat, sans-serif;
+            width: 100%;
+        }
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .coming-soon {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(106,27,154,0.1);
+            border-radius: 8px;
+        }
+        .coming-soon h3 {
+            margin-top: 0;
+            color: var(--accent-color);
+        }
+        .coming-soon ul {
+            padding-left: 1.2rem;
+        }
+        .coming-soon li {
+            margin: 0.5rem 0;
+        }
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .tab-container {
+            display: flex;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+        .tab:hover {
+            color: var(--accent-color);
+        }
+        .tab.active {
+            border-bottom-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">PenseeWeb</div>
+            <h2>Create Beautiful Mindmaps Instantly</h2>
+        </div>
+        <div class="form-container">
+            <div class="tab-container">
+                <div class="tab active" onclick="switchTab('text')">Text Input</div>
+                <div class="tab" onclick="switchTab('youtube')">YouTube Link</div>
+            </div>
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group">
+                    <label class="input-label">Enter Your Text (Max 1200 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="1200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+            <div class="coming-soon">
+                <h3>Coming Soon: Extended Platform Support</h3>
+                <p>We're working to bring mindmap generation support for:</p>
+                <ul>
+                    <li>TED</li>
+                    <li>Facebook</li>
+                    <li>Google Drive</li>
+                    <li>Vimeo</li>
+                    <li>Metopera</li>
+                    <li>Weverse</li>
+                </ul>
+            </div>
+            <div class="privacy-notice">
+                <p>🔒 PenseeWeb is completely free to use. No credit card required.</p>
+                <p>Your data is encrypted and automatically deleted after 24 hours.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(e) {
+            document.querySelectorAll(".tab").forEach(e => e.classList.remove("active"));
+            document.querySelector(`[onclick="switchTab('${e}')"]`).classList.add("active");
+            document.getElementById("text-input").style.display = e === "text" ? "block" : "none";
+            document.getElementById("youtube-input").style.display = e === "youtube" ? "block" : "none";
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+        }
+
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+
+            const t = document.querySelector(".tab.active").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                // Store the form data in localStorage
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                // Redirect to page2
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 1200 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
