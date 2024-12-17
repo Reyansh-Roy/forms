@@ -389,6 +389,7 @@
         document.getElementById('tvScreen').addEventListener('click', () => {
             adClickCount++;
             if (adClickCount === 2) {
+                // Redirect logic on the second click (customize URL as needed)
                 window.open('https://advertisedwebsite.com', '_blank');
                 adClickCount = 0; // Reset after redirect
             }
