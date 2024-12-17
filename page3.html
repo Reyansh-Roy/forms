@@ -7,16 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-    <!-- Propeller Ads Integration -->
-    <!-- Interstitial -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8669368,document.createElement('script'))</script>
-    
-    <!-- Vignette -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8669370,document.createElement('script'))</script>
-
-    <!-- Adsterra Integration -->
-    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-
     <style>
         :root {
             --primary-color: #faeae6;
@@ -309,6 +299,13 @@
             transform: translateY(-2px);
         }
 
+        .disclaimer {
+            font-size: 0.7em;
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateY(-20px);
@@ -375,16 +372,16 @@
                 </div>
                 <div class="tv-screen">
                     <div class="ad-space">
-                        <!-- Propeller Ads Slots -->
-                        <div class="ad-slot propeller-slot" id="propSlot1">
+                        <!-- Ad Slots -->
+                        <div class="ad-slot ad-active" id="adSlot1">
                             <!-- Insert Ad Code Here -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
                         </div>
-                        <div class="ad-slot propeller-slot" id="propSlot2">
+                        <div class="ad-slot" id="adSlot2">
                             <!-- Insert Ad Code Here -->
                         </div>
-                        <div class="ad-slot propeller-slot" id="propSlot3">
+                        <div class="ad-slot" id="adSlot3">
                             <!-- Insert Ad Code Here -->
                         </div>
                     </div>
@@ -420,9 +417,9 @@
                 const timer = document.getElementById('adTimer');
                 const closeButton = document.getElementById('closeButton');
                 const adSlots = [
-                    document.getElementById('propSlot1'),
-                    document.getElementById('propSlot2'),
-                    document.getElementById('propSlot3')
+                    document.getElementById('adSlot1'),
+                    document.getElementById('adSlot2'),
+                    document.getElementById('adSlot3')
                 ];
                 
                 overlay.style.display = 'flex';
