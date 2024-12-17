@@ -348,7 +348,7 @@
 
         const adSystem = {
             isUserInitiated: false,
-            
+
             createSafeFrame() {
                 const frame = document.createElement('iframe');
                 frame.classList.add('allowed-ad');
@@ -363,7 +363,7 @@
                 const frame = this.createSafeFrame();
                 container.innerHTML = '';
                 container.appendChild(frame);
-                
+
                 const html = `
                     <html>
                         <body style="margin:0;overflow:hidden;">
@@ -382,7 +382,7 @@
                             </script>
                         </body>
                     </html>`;
-                
+
                 frame.contentWindow.document.open();
                 frame.contentWindow.document.write(html);
                 frame.contentWindow.document.close();
@@ -393,7 +393,7 @@
                 const frame = this.createSafeFrame();
                 container.innerHTML = '';
                 container.appendChild(frame);
-                
+
                 const html = `
                     <html>
                         <body style="margin:0;overflow:hidden;">
@@ -411,7 +411,7 @@
                             </script>
                         </body>
                     </html>`;
-                
+
                 frame.contentWindow.document.open();
                 frame.contentWindow.document.write(html);
                 frame.contentWindow.document.close();
@@ -426,14 +426,14 @@
                     document.getElementById('adSlot1'),
                     document.getElementById('adSlot2')
                 ];
-                
+
                 this.loadPropellerAd(adSlots[0]);
                 this.loadAdsterraAd(adSlots[1]);
-                
+
                 overlay.style.display = 'flex';
                 let totalTime = 14;
                 let currentAdIndex = 0;
-                
+
                 adSlots[currentAdIndex].classList.add('ad-active');
 
                 return new Promise(resolve => {
@@ -451,7 +451,7 @@
                             clearInterval(countdown);
                             timer.style.display = 'none';
                             closeButton.style.display = 'block';
-                            
+
                             adSlots.forEach(slot => slot.classList.remove('ad-active'));
                             adSlots[1].classList.add('ad-active');
                         }
@@ -473,7 +473,7 @@
                                  e.clientX <= rect.right && 
                                  e.clientY >= rect.top && 
                                  e.clientY <= rect.bottom;
-            
+
             if (isWithinFrame) {
                 adSystem.isUserInitiated = true;
                 setTimeout(() => {
@@ -484,10 +484,10 @@
 
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const email = document.getElementById('email').value.trim();
             const storedData = JSON.parse(localStorage.getItem('penseewebFormData'));
-            
+
             if (!email) {
                 document.getElementById('errorMessage').textContent = 'Please enter your email address';
                 document.getElementById('errorMessage').style.display = 'block';
@@ -530,7 +530,7 @@
                 localStorage.removeItem('penseewebFormData');
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('mindmapForm').reset();
-                
+
                 history.pushState(null, null, location.href);
                 window.onpopstate = function() {
                     history.go(1);
@@ -550,7 +550,7 @@
                 document.getElementById('errorMessage').textContent = 'Please start from the beginning of the process.';
                 document.getElementById('errorMessage').style.display = 'block';
                 document.getElementById('submitButton').disabled = true;
-                
+
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 3000);
