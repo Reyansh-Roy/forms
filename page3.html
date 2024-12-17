@@ -9,10 +9,10 @@
 
     <!-- Propeller Ads Integration -->
     <!-- Interstitial -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8668780,document.createElement('script'));</script>
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8668780,document.createElement('script'))</script>
     
     <!-- Vignette -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8668776,document.createElement('script'));</script>
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8668776,document.createElement('script'))</script>
     
     <!-- Onclick -->
     <script>(function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://shebudriftaiter.net/tag.min.js',8668772,document.body||document.documentElement)</script>
@@ -64,8 +64,67 @@
             transform: translateY(-5px);
             box-shadow: 0 20px 40px var(--shadow-color);
         }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3.5em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .header p {
+            font-size: 1.2em;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(212,117,109,0.2);
+            border-radius: 12px;
+            font-size: 1em;
+            transition: 0.3s ease;
+            background: rgba(255,255,255,0.9);
+        }
+        input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 15px rgba(212,117,109,0.2);
+        }
+        button {
+            background: linear-gradient(135deg, var(--accent-color) 0%, #c26259 100%);
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,117,109,0.4);
+        }
 
-        /* TV Frame and Ad Container Styles */
         .ad-overlay {
             position: fixed;
             top: 0;
@@ -91,6 +150,17 @@
             animation: slideIn 0.5s ease-out;
         }
 
+        .ad-header {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.6;
+            padding: 0 10px;
+            font-size: 0.9em;
+        }
+
         .tv-frame {
             background: #1a1a1a;
             padding: 20px;
@@ -104,6 +174,19 @@
             margin: 0 auto;
             overflow: hidden;
             background: linear-gradient(145deg, #232323 0%, #0a0a0a 100%);
+        }
+
+        .tv-frame::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: #333;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
         .tv-brand-logo {
@@ -125,6 +208,23 @@
             font-weight: 700;
             letter-spacing: 2px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .disclaimer {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #2c1810;
+            font-size: 0.8em;
+            line-height: 1.4;
+            padding: 10px;
+            background: rgba(250, 234, 230, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .tv-screen {
@@ -176,6 +276,22 @@
             pointer-events: auto;
         }
 
+        .propeller-slot {
+            z-index: 2;
+        }
+
+        .tv-brand {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #888;
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
         .ad-controls {
             position: absolute;
             bottom: 10px;
@@ -197,41 +313,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .close-button {
-            display: none;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--accent-color);
-            border: none;
-            padding: 5px 15px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            transition: 0.3s ease;
-        }
-
-        .close-button:hover {
-            background: white;
-            transform: translateY(-2px);
-        }
-
-        .disclaimer {
-            position: absolute;
-            bottom: -40px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: #2c1810;
-            font-size: 0.8em;
-            line-height: 1.4;
-            padding: 10px;
-            background: rgba(250, 234, 230, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
         @keyframes slideIn {
             from {
                 transform: translateY(-20px);
@@ -247,12 +328,15 @@
             .container {
                 padding: 20px;
             }
+            .header h1 {
+                font-size: 2em;
+            }
             .ad-container {
                 width: 95%;
                 padding: 15px;
             }
-            .disclaimer {
-                font-size: 0.7em;
+            .ad-header {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -270,7 +354,7 @@
             </div>
             <button type="submit" id="submitButton">Complete Submission</button>
             <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage" style="display: none;">
+            <div class="success-message" id="successMessage">
                 Submission Complete! 🎉<br>
                 Your mindmap will be sent to your email within 24 hours.<br>
                 Don't forget to check your spam folder!<br>✨
@@ -296,18 +380,9 @@
                 <div class="tv-screen">
                     <div class="ad-space">
                         <!-- Propeller Ads Slots -->
-                        <div class="ad-slot propeller-slot" id="propSlot1">
-                            <!-- Interstitial -->
-                            <div id="propeller-interstitial"></div>
-                        </div>
-                        <div class="ad-slot propeller-slot" id="propSlot2">
-                            <!-- Vignette -->
-                            <div id="propeller-vignette"></div>
-                        </div>
-                        <div class="ad-slot propeller-slot" id="propSlot3">
-                            <!-- Onclick -->
-                            <div id="propeller-onclick"></div>
-                        </div>
+                        <div class="ad-slot propeller-slot" id="propSlot1"></div>
+                        <div class="ad-slot propeller-slot" id="propSlot2"></div>
+                        <div class="ad-slot propeller-slot" id="propSlot3"></div>
 
                         <!-- Adsterra Slots -->
                         <div class="ad-slot" id="adSlot1">
@@ -333,10 +408,6 @@
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
                 </div>
-                <div class="ad-controls">
-                    <div class="timer" id="adTimer">14</div>
-                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
-                </div>
                 <div class="disclaimer">
                     "Disclaimer: The advertisements displayed are from third-party networks. 
                     PenseeWeb does not endorse, guarantee, or take responsibility for any products, 
@@ -346,30 +417,20 @@
                     independent of advertised content." 
                     — PenseeWeb Management
                 </div>
+                <div class="ad-controls">
+                    <div class="timer" id="adTimer">14</div>
+                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Supabase Client Initialization
         const supabaseClient = supabase.createClient(
             'https://rgccooiyalkqiugaxzbk.supabase.co',
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0'
         );
 
-        // Ad System Configuration
-        const adConfig = {
-            propellerIds: {
-                interstitial: '8668780',
-                vignette: '8668776',
-                onclick: '8668772'
-            },
-            adsterraCodes: {
-                native: '5a0a6d52f643547f356c1aeafcfac4f7'
-            }
-        };
-
-        // Advanced Ad System Implementation
         const adSystem = {
             async showAds() {
                 const overlay = document.getElementById('adOverlay');
@@ -393,13 +454,12 @@
                 let totalTime = 14;
                 let currentAdIndex = 0;
                 let clickCount = 0;
-                let isVideoAd = false;
-                let adRotationInterval;
-                
+                let isAdsterraMode = false;
+
                 // Initialize first Propeller ad
                 propellerSlots[0].classList.add('ad-active');
 
-                // Track ad clicks with double-click protection
+                // Track ad clicks
                 [...propellerSlots, ...adsterraSlots].forEach(slot => {
                     slot.addEventListener('click', (e) => {
                         clickCount++;
@@ -417,53 +477,52 @@
 
                         // First 14 seconds: alternate between networks
                         if (totalTime >= 0) {
-                            if (!isVideoAd) {
-                                const currentTime = 14 - totalTime;
-                                if (currentTime % 3.5 === 0) {
-                                    const allSlots = [...propellerSlots, ...adsterraSlots];
-                                    allSlots.forEach(slot => slot.classList.remove('ad-active'));
-                                    
-                                    // Alternate between networks
-                                    if (currentTime % 7 === 0) {
-                                        propellerSlots[currentAdIndex % propellerSlots.length].classList.add('ad-active');
-                                    } else {
-                                        adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
-                                    }
-                                    currentAdIndex++;
+                            const currentTime = 14 - totalTime;
+                            if (currentTime % 3.5 === 0) { // Switch every 3.5 seconds
+                                const allSlots = [...propellerSlots, ...adsterraSlots];
+                                allSlots.forEach(slot => slot.classList.remove('ad-active'));
+                                
+                                // Alternate between networks
+                                if (currentTime % 7 === 0) {
+                                    propellerSlots[currentAdIndex % propellerSlots.length].classList.add('ad-active');
+                                } else {
+                                    adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
                                 }
+                                currentAdIndex++;
                             }
                         }
 
                         // After 14 seconds
                         if (totalTime === 0) {
                             closeButton.style.display = 'block';
-                            
-                            // Start extended rotation
+                        }
+                        
+                        // After 14 seconds: longer rotations
+                        if (totalTime < 0) {
                             clearInterval(countdown);
-                            
-                            adRotationInterval = setInterval(() => {
+
+                            // Start new rotation pattern
+                            let isPropeller = true;
+                            setInterval(() => {
                                 const allSlots = [...propellerSlots, ...adsterraSlots];
                                 allSlots.forEach(slot => slot.classList.remove('ad-active'));
                                 
-                                // Alternate between Propeller (25s) and Adsterra (until closed)
-                                if (currentAdIndex % 2 === 0) {
+                                if (isPropeller) {
                                     propellerSlots[currentAdIndex % propellerSlots.length].classList.add('ad-active');
                                     setTimeout(() => {
-                                        if (!isVideoAd) {
-                                            propellerSlots[currentAdIndex % propellerSlots.length].classList.remove('ad-active');
-                                            adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
-                                        }
-                                    }, 25000);
+                                        isPropeller = false;
+                                    }, 25000); // Propeller ads show for 25 seconds
+                                } else {
+                                    adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
+                                    // Adsterra ads show until closed
                                 }
-                                
                                 currentAdIndex++;
-                            }, 30000);
+                            }, isPropeller ? 25000 : 30000);
                         }
                     }, 1000);
 
                     closeButton.onclick = () => {
                         clearInterval(countdown);
-                        clearInterval(adRotationInterval);
                         overlay.style.display = 'none';
                         [...propellerSlots, ...adsterraSlots].forEach(slot => 
                             slot.classList.remove('ad-active'));
@@ -473,7 +532,29 @@
             }
         };
 
-        // Form Submission Handler
+        // Add Propeller Ads initialization
+        function initPropellerAds() {
+            (function(s,u,z,p){
+                s.src='//'+u+'/'+z+'/'+p;
+                try{document.body.appendChild(s)}catch(e){}
+            })(document.createElement('script'),'cdn.propellerads.com','8668777','inv'); // Example Propeller Ads code
+        }
+
+        // Initialize both ad networks
+        function initAds() {
+            // Initialize Adsterra
+            const adsterraScript = document.createElement('script');
+            adsterraScript.src = "//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js";
+            adsterraScript.async = true;
+            document.head.appendChild(adsterraScript);
+
+            // Initialize Propeller
+            initPropellerAds();
+        }
+
+        // Call initialization
+        initAds();
+
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -492,16 +573,14 @@
                 return;
             }
 
-            try {
-                // Show ads first
-                await adSystem.showAds();
+            // Show ads first
+            await adSystem.showAds();
 
-                // Get user IP
+            try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
                 const ipData = await ipResponse.json();
                 const userIP = ipData.ip;
 
-                // Prepare submission data
                 const submissionData = {
                     email: email,
                     content: storedData.content,
@@ -516,19 +595,16 @@
                     }
                 };
 
-                // Submit to Supabase
                 const { error } = await supabaseClient
                     .from('penseeweb_forms')
                     .insert([submissionData]);
 
                 if (error) throw error;
 
-                // Clear storage and show success
                 localStorage.removeItem('penseewebFormData');
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('mindmapForm').reset();
                 
-                // Prevent back navigation
                 history.pushState(null, null, location.href);
                 window.onpopstate = function() {
                     history.go(1);
@@ -542,7 +618,6 @@
             }
         });
 
-        // Initial page load check
         window.onload = function() {
             const formData = localStorage.getItem('penseewebFormData');
             if (!formData) {
