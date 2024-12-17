@@ -93,7 +93,7 @@
             </div>
         </div>
         <div class="continue-section">
-            <button class="continue-btn" onclick="proceedToPage3()">Continue</button>
+            <button class="continue-btn" onclick="proceedTopage3()">Continue</button>
         </div>
         <div id="loadingMessage">Processing your request...</div>
         <div id="errorMessage" class="error-message"></div>
@@ -118,7 +118,7 @@
             }
         }
 
-        function proceedToPage3() {
+        function proceedTopage3() {
             const formData = localStorage.getItem('penseewebFormData');
             if (formData) {
                 document.getElementById('loadingMessage').style.display = 'block';
