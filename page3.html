@@ -7,6 +7,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
+    <!-- Propeller Ads Integration -->
+    <!-- Interstitial -->
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8669368,document.createElement('script'))</script>
+    
+    <!-- Vignette -->
+    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8669370,document.createElement('script'))</script>
+
+    <!-- Adsterra Integration -->
+    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+
     <style>
         :root {
             --primary-color: #faeae6;
@@ -24,6 +34,7 @@
             background-color: var(--primary-color);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -46,6 +57,7 @@
             backdrop-filter: blur(10px);
             transform: translateZ(0);
             transition: 0.3s ease;
+            margin-bottom: 50px;
         }
         .container:hover {
             transform: translateY(-5px);
@@ -197,21 +209,6 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
 
-        .disclaimer {
-            position: relative;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: #2c1810;
-            font-size: 0.8em;
-            line-height: 1.4;
-            padding: 10px;
-            background: rgba(250, 234, 230, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-top: 50px; /* Position below the TV frame */
-        }
-
         .tv-screen {
             position: relative;
             width: 100%;
@@ -292,6 +289,24 @@
             font-family: 'Poppins', sans-serif;
             backdrop-filter: blur(5px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .close-button {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-color);
+            border: none;
+            padding: 5px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: white;
+            transform: translateY(-2px);
         }
 
         @keyframes slideIn {
@@ -377,7 +392,7 @@
                 </div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
-                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
+                    <button class="close-button" id="closeButton">Close TV</button>
                 </div>
             </div>
         </div>
@@ -414,29 +429,17 @@
                 
                 let totalTime = 14;
                 let currentAdIndex = 0;
-                let clickCount = 0;
                 
                 // Initialize first ad
                 adSlots[0].classList.add('ad-active');
-
-                // Track ad clicks
-                adSlots.forEach(slot => {
-                    slot.addEventListener('click', (e) => {
-                        clickCount++;
-                        if (clickCount < 2) {
-                            e.preventDefault();
-                            e.stopPropagation();
-                        }
-                    });
-                });
 
                 return new Promise(resolve => {
                     const countdown = setInterval(() => {
                         timer.textContent = Math.max(0, totalTime);
                         totalTime--;
 
-                        // Switch ads every 4 seconds
-                        if (totalTime >= 0 && totalTime % 4 === 0) {
+                        // Switch ads every 25 seconds after initial 14 seconds
+                        if (totalTime < 0 && totalTime % 25 === 0) {
                             adSlots[currentAdIndex].classList.remove('ad-active');
                             currentAdIndex = (currentAdIndex + 1) % adSlots.length;
                             adSlots[currentAdIndex].classList.add('ad-active');
