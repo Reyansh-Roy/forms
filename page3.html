@@ -307,11 +307,11 @@
                 <div class="tv-screen" id="tvScreen">
                     <div class="ad-space" id="adSpace">
                         <div class="ad-slot" id="adSlot1">
-                            <!-- Propeller Ads -->
+                            <!-- Propeller Ads (First 14 seconds) -->
                             <script src="https://alwingulla.com/88/tag.min.js" data-zone="120175" async data-cfasync="false"></script>
                         </div>
                         <div class="ad-slot" id="adSlot2">
-                            <!-- Adsterra Ads -->
+                            <!-- Adsterra Ads (After 14 seconds) -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
                         </div>
@@ -320,7 +320,7 @@
                 </div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
-                    <button class="close-button" id="closeButton">Close TV</button>
+                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
                 </div>
             </div>
         </div>
@@ -355,7 +355,7 @@
                         timer.textContent = totalTime;
                         totalTime--;
 
-                        // Switch ads every 5 seconds initially
+                        // Switch ads every 5 seconds initially (3 ads in 14s)
                         if (totalTime % 5 === 0 && totalTime >= 0) {
                             adSlots[currentAdIndex].classList.remove('ad-active');
                             currentAdIndex = (currentAdIndex + 1) % adSlots.length;
