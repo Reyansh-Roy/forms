@@ -7,19 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
-    <!-- Propeller Ads Integration -->
-    <!-- Interstitial -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',8668780,document.createElement('script'))</script>
-    
-    <!-- Vignette -->
-    <script>(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('cimtaiphos.com',8668776,document.createElement('script'))</script>
-    
-    <!-- Onclick -->
-    <script>(function(s,u,z,p){s.src=u,s.setAttribute('data-zone',z),p.appendChild(s);})(document.createElement('script'),'https://shebudriftaiter.net/tag.min.js',8668772,document.body||document.documentElement)</script>
-
-    <!-- Adsterra Integration -->
-    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-
     <style>
         :root {
             --primary-color: #faeae6;
@@ -211,10 +198,7 @@
         }
 
         .disclaimer {
-            position: absolute;
-            bottom: -40px;
-            left: 0;
-            right: 0;
+            position: relative;
             text-align: center;
             font-family: 'Playfair Display', serif;
             font-style: italic;
@@ -225,6 +209,7 @@
             background: rgba(250, 234, 230, 0.9);
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 50px; /* Position below the TV frame */
         }
 
         .tv-screen {
@@ -274,10 +259,6 @@
             display: block;
             opacity: 1;
             pointer-events: auto;
-        }
-
-        .propeller-slot {
-            z-index: 2;
         }
 
         .tv-brand {
@@ -354,7 +335,7 @@
             </div>
             <button type="submit" id="submitButton">Complete Submission</button>
             <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage">
+            <div class="success-message" id="successMessage" style="display: none;">
                 Submission Complete! 🎉<br>
                 Your mindmap will be sent to your email within 24 hours.<br>
                 Don't forget to check your spam folder!<br>✨
@@ -380,42 +361,19 @@
                 <div class="tv-screen">
                     <div class="ad-space">
                         <!-- Propeller Ads Slots -->
-                        <div class="ad-slot propeller-slot" id="propSlot1"></div>
-                        <div class="ad-slot propeller-slot" id="propSlot2"></div>
-                        <div class="ad-slot propeller-slot" id="propSlot3"></div>
-
-                        <!-- Adsterra Slots -->
-                        <div class="ad-slot" id="adSlot1">
+                        <div class="ad-slot propeller-slot" id="propSlot1">
+                            <!-- Insert Ad Code Here -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
                         </div>
-                        <div class="ad-slot" id="adSlot2">
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
+                        <div class="ad-slot propeller-slot" id="propSlot2">
+                            <!-- Insert Ad Code Here -->
                         </div>
-                        <div class="ad-slot" id="adSlot3">
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-3"></div>
-                        </div>
-                        <div class="ad-slot" id="adSlot4">
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-4"></div>
-                        </div>
-                        <div class="ad-slot" id="adSlot5">
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-5"></div>
+                        <div class="ad-slot propeller-slot" id="propSlot3">
+                            <!-- Insert Ad Code Here -->
                         </div>
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
-                </div>
-                <div class="disclaimer">
-                    "Disclaimer: The advertisements displayed are from third-party networks. 
-                    PenseeWeb does not endorse, guarantee, or take responsibility for any products, 
-                    services, or actions resulting from these advertisements. Interaction with 
-                    these ads is solely at your own discretion and risk. We maintain our 
-                    commitment to providing you with our core services while remaining 
-                    independent of advertised content." 
-                    — PenseeWeb Management
                 </div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
@@ -423,6 +381,16 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="disclaimer">
+        "Disclaimer: The advertisements displayed are from third-party networks. 
+        PenseeWeb does not endorse, guarantee, or take responsibility for any products, 
+        services, or actions resulting from these advertisements. Interaction with 
+        these ads is solely at your own discretion and risk. We maintain our 
+        commitment to providing you with our core services while remaining 
+        independent of advertised content." 
+        — PenseeWeb Management
     </div>
 
     <script>
@@ -436,17 +404,10 @@
                 const overlay = document.getElementById('adOverlay');
                 const timer = document.getElementById('adTimer');
                 const closeButton = document.getElementById('closeButton');
-                const propellerSlots = [
+                const adSlots = [
                     document.getElementById('propSlot1'),
                     document.getElementById('propSlot2'),
                     document.getElementById('propSlot3')
-                ];
-                const adsterraSlots = [
-                    document.getElementById('adSlot1'),
-                    document.getElementById('adSlot2'),
-                    document.getElementById('adSlot3'),
-                    document.getElementById('adSlot4'),
-                    document.getElementById('adSlot5')
                 ];
                 
                 overlay.style.display = 'flex';
@@ -454,13 +415,12 @@
                 let totalTime = 14;
                 let currentAdIndex = 0;
                 let clickCount = 0;
-                let isAdsterraMode = false;
-
-                // Initialize first Propeller ad
-                propellerSlots[0].classList.add('ad-active');
+                
+                // Initialize first ad
+                adSlots[0].classList.add('ad-active');
 
                 // Track ad clicks
-                [...propellerSlots, ...adsterraSlots].forEach(slot => {
+                adSlots.forEach(slot => {
                     slot.addEventListener('click', (e) => {
                         clickCount++;
                         if (clickCount < 2) {
@@ -475,85 +435,28 @@
                         timer.textContent = Math.max(0, totalTime);
                         totalTime--;
 
-                        // First 14 seconds: alternate between networks
-                        if (totalTime >= 0) {
-                            const currentTime = 14 - totalTime;
-                            if (currentTime % 3.5 === 0) { // Switch every 3.5 seconds
-                                const allSlots = [...propellerSlots, ...adsterraSlots];
-                                allSlots.forEach(slot => slot.classList.remove('ad-active'));
-                                
-                                // Alternate between networks
-                                if (currentTime % 7 === 0) {
-                                    propellerSlots[currentAdIndex % propellerSlots.length].classList.add('ad-active');
-                                } else {
-                                    adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
-                                }
-                                currentAdIndex++;
-                            }
+                        // Switch ads every 4 seconds
+                        if (totalTime >= 0 && totalTime % 4 === 0) {
+                            adSlots[currentAdIndex].classList.remove('ad-active');
+                            currentAdIndex = (currentAdIndex + 1) % adSlots.length;
+                            adSlots[currentAdIndex].classList.add('ad-active');
                         }
 
-                        // After 14 seconds
+                        // Show close button after 14 seconds
                         if (totalTime === 0) {
                             closeButton.style.display = 'block';
-                        }
-                        
-                        // After 14 seconds: longer rotations
-                        if (totalTime < 0) {
-                            clearInterval(countdown);
-
-                            // Start new rotation pattern
-                            let isPropeller = true;
-                            setInterval(() => {
-                                const allSlots = [...propellerSlots, ...adsterraSlots];
-                                allSlots.forEach(slot => slot.classList.remove('ad-active'));
-                                
-                                if (isPropeller) {
-                                    propellerSlots[currentAdIndex % propellerSlots.length].classList.add('ad-active');
-                                    setTimeout(() => {
-                                        isPropeller = false;
-                                    }, 25000); // Propeller ads show for 25 seconds
-                                } else {
-                                    adsterraSlots[currentAdIndex % adsterraSlots.length].classList.add('ad-active');
-                                    // Adsterra ads show until closed
-                                }
-                                currentAdIndex++;
-                            }, isPropeller ? 25000 : 30000);
                         }
                     }, 1000);
 
                     closeButton.onclick = () => {
                         clearInterval(countdown);
                         overlay.style.display = 'none';
-                        [...propellerSlots, ...adsterraSlots].forEach(slot => 
-                            slot.classList.remove('ad-active'));
+                        adSlots.forEach(slot => slot.classList.remove('ad-active'));
                         resolve();
                     };
                 });
             }
         };
-
-        // Add Propeller Ads initialization
-        function initPropellerAds() {
-            (function(s,u,z,p){
-                s.src='//'+u+'/'+z+'/'+p;
-                try{document.body.appendChild(s)}catch(e){}
-            })(document.createElement('script'),'cdn.propellerads.com','8668777','inv'); // Example Propeller Ads code
-        }
-
-        // Initialize both ad networks
-        function initAds() {
-            // Initialize Adsterra
-            const adsterraScript = document.createElement('script');
-            adsterraScript.src = "//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js";
-            adsterraScript.async = true;
-            document.head.appendChild(adsterraScript);
-
-            // Initialize Propeller
-            initPropellerAds();
-        }
-
-        // Call initialization
-        initAds();
 
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
