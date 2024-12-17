@@ -111,7 +111,7 @@
                 document.getElementById('errorMessage').style.display = 'block';
                 document.querySelector('.continue-btn').disabled = true;
                 
-                // Redirect back to index after 3 seconds
+                // Redirect back to root index.html after 3 seconds
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 3000);
@@ -124,7 +124,7 @@
                 document.getElementById('loadingMessage').style.display = 'block';
                 // Add a small delay to show the loading message
                 setTimeout(() => {
-                    window.location.href = 'page3.html';
+                    window.location.href = 'page3/';
                 }, 800);
             } else {
                 document.getElementById('errorMessage').textContent = 'Please complete the first step before continuing.';
