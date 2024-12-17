@@ -270,6 +270,55 @@
             }
         }
     </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PenseeWeb</h1>
+            <p>Create Your Professional Mindmap</p>
+        </div>
+        <form id="mindmapForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap">
+            </div>
+            <button type="submit" id="submitButton">Complete Submission</button>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage">
+                Submission Complete! 🎉<br>
+                Your mindmap will be sent to your email within 24 hours.<br>
+                Don't forget to check your spam folder!<br>✨
+            </div>
+            <div class="note">
+                Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. 
+                We sincerely apologize for any delay or inconvenience. 🙏
+            </div>
+        </form>
+    </div>
+
+    <div class="ad-overlay" id="adOverlay">
+        <div class="ad-container">
+            <div class="ad-header">
+                "Dear visitor, we apologize for the brief interruption. As we strive to maintain and improve our services, 
+                we rely on ad support. Your request has already been queued, and your mindmap will be delivered within 24 hours. 
+                Thank you for your patience and understanding. ✨"
+            </div>
+            <div class="tv-frame">
+                <div class="tv-screen" id="tvScreen">
+                    <div class="ad-space">
+                        <div class="ad-slot" id="adSlot1"></div>
+                        <div class="ad-slot" id="adSlot2"></div>
+                    </div>
+                    <div class="tv-brand">PenseeWeb</div>
+                </div>
+                <div class="ad-controls">
+                    <div class="timer" id="adTimer">14</div>
+                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
             const originalOpen = window.open;
@@ -315,7 +364,6 @@
                 container.innerHTML = '';
                 container.appendChild(frame);
                 
-                // Safe loading of Propeller ad
                 const html = `
                     <html>
                         <body style="margin:0;overflow:hidden;">
@@ -346,7 +394,6 @@
                 container.innerHTML = '';
                 container.appendChild(frame);
                 
-                // Safe loading of Adsterra ad
                 const html = `
                     <html>
                         <body style="margin:0;overflow:hidden;">
@@ -380,7 +427,6 @@
                     document.getElementById('adSlot2')
                 ];
                 
-                // Initialize ad containers
                 this.loadPropellerAd(adSlots[0]);
                 this.loadAdsterraAd(adSlots[1]);
                 
@@ -406,7 +452,6 @@
                             timer.style.display = 'none';
                             closeButton.style.display = 'block';
                             
-                            // Switch to Adsterra
                             adSlots.forEach(slot => slot.classList.remove('ad-active'));
                             adSlots[1].classList.add('ad-active');
                         }
@@ -437,57 +482,6 @@
             }
         });
 
-    </script>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>PenseeWeb</h1>
-            <p>Create Your Professional Mindmap</p>
-        </div>
-        <form id="mindmapForm">
-            <div class="form-group">
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap">
-            </div>
-            <button type="submit" id="submitButton">Complete Submission</button>
-            <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage">
-                Submission Complete! 🎉<br>
-                Your mindmap will be sent to your email within 24 hours.<br>
-                Don't forget to check your spam folder!<br>✨
-            </div>
-            <div class="note">
-                Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. 
-                We sincerely apologize for any delay or inconvenience. 🙏
-            </div>
-        </form>
-    </div>
-
-    <div class="ad-overlay" id="adOverlay">
-        <div class="ad-container">
-            <div class="ad-header">
-                "Dear visitor, we apologize for the brief interruption. As we strive to maintain and improve our services, 
-                we rely on ad support. Your request has already been queued, and your mindmap will be delivered within 24 hours. 
-                Thank you for your patience and understanding. ✨"
-            </div>
-            <div class="tv-frame">
-                <div class="tv-screen">
-                    <div class="ad-space">
-                        <div class="ad-slot" id="adSlot1"></div>
-                        <div class="ad-slot" id="adSlot2"></div>
-                    </div>
-                    <div class="tv-brand">PenseeWeb</div>
-                </div>
-                <div class="ad-controls">
-                    <div class="timer" id="adTimer">14</div>
-                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -506,7 +500,6 @@
                 return;
             }
 
-            // Show ads first
             await adSystem.showAds();
 
             try {
