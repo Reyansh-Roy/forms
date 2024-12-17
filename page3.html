@@ -147,12 +147,88 @@
         }
 
         .tv-frame {
-            background: #000;
-            padding: 20px;
-            border-radius: 15px;
-            border: 3px solid #333;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 25px;
+            border: 8px solid #333;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
             position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+            background: linear-gradient(0deg, #000000 0%, #1a1a1a 100%);
+        }
+
+        .tv-frame::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 15px;
+            background: #444;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tv-frame::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: #444;
+            border-radius: 2px;
+        }
+
+        .tv-screen {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            border: 2px solid #444;
+        }
+
+        .tv-static {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.1) 50%, transparent 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 2;
+        }
+
+        .ad-space {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .primary-ad, .secondary-ad {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            transform: scale(0.98);
+            transition: opacity 0.5s ease;
+        }
+
+        .ad-active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
         }
 
         .ad-controls {
@@ -162,45 +238,56 @@
             display: flex;
             gap: 10px;
             align-items: center;
-            z-index: 1;
+            z-index: 3;
         }
 
         .timer {
-            background: var(--accent-color);
+            background: rgba(212, 117, 109, 0.9);
             color: white;
             padding: 8px 15px;
             border-radius: 12px;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .close-button {
-            display: none;
-            background: var(--accent-color);
-            color: white;
-            padding: 8px 15px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            font-family: 'Poppins', sans-serif;
-            transition: 0.3s ease;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
-        .close-button:hover {
-            background: #c26259;
+        .tv-button {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #444;
+            border-radius: 50%;
+            bottom: 15px;
+            right: 20px;
         }
 
-        .ad-space {
-            min-height: 250px;
-            background: #fff;
-            border-radius: 10px;
-            overflow: hidden;
+        .tv-speaker {
+            position: absolute;
+            width: 40px;
+            height: 100px;
+            background: linear-gradient(90deg, #333 0%, #444 100%);
+            right: -60px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+            justify-content: center;
         }
 
-        .primary-ad, .secondary-ad {
+        .speaker-hole {
             width: 100%;
-            min-height: 250px;
-            display: none;
+            height: 4px;
+            background: #222;
+            border-radius: 2px;
         }
 
         .error-message, .success-message {
@@ -287,18 +374,28 @@
                 Thank you for your patience and understanding. ✨"
             </div>
             <div class="tv-frame">
+                <div class="tv-static"></div>
+                <div class="tv-speaker">
+                    <div class="speaker-hole"></div>
+                    <div class="speaker-hole"></div>
+                    <div class="speaker-hole"></div>
+                    <div class="speaker-hole"></div>
+                </div>
+                <div class="tv-button"></div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
-                    <button class="close-button" id="closeButton" style="display: none;">Close Ad</button>
+                    <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
                 </div>
-                <div class="ad-space">
-                    <div class="primary-ad" id="primaryAd">
-                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
-                    </div>
-                    <div class="secondary-ad" id="secondaryAd">
-                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
+                <div class="tv-screen">
+                    <div class="ad-space">
+                        <div class="primary-ad" id="primaryAd">
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
+                        </div>
+                        <div class="secondary-ad" id="secondaryAd">
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,7 +417,7 @@
                 const secondaryAd = document.getElementById('secondaryAd');
                 
                 overlay.style.display = 'flex';
-                primaryAd.style.display = 'block';
+                primaryAd.classList.add('ad-active');
                 
                 let totalTime = 14;
                 
@@ -331,8 +428,9 @@
                         
                         // Switch to second ad after 7 seconds
                         if (totalTime === 6) {
+                            primaryAd.classList.remove('ad-active');
                             primaryAd.style.display = 'none';
-                            secondaryAd.style.display = 'block';
+                            secondaryAd.classList.add('ad-active');
                         }
                         
                         // Show close button when timer ends
