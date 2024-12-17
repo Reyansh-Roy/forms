@@ -117,7 +117,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(44, 24, 16, 0.95);
+            background: rgba(250, 234, 230, 0.95);
             z-index: 9999;
             display: none;
             align-items: center;
@@ -127,10 +127,10 @@
 
         .ad-container {
             position: relative;
-            max-width: 800px;
+            max-width: 600px;
             width: 90%;
             background: var(--primary-color);
-            padding: 30px;
+            padding: 20px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(212,117,109,0.3);
             animation: slideIn 0.5s ease-out;
@@ -138,161 +138,39 @@
 
         .ad-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: var(--accent-color);
             font-style: italic;
             font-family: 'Playfair Display', serif;
             line-height: 1.6;
-            padding: 0 20px;
+            padding: 0 10px;
+            font-size: 0.9em;
         }
 
         .tv-frame {
             background: #1a1a1a;
-            padding: 35px;
-            border-radius: 30px;
-            border: 12px solid #2a2a2a;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5),
-                        inset 0 0 20px rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 15px;
+            border: 8px solid #2a2a2a;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5),
+                        inset 0 0 10px rgba(0,0,0,0.8);
             position: relative;
             width: 100%;
-            max-width: 800px;
+            max-width: 600px;
             margin: 0 auto;
-            overflow: visible;
+            overflow: hidden;
             background: linear-gradient(145deg, #232323 0%, #0a0a0a 100%);
-        }
-
-        .tv-frame::before {
-            content: '';
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 25px;
-            background: linear-gradient(180deg, #444 0%, #333 100%);
-            border-radius: 10px 10px 0 0;
-            box-shadow: 0 -5px 10px rgba(0,0,0,0.3);
-        }
-
-        .tv-antenna {
-            position: absolute;
-            top: -60px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 40px;
-            background: #555;
-            z-index: 1;
-        }
-
-        .tv-antenna::before,
-        .tv-antenna::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 30px;
-            height: 2px;
-            background: #555;
-        }
-
-        .tv-antenna::before {
-            transform: rotate(45deg);
-            left: -13px;
-        }
-
-        .tv-antenna::after {
-            transform: rotate(-45deg);
-            right: -13px;
         }
 
         .tv-screen {
             position: relative;
             width: 100%;
             background: #000;
-            border-radius: 20px;
+            border-radius: 10px;
             overflow: hidden;
             aspect-ratio: 16/9;
-            border: 3px solid #444;
-            box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
-        }
-
-        .tv-static {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(rgba(255,255,255,0.1) 50%, transparent 50%);
-            background-size: 100% 4px;
-            pointer-events: none;
-            opacity: 0.1;
-            z-index: 2;
-            animation: tvStatic 0.1s infinite;
-        }
-
-        .tv-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            box-shadow: inset 0 0 100px rgba(255,255,255,0.1);
-            pointer-events: none;
-            z-index: 3;
-        }
-
-        .tv-reflection {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, transparent 100%);
-            pointer-events: none;
-            z-index: 4;
-        }
-
-        .tv-controls {
-            position: absolute;
-            bottom: -20px;
-            right: 40px;
-            display: flex;
-            gap: 15px;
-        }
-
-        .tv-knob {
-            width: 25px;
-            height: 25px;
-            background: linear-gradient(145deg, #444 0%, #333 100%);
-            border-radius: 50%;
-            border: 2px solid #222;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-        }
-
-        .tv-speakers {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .speaker {
-            width: 60px;
-            height: 120px;
-            background: linear-gradient(90deg, #2a2a2a 0%, #222 100%);
-            border-radius: 5px;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 5px;
-            padding: 5px;
-        }
-
-        .speaker-hole {
-            width: 100%;
-            height: 8px;
-            background: #181818;
-            border-radius: 4px;
+            border: 2px solid #444;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
 
         .ad-space {
@@ -302,7 +180,7 @@
             background: #000;
         }
 
-        .primary-ad, .secondary-ad {
+        .ad-slot {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -319,47 +197,36 @@
             opacity: 1;
         }
 
-        @keyframes tvStatic {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
         .tv-brand {
             position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 10px;
+            left: 10px;
             color: #666;
             font-family: 'Arial', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        .error-message, .success-message {
-            display: none;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 20px;
-            text-align: center;
+        .ad-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 3;
         }
 
-        .error-message {
-            background: rgba(255,0,0,0.1);
-            color: #d32f2f;
-        }
-
-        .success-message {
-            background: rgba(76,175,80,0.1);
-            color: #388e3c;
-        }
-
-        .note {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 0.9em;
-            color: var(--text-color);
-            opacity: 0.7;
+        .timer {
+            background: rgba(212, 117, 109, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         @keyframes slideIn {
@@ -378,11 +245,14 @@
                 padding: 20px;
             }
             .header h1 {
-                font-size: 2.5em;
+                font-size: 2em;
             }
             .ad-container {
                 width: 95%;
                 padding: 15px;
+            }
+            .ad-header {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -420,38 +290,26 @@
                 Thank you for your patience and understanding. ✨"
             </div>
             <div class="tv-frame">
-                <div class="tv-antenna"></div>
                 <div class="tv-screen">
-                    <div class="tv-static"></div>
-                    <div class="tv-glow"></div>
-                    <div class="tv-reflection"></div>
+                    <div class="tv-brand">PenseeWeb</div>
                     <div class="ad-space">
-                        <div class="primary-ad" id="primaryAd">
+                        <div class="ad-slot" id="adSlot1">
                             <!-- First Ad -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
                         </div>
-                        <div class="secondary-ad" id="secondaryAd">
+                        <div class="ad-slot" id="adSlot2">
                             <!-- Second Ad -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
                         </div>
+                        <div class="ad-slot" id="adSlot3">
+                            <!-- Third Ad (Banner Size 300x250) -->
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-3"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="tv-controls">
-                    <div class="tv-knob"></div>
-                    <div class="tv-knob"></div>
-                    <div class="tv-knob"></div>
-                </div>
-                <div class="tv-speakers">
-                    <div class="speaker">
-                        <div class="speaker-hole"></div>
-                        <div class="speaker-hole"></div>
-                        <div class="speaker-hole"></div>
-                        <div class="speaker-hole"></div>
-                    </div>
-                </div>
-                <div class="tv-brand">PenseeTV</div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
                     <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
@@ -471,39 +329,24 @@
                 const overlay = document.getElementById('adOverlay');
                 const timer = document.getElementById('adTimer');
                 const closeButton = document.getElementById('closeButton');
-                const primaryAd = document.getElementById('primaryAd');
-                const secondaryAd = document.getElementById('secondaryAd');
+                const adSlots = [document.getElementById('adSlot1'), document.getElementById('adSlot2'), document.getElementById('adSlot3')];
                 
                 overlay.style.display = 'flex';
                 
-                // Initialize ads
-                primaryAd.style.display = 'none';
-                secondaryAd.style.display = 'none';
-                
                 let totalTime = 14;
+                let currentAdIndex = 0;
                 
                 return new Promise(resolve => {
-                    // Show first ad
-                    primaryAd.style.display = 'block';
-                    setTimeout(() => primaryAd.classList.add('ad-active'), 100);
-                    
                     const countdown = setInterval(() => {
                         timer.textContent = totalTime;
                         totalTime--;
-                        
-                        // Switch to second ad after 7 seconds
-                        if (totalTime === 6) {
-                            // Fade out first ad
-                            primaryAd.classList.remove('ad-active');
-                            setTimeout(() => {
-                                primaryAd.style.display = 'none';
-                                // Show second ad
-                                secondaryAd.style.display = 'block';
-                                setTimeout(() => secondaryAd.classList.add('ad-active'), 100);
-                            }, 500);
+
+                        if (totalTime % 5 === 0) {
+                            adSlots[currentAdIndex].classList.remove('ad-active');
+                            currentAdIndex = (currentAdIndex + 1) % adSlots.length;
+                            adSlots[currentAdIndex].classList.add('ad-active');
                         }
                         
-                        // Show close button when timer ends
                         if (totalTime < 0) {
                             clearInterval(countdown);
                             closeButton.style.display = 'block';
@@ -513,8 +356,7 @@
 
                     closeButton.onclick = () => {
                         overlay.style.display = 'none';
-                        primaryAd.style.display = 'none';
-                        secondaryAd.style.display = 'none';
+                        adSlots.forEach(slot => slot.classList.remove('ad-active'));
                         resolve();
                     };
                 });
