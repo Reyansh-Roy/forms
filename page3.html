@@ -270,6 +270,178 @@
             }
         }
     </style>
+    <script>
+        (function() {
+            // Prevent pop-ups and new window creation
+            const originalOpen = window.open;
+            window.open = function(url, target, features) {
+                if (adSystem.isUserInitiated) {
+                    adSystem.isUserInitiated = false;
+                    return originalOpen.call(window, url, target, features);
+                }
+                return null;
+            };
+
+            // Block external iframes
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.tagName === 'IFRAME' && !node.classList.contains('allowed-ad')) {
+                            node.remove();
+                        }
+                    });
+                });
+            });
+
+            observer.observe(document.body, {
+                childList: true,
+                subtree: true
+            });
+        })();
+
+        // Modified ad system with stricter controls
+        const adSystem = {
+            isUserInitiated: false,
+            
+            createSafeFrame() {
+                const frame = document.createElement('iframe');
+                frame.classList.add('allowed-ad');
+                frame.sandbox = 'allow-scripts allow-same-origin';
+                frame.style.width = '100%';
+                frame.style.height = '100%';
+                frame.style.border = 'none';
+                return frame;
+            },
+
+            loadPropellerAd(container) {
+                const frame = this.createSafeFrame();
+                container.innerHTML = '';
+                container.appendChild(frame);
+                
+                // Safe loading of Propeller ad
+                const html = `
+                    <html>
+                        <body style="margin:0;overflow:hidden;">
+                            <div id="ad-container"></div>
+                            <script>
+                                window.addEventListener('message', function(e) {
+                                    if (e.data === 'loadPropellerAd') {
+                                        const script = document.createElement('script');
+                                        script.src = 'https://alwingulla.com/88/tag.min.js';
+                                        script.setAttribute('data-zone', '120175');
+                                        script.setAttribute('async', 'true');
+                                        script.setAttribute('data-cfasync', 'false');
+                                        document.getElementById('ad-container').appendChild(script);
+                                    }
+                                });
+                            </script>
+                        </body>
+                    </html>`;
+                
+                frame.contentWindow.document.open();
+                frame.contentWindow.document.write(html);
+                frame.contentWindow.document.close();
+                frame.contentWindow.postMessage('loadPropellerAd', '*');
+            },
+
+            loadAdsterraAd(container) {
+                const frame = this.createSafeFrame();
+                container.innerHTML = '';
+                container.appendChild(frame);
+                
+                // Safe loading of Adsterra ad
+                const html = `
+                    <html>
+                        <body style="margin:0;overflow:hidden;">
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
+                            <script>
+                                window.addEventListener('message', function(e) {
+                                    if (e.data === 'loadAdsterraAd') {
+                                        const script = document.createElement('script');
+                                        script.src = '//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js';
+                                        script.setAttribute('async', 'true');
+                                        script.setAttribute('data-cfasync', 'false');
+                                        document.body.appendChild(script);
+                                    }
+                                });
+                            </script>
+                        </body>
+                    </html>`;
+                
+                frame.contentWindow.document.open();
+                frame.contentWindow.document.write(html);
+                frame.contentWindow.document.close();
+                frame.contentWindow.postMessage('loadAdsterraAd', '*');
+            },
+
+            async showAds() {
+                const overlay = document.getElementById('adOverlay');
+                const timer = document.getElementById('adTimer');
+                const closeButton = document.getElementById('closeButton');
+                const adSlots = [
+                    document.getElementById('adSlot1'),
+                    document.getElementById('adSlot2')
+                ];
+                
+                // Initialize ad containers
+                this.loadPropellerAd(adSlots[0]);
+                this.loadAdsterraAd(adSlots[1]);
+                
+                overlay.style.display = 'flex';
+                let totalTime = 14;
+                let currentAdIndex = 0;
+                
+                adSlots[currentAdIndex].classList.add('ad-active');
+
+                return new Promise(resolve => {
+                    const countdown = setInterval(() => {
+                        timer.textContent = totalTime;
+                        totalTime--;
+
+                        if (totalTime % 5 === 0 && totalTime >= 0) {
+                            adSlots[currentAdIndex].classList.remove('ad-active');
+                            currentAdIndex = (currentAdIndex + 1) % adSlots.length;
+                            adSlots[currentAdIndex].classList.add('ad-active');
+                        }
+
+                        if (totalTime < 0) {
+                            clearInterval(countdown);
+                            timer.style.display = 'none';
+                            closeButton.style.display = 'block';
+                            
+                            // Switch to Adsterra
+                            adSlots.forEach(slot => slot.classList.remove('ad-active'));
+                            adSlots[1].classList.add('ad-active');
+                        }
+                    }, 1000);
+
+                    closeButton.onclick = () => {
+                        clearInterval(countdown);
+                        overlay.style.display = 'none';
+                        adSlots.forEach(slot => slot.classList.remove('ad-active'));
+                        resolve();
+                    };
+                });
+            }
+        };
+
+        // Modified click handler
+        document.getElementById('tvScreen').addEventListener('click', (e) => {
+            const rect = e.target.getBoundingClientRect();
+            const isWithinFrame = e.clientX >= rect.left && 
+                                 e.clientX <= rect.right && 
+                                 e.clientY >= rect.top && 
+                                 e.clientY <= rect.bottom;
+            
+            if (isWithinFrame) {
+                adSystem.isUserInitiated = true;
+                setTimeout(() => {
+                    adSystem.isUserInitiated = false;
+                }, 1000);
+            }
+        });
+
+    </script>
 </head>
 <body>
     <div class="container">
@@ -306,15 +478,8 @@
             <div class="tv-frame">
                 <div class="tv-screen" id="tvScreen">
                     <div class="ad-space" id="adSpace">
-                        <div class="ad-slot" id="adSlot1">
-                            <!-- Propeller Ads (First 14 seconds) -->
-                            <script src="https://alwingulla.com/88/tag.min.js" data-zone="120175" async data-cfasync="false"></script>
-                        </div>
-                        <div class="ad-slot" id="adSlot2">
-                            <!-- Adsterra Ads (After 14 seconds) -->
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
-                        </div>
+                        <div class="ad-slot" id="adSlot1"></div>
+                        <div class="ad-slot" id="adSlot2"></div>
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
                 </div>
@@ -327,74 +492,6 @@
     </div>
 
     <script>
-        const supabaseClient = supabase.createClient(
-            'https://rgccooiyalkqiugaxzbk.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0'
-        );
-
-        let adClickCount = 0;
-
-        const adSystem = {
-            async showAds() {
-                const overlay = document.getElementById('adOverlay');
-                const timer = document.getElementById('adTimer');
-                const closeButton = document.getElementById('closeButton');
-                const adSlots = [
-                    document.getElementById('adSlot1'), // Propeller Ads
-                    document.getElementById('adSlot2')  // Adsterra Ads
-                ];
-                
-                overlay.style.display = 'flex';
-                let totalTime = 14;
-                let currentAdIndex = 0;
-                
-                adSlots[currentAdIndex].classList.add('ad-active');
-
-                return new Promise(resolve => {
-                    const countdown = setInterval(() => {
-                        timer.textContent = totalTime;
-                        totalTime--;
-
-                        // Switch ads every 5 seconds initially (3 ads in 14s)
-                        if (totalTime % 5 === 0 && totalTime >= 0) {
-                            adSlots[currentAdIndex].classList.remove('ad-active');
-                            currentAdIndex = (currentAdIndex + 1) % adSlots.length;
-                            adSlots[currentAdIndex].classList.add('ad-active');
-                        }
-
-                        // After 14 seconds switch to Adsterra ads if no interaction
-                        if (totalTime < 0) {
-                            clearInterval(countdown);
-                            timer.style.display = 'none';
-                            closeButton.style.display = 'block';
-                            currentAdIndex = 1; // Switch to Adsterra
-                            setInterval(() => {
-                                adSlots.forEach(slot => slot.classList.remove('ad-active'));
-                                adSlots[currentAdIndex].classList.add('ad-active');
-                                currentAdIndex = (currentAdIndex + 1) % adSlots.length;
-                            }, 20000); // Switch every 20 seconds
-                        }
-                    }, 1000);
-
-                    closeButton.onclick = () => {
-                        clearInterval(countdown);
-                        overlay.style.display = 'none';
-                        adSlots.forEach(slot => slot.classList.remove('ad-active'));
-                        resolve();
-                    };
-                });
-            }
-        };
-
-        document.getElementById('tvScreen').addEventListener('click', () => {
-            adClickCount++;
-            if (adClickCount === 2) {
-                // Redirect logic on the second click (customize URL as needed)
-                window.open('https://advertisedwebsite.com', '_blank');
-                adClickCount = 0; // Reset after redirect
-            }
-        });
-
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
