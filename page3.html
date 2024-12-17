@@ -321,6 +321,16 @@
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-3"></div>
                         </div>
+                        <div class="ad-slot" id="adSlot4">
+                            <!-- Fourth Ad -->
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-4"></div>
+                        </div>
+                        <div class="ad-slot" id="adSlot5">
+                            <!-- Fifth Ad -->
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-5"></div>
+                        </div>
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
                 </div>
@@ -343,7 +353,13 @@
                 const overlay = document.getElementById('adOverlay');
                 const timer = document.getElementById('adTimer');
                 const closeButton = document.getElementById('closeButton');
-                const adSlots = [document.getElementById('adSlot1'), document.getElementById('adSlot2'), document.getElementById('adSlot3')];
+                const adSlots = [
+                    document.getElementById('adSlot1'),
+                    document.getElementById('adSlot2'),
+                    document.getElementById('adSlot3'),
+                    document.getElementById('adSlot4'),
+                    document.getElementById('adSlot5')
+                ];
                 
                 overlay.style.display = 'flex';
                 
@@ -357,20 +373,22 @@
                         timer.textContent = totalTime;
                         totalTime--;
 
-                        if (totalTime % 5 === 0 && totalTime > 0) {
+                        // Switch ads every 3 seconds to maximize ad exposure
+                        if (totalTime % 3 === 0 || totalTime < 0) {
                             adSlots[currentAdIndex].classList.remove('ad-active');
                             currentAdIndex = (currentAdIndex + 1) % adSlots.length;
                             adSlots[currentAdIndex].classList.add('ad-active');
                         }
                         
+                        // Show close button after 14 seconds
                         if (totalTime < 0) {
-                            clearInterval(countdown);
                             closeButton.style.display = 'block';
                             timer.textContent = '0';
                         }
                     }, 1000);
 
                     closeButton.onclick = () => {
+                        clearInterval(countdown);
                         overlay.style.display = 'none';
                         adSlots.forEach(slot => slot.classList.remove('ad-active'));
                         resolve();
