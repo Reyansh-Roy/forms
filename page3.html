@@ -236,16 +236,13 @@
             transform: translate(-50%, -50%);
             width: 100%;
             height: 100%;
-            display: none;
             opacity: 0;
             transition: opacity 0.3s ease;
-            pointer-events: none;
+            display: none;
         }
 
         .ad-slot.ad-active {
             display: block;
-            opacity: 1;
-            pointer-events: auto;
         }
 
         .tv-brand {
@@ -374,15 +371,16 @@
                     <div class="ad-space">
                         <!-- Ad Slots -->
                         <div class="ad-slot ad-active" id="adSlot1">
-                            <!-- Insert Ad Code Here -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
                         </div>
                         <div class="ad-slot" id="adSlot2">
-                            <!-- Insert Ad Code Here -->
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/4f89d975e35e7f6364d9ef11f6462469/invoke.js"></script>
+                            <div id="container-4f89d975e35e7f6364d9ef11f6462469"></div>
                         </div>
                         <div class="ad-slot" id="adSlot3">
-                            <!-- Insert Ad Code Here -->
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/7b65c1d5a6f2cd9a6e3f4c3d45e69eb5/invoke.js"></script>
+                            <div id="container-7b65c1d5a6f2cd9a6e3f4c3d45e69eb5"></div>
                         </div>
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
@@ -416,42 +414,52 @@
                 const overlay = document.getElementById('adOverlay');
                 const timer = document.getElementById('adTimer');
                 const closeButton = document.getElementById('closeButton');
-                const adSlots = [
-                    document.getElementById('adSlot1'),
-                    document.getElementById('adSlot2'),
-                    document.getElementById('adSlot3')
-                ];
+                const adSlots = document.querySelectorAll('.ad-slot');
                 
                 overlay.style.display = 'flex';
                 
                 let totalTime = 14;
                 let currentAdIndex = 0;
                 
-                // Initialize first ad
+                adSlots.forEach(slot => {
+                    slot.classList.remove('ad-active');
+                    slot.style.opacity = '0';
+                });
+                
                 adSlots[0].classList.add('ad-active');
+                adSlots[0].style.opacity = '1';
+
+                const rotateAds = () => {
+                    adSlots[currentAdIndex].style.opacity = '0';
+                    adSlots[currentAdIndex].classList.remove('ad-active');
+                    
+                    currentAdIndex = (currentAdIndex + 1) % adSlots.length;
+                    
+                    adSlots[currentAdIndex].classList.add('ad-active');
+                    setTimeout(() => {
+                        adSlots[currentAdIndex].style.opacity = '1';
+                    }, 300);
+                };
 
                 return new Promise(resolve => {
                     const countdown = setInterval(() => {
                         timer.textContent = Math.max(0, totalTime);
                         totalTime--;
 
-                        // Switch ads every 25 seconds after initial 14 seconds
-                        if (totalTime < 0 && totalTime % 25 === 0) {
-                            adSlots[currentAdIndex].classList.remove('ad-active');
-                            currentAdIndex = (currentAdIndex + 1) % adSlots.length;
-                            adSlots[currentAdIndex].classList.add('ad-active');
-                        }
-
-                        // Show close button after 14 seconds
                         if (totalTime === 0) {
                             closeButton.style.display = 'block';
+                            
+                            setInterval(rotateAds, 25000); // Rotate every 25 seconds
                         }
                     }, 1000);
 
                     closeButton.onclick = () => {
                         clearInterval(countdown);
                         overlay.style.display = 'none';
-                        adSlots.forEach(slot => slot.classList.remove('ad-active'));
+                        adSlots.forEach(slot => {
+                            slot.classList.remove('ad-active');
+                            slot.style.opacity = '0';
+                        });
                         resolve();
                     };
                 });
@@ -476,7 +484,6 @@
                 return;
             }
 
-            // Show ads first
             await adSystem.showAds();
 
             try {
