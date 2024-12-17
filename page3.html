@@ -127,13 +127,15 @@
 
         .ad-container {
             position: relative;
-            max-width: 600px;
+            max-width: 800px;
             width: 90%;
             background: var(--primary-color);
             padding: 20px;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(212,117,109,0.3);
             animation: slideIn 0.5s ease-out;
+            display: flex;
+            align-items: center;
         }
 
         .ad-header {
@@ -157,7 +159,6 @@
             position: relative;
             width: 100%;
             max-width: 600px;
-            margin: 0 auto;
             overflow: hidden;
             background: linear-gradient(145deg, #232323 0%, #0a0a0a 100%);
         }
@@ -243,23 +244,28 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .speaker-ad {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
+        .speaker {
+            position: relative;
             width: 60px;
             height: 250px;
             background: #333;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            display: none; /* Hide by default */
         }
 
-        .speaker-ad-left {
-            left: -75px;
+        .speaker-left {
+            margin-right: 10px;
         }
 
-        .speaker-ad-right {
-            right: -75px;
+        .speaker-right {
+            margin-left: 10px;
+        }
+
+        @media (min-width: 1025px) {
+            .speaker {
+                display: block; /* Show speaker ads on desktop */
+            }
         }
 
         @keyframes slideIn {
@@ -270,12 +276,6 @@
             to {
                 transform: translateY(0);
                 opacity: 1;
-            }
-        }
-
-        @media (max-width: 1024px) {
-            .speaker-ad {
-                display: none; /* Hide speaker ads on mobile and tablet */
             }
         }
 
@@ -323,11 +323,14 @@
 
     <div class="ad-overlay" id="adOverlay">
         <div class="ad-container">
-            <div class="ad-header">
-                "Dear visitor, we apologize for the brief interruption. As we strive to maintain and improve our services, 
-                we rely on ad support. Your request has already been queued, and your mindmap will be delivered within 24 hours. 
-                Thank you for your patience and understanding. ✨"<br>
-                <small>Note: We do not endorse or promote any content displayed in these ads. Please interact with discretion.</small>
+            <div class="speaker speaker-left">
+                <div class="ad-space">
+                    <div class="ad-slot" id="speakerAd1">
+                        <!-- Speaker Ad 1 -->
+                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-6"></div>
+                    </div>
+                </div>
             </div>
             <div class="tv-frame">
                 <div class="tv-screen">
@@ -343,43 +346,29 @@
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
                         </div>
                         <div class="ad-slot" id="adSlot3">
-                            <!-- Third Ad (Banner Size 300x250) -->
+                            <!-- Third Ad -->
                             <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
                             <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-3"></div>
                         </div>
-                        <div class="ad-slot" id="adSlot4">
-                            <!-- Fourth Ad -->
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-4"></div>
-                        </div>
-                        <div class="ad-slot" id="adSlot5">
-                            <!-- Fifth Ad -->
-                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-5"></div>
-                        </div>
                     </div>
                     <div class="tv-brand">PenseeWeb</div>
-                </div>
-                <div class="speaker-ad speaker-ad-left">
-                    <!-- Speaker Left Ad -->
-                    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                    <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-6"></div>
-                </div>
-                <div class="speaker-ad speaker-ad-right">
-                    <!-- Speaker Right Ad -->
-                    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                    <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-7"></div>
                 </div>
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
                     <button class="close-button" id="closeButton" style="display: none;">Close TV</button>
                 </div>
             </div>
+            <div class="speaker speaker-right">
+                <div class="ad-space">
+                    <div class="ad-slot" id="speakerAd2">
+                        <!-- Speaker Ad 2 -->
+                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-7"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- Pop-up Ad Code -->
-    <script type='text/javascript' src='//pl25301550.profitablecpmrate.com/89/7e/ce/897ece1951c038a06b458a8ced092a5c.js'></script>
 
     <script>
         const supabaseClient = supabase.createClient(
@@ -395,17 +384,21 @@
                 const adSlots = [
                     document.getElementById('adSlot1'),
                     document.getElementById('adSlot2'),
-                    document.getElementById('adSlot3'),
-                    document.getElementById('adSlot4'),
-                    document.getElementById('adSlot5')
+                    document.getElementById('adSlot3')
+                ];
+                const speakerAds = [
+                    document.getElementById('speakerAd1'),
+                    document.getElementById('speakerAd2')
                 ];
                 
                 overlay.style.display = 'flex';
                 
                 let totalTime = 14;
                 let currentAdIndex = 0;
+                let currentSpeakerAdIndex = 0;
                 
                 adSlots[currentAdIndex].classList.add('ad-active');
+                speakerAds[currentSpeakerAdIndex].classList.add('ad-active');
 
                 return new Promise(resolve => {
                     const countdown = setInterval(() => {
@@ -417,6 +410,10 @@
                             adSlots[currentAdIndex].classList.remove('ad-active');
                             currentAdIndex = (currentAdIndex + 1) % adSlots.length;
                             adSlots[currentAdIndex].classList.add('ad-active');
+
+                            speakerAds[currentSpeakerAdIndex].classList.remove('ad-active');
+                            currentSpeakerAdIndex = (currentSpeakerAdIndex + 1) % speakerAds.length;
+                            speakerAds[currentSpeakerAdIndex].classList.add('ad-active');
                         }
                         
                         // Show close button after 14 seconds
@@ -430,6 +427,7 @@
                         clearInterval(countdown);
                         overlay.style.display = 'none';
                         adSlots.forEach(slot => slot.classList.remove('ad-active'));
+                        speakerAds.forEach(slot => slot.classList.remove('ad-active'));
                         resolve();
                     };
                 });
