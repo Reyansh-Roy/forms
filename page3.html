@@ -336,12 +336,14 @@
                 let totalTime = 14;
                 let currentAdIndex = 0;
                 
+                adSlots[currentAdIndex].classList.add('ad-active');
+
                 return new Promise(resolve => {
                     const countdown = setInterval(() => {
                         timer.textContent = totalTime;
                         totalTime--;
 
-                        if (totalTime % 5 === 0) {
+                        if (totalTime % 5 === 0 && totalTime > 0) {
                             adSlots[currentAdIndex].classList.remove('ad-active');
                             currentAdIndex = (currentAdIndex + 1) % adSlots.length;
                             adSlots[currentAdIndex].classList.add('ad-active');
