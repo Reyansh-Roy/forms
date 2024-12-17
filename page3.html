@@ -111,7 +111,6 @@
             box-shadow: 0 5px 15px rgba(212,117,109,0.4);
         }
 
-        /* Ad Overlay Styles */
         .ad-overlay {
             position: fixed;
             top: 0;
@@ -137,62 +136,97 @@
             animation: slideIn 0.5s ease-out;
         }
 
-        .ad-timer {
+        .ad-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.6;
+            padding: 0 20px;
+        }
+
+        .tv-frame {
+            background: #000;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #333;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .ad-controls {
             position: absolute;
             top: 15px;
             right: 15px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .timer {
             background: var(--accent-color);
             color: white;
             padding: 8px 15px;
             border-radius: 12px;
             font-size: 14px;
             font-family: 'Poppins', sans-serif;
-            box-shadow: 0 3px 10px rgba(212,117,109,0.2);
+        }
+
+        .close-button {
+            display: none;
+            background: var(--accent-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            transition: 0.3s ease;
+        }
+
+        .close-button:hover {
+            background: #c26259;
         }
 
         .ad-space {
             min-height: 250px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            position: relative;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         .primary-ad, .secondary-ad {
             width: 100%;
             min-height: 250px;
-            transition: opacity 0.3s ease;
             display: none;
         }
 
-        .ad-transition {
+        .error-message, .success-message {
+            display: none;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
             text-align: center;
-            color: var(--accent-color);
-            font-size: 1.2em;
-            margin: 10px 0;
-            font-family: 'Poppins', sans-serif;
         }
 
-        .ad-loading {
+        .error-message {
+            background: rgba(255,0,0,0.1);
+            color: #d32f2f;
+        }
+
+        .success-message {
+            background: rgba(76,175,80,0.1);
+            color: #388e3c;
+        }
+
+        .note {
+            margin-top: 20px;
             text-align: center;
-            padding: 20px;
+            font-size: 0.9em;
             color: var(--text-color);
-        }
-
-        .ad-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(212,117,109,0.1);
-            border-left-color: var(--accent-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            opacity: 0.7;
         }
 
         @keyframes slideIn {
@@ -204,11 +238,6 @@
                 transform: translateY(0);
                 opacity: 1;
             }
-        }
-
-        /* Rest of your existing styles */
-        .note, .success-message, .error-message, .footer {
-            /* Keep your existing styles for these elements */
         }
 
         @media (max-width: 768px) {
@@ -237,9 +266,6 @@
                 <input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap">
             </div>
             <button type="submit" id="submitButton">Complete Submission</button>
-            <div id="loadingSpinner">
-                <div class="spinner"></div>
-            </div>
             <div class="error-message" id="errorMessage"></div>
             <div class="success-message" id="successMessage">
                 Submission Complete! 🎉<br>
@@ -251,34 +277,29 @@
                 We sincerely apologize for any delay or inconvenience. 🙏
             </div>
         </form>
-        <div class="footer">
-            <p>PenseeWeb Free Custom Maps</p>
-            <a href="#" class="premium-link">Explore our collection of premium custom map products. @visit →</a>
-        </div>
     </div>
 
-    <!-- Ad Overlay -->
     <div class="ad-overlay" id="adOverlay">
         <div class="ad-container">
-            <div class="ad-timer" id="adTimer"></div>
-            <div class="ad-loading" id="adLoading">
-                <div class="ad-spinner"></div>
-                <div>Loading Advertisement...</div>
+            <div class="ad-header">
+                "Dear visitor, we apologize for the brief interruption. As we strive to maintain and improve our services, 
+                we rely on ad support. Your request has already been queued, and your mindmap will be delivered within 24 hours. 
+                Thank you for your patience and understanding. ✨"
             </div>
-            <div class="ad-space">
-                <!-- Primary Ad -->
-                <div class="primary-ad" id="primaryAd">
-                    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                    <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
+            <div class="tv-frame">
+                <div class="ad-controls">
+                    <div class="timer" id="adTimer">14</div>
+                    <button class="close-button" id="closeButton" style="display: none;">Close Ad</button>
                 </div>
-                <div class="ad-transition" id="adTransition" style="display: none;">
-                    Loading next advertisement...
-                </div>
-                <!-- Secondary Ad -->
-                <div class="secondary-ad" id="secondaryAd">
-                    <!-- Second Adsterra ad code - Replace with your second ad code -->
-                    <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
-                    <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
+                <div class="ad-space">
+                    <div class="primary-ad" id="primaryAd">
+                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
+                    </div>
+                    <div class="secondary-ad" id="secondaryAd">
+                        <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                        <div id="container-5a0a6d52f643547f356c1aeafcfac4f7-2"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -293,59 +314,43 @@
         const adSystem = {
             async showAds() {
                 const overlay = document.getElementById('adOverlay');
-                const adLoading = document.getElementById('adLoading');
-                const adTimer = document.getElementById('adTimer');
+                const timer = document.getElementById('adTimer');
+                const closeButton = document.getElementById('closeButton');
                 const primaryAd = document.getElementById('primaryAd');
                 const secondaryAd = document.getElementById('secondaryAd');
-                const adTransition = document.getElementById('adTransition');
                 
                 overlay.style.display = 'flex';
-                adLoading.style.display = 'none';
-                
-                // Show first ad (7-10 seconds)
                 primaryAd.style.display = 'block';
-                const duration1 = Math.floor(Math.random() * (10 - 7 + 1)) + 7;
                 
-                await new Promise(resolve => {
-                    let timeLeft = duration1;
-                    const timer = setInterval(() => {
-                        adTimer.textContent = `First Ad: ${timeLeft}s`;
-                        timeLeft--;
+                let totalTime = 14;
+                
+                return new Promise(resolve => {
+                    const countdown = setInterval(() => {
+                        timer.textContent = totalTime;
+                        totalTime--;
                         
-                        if (timeLeft < 0) {
-                            clearInterval(timer);
-                            resolve();
+                        // Switch to second ad after 7 seconds
+                        if (totalTime === 6) {
+                            primaryAd.style.display = 'none';
+                            secondaryAd.style.display = 'block';
+                        }
+                        
+                        // Show close button when timer ends
+                        if (totalTime < 0) {
+                            clearInterval(countdown);
+                            closeButton.style.display = 'block';
+                            timer.textContent = '0';
                         }
                     }, 1000);
-                });
 
-                // Transition
-                primaryAd.style.display = 'none';
-                adTransition.style.display = 'block';
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                adTransition.style.display = 'none';
-
-                // Show second ad (5-7 seconds)
-                secondaryAd.style.display = 'block';
-                const duration2 = Math.floor(Math.random() * (7 - 5 + 1)) + 5;
-                
-                await new Promise(resolve => {
-                    let timeLeft = duration2;
-                    const timer = setInterval(() => {
-                        adTimer.textContent = `Second Ad: ${timeLeft}s`;
-                        timeLeft--;
-                        
-                        if (timeLeft < 0) {
-                            clearInterval(timer);
-                            overlay.style.display = 'none';
-                            resolve();
-                        }
-                    }, 1000);
+                    closeButton.onclick = () => {
+                        overlay.style.display = 'none';
+                        resolve();
+                    };
                 });
             }
         };
 
-        // Form submission handler
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -366,11 +371,6 @@
 
             // Show ads first
             await adSystem.showAds();
-
-            // Then proceed with form submission
-            document.getElementById('loadingSpinner').style.display = 'block';
-            document.getElementById('submitButton').disabled = true;
-            document.getElementById('errorMessage').style.display = 'none';
 
             try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -398,7 +398,6 @@
                 if (error) throw error;
 
                 localStorage.removeItem('penseewebFormData');
-                document.getElementById('loadingSpinner').style.display = 'none';
                 document.getElementById('successMessage').style.display = 'block';
                 document.getElementById('mindmapForm').reset();
                 
@@ -409,14 +408,12 @@
 
             } catch (error) {
                 console.error('Error:', error);
-                document.getElementById('loadingSpinner').style.display = 'none';
                 document.getElementById('submitButton').disabled = false;
                 document.getElementById('errorMessage').textContent = 'There was an error submitting your request. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
             }
         });
 
-        // Check for stored data on page load
         window.onload = function() {
             const formData = localStorage.getItem('penseewebFormData');
             if (!formData) {
