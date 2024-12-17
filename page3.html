@@ -6,7 +6,7 @@
     <title>PenseeWeb - Professional Mindmap Creation</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-    <!-- Adsterra Popunder Code -->
+    <!-- Adsterra Code -->
     <script type='text/javascript' src='//pl25301550.profitablecpmrate.com/89/7e/ce/897ece1951c038a06b458a8ced092a5c.js'></script>
     <style>
         :root {
@@ -184,6 +184,52 @@
                 transform: rotate(360deg);
             }
         }
+        /* Ad Overlay Styles */
+        #adOverlay {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 600px;
+            width: 90%;
+        }
+        #adOverlayBg {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 999;
+        }
+        .closeAdBtn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background: #d4756d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: 0.3s ease;
+        }
+        .closeAdBtn:hover {
+            background: #c26259;
+            transform: scale(1.1);
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -226,6 +272,16 @@
         </div>
     </div>
 
+    <!-- Ad Overlay Structure -->
+    <div id="adOverlayBg"></div>
+    <div id="adOverlay">
+        <button class="closeAdBtn">×</button>
+        <div id="adContent">
+            <!-- Adsterra Ad Code -->
+            <script type='text/javascript' src='//pl25301550.profitablecpmrate.com/89/7e/ce/897ece1951c038a06b458a8ced092a5c.js'></script>
+        </div>
+    </div>
+
     <script>
         const supabaseClient = supabase.createClient(
             'https://rgccooiyalkqiugaxzbk.supabase.co',
@@ -246,13 +302,27 @@
         };
 
         function triggerAd() {
-            const clickEvent = new MouseEvent('click', {
-                view: window,
-                bubbles: true,
-                cancelable: true
-            });
-            document.body.dispatchEvent(clickEvent);
+            const adOverlay = document.getElementById('adOverlay');
+            const adOverlayBg = document.getElementById('adOverlayBg');
+            
+            adOverlay.style.display = 'block';
+            adOverlayBg.style.display = 'block';
+
+            setTimeout(() => {
+                closeAd();
+            }, 5000);
         }
+
+        function closeAd() {
+            const adOverlay = document.getElementById('adOverlay');
+            const adOverlayBg = document.getElementById('adOverlayBg');
+            
+            adOverlay.style.display = 'none';
+            adOverlayBg.style.display = 'none';
+        }
+
+        document.querySelector('.closeAdBtn').addEventListener('click', closeAd);
+        document.getElementById('adOverlayBg').addEventListener('click', closeAd);
 
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
