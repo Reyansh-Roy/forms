@@ -272,7 +272,6 @@
     </style>
     <script>
         (function() {
-            // Prevent pop-ups and new window creation
             const originalOpen = window.open;
             window.open = function(url, target, features) {
                 if (adSystem.isUserInitiated) {
@@ -282,7 +281,6 @@
                 return null;
             };
 
-            // Block external iframes
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     mutation.addedNodes.forEach((node) => {
@@ -299,7 +297,6 @@
             });
         })();
 
-        // Modified ad system with stricter controls
         const adSystem = {
             isUserInitiated: false,
             
@@ -425,7 +422,6 @@
             }
         };
 
-        // Modified click handler
         document.getElementById('tvScreen').addEventListener('click', (e) => {
             const rect = e.target.getBoundingClientRect();
             const isWithinFrame = e.clientX >= rect.left && 
@@ -476,8 +472,8 @@
                 Thank you for your patience and understanding. ✨"
             </div>
             <div class="tv-frame">
-                <div class="tv-screen" id="tvScreen">
-                    <div class="ad-space" id="adSpace">
+                <div class="tv-screen">
+                    <div class="ad-space">
                         <div class="ad-slot" id="adSlot1"></div>
                         <div class="ad-slot" id="adSlot2"></div>
                     </div>
