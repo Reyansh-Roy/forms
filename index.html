@@ -5,7 +5,7 @@
     <title>PenseeWeb - Professional Mindmap Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -48,19 +48,22 @@
 
         .mysterious-header {
             text-align: center;
-            margin-bottom: 0.5rem; /* Further reduced */
+            margin-bottom: 0.5rem; /* Reduced margin to bring carousel closer */
             position: relative;
             padding: 3rem 0;
             overflow: hidden;
         }
 
         .logo {
-            font-family: 'Roboto Serif', serif;
-            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
             letter-spacing: 3px;
-            color: var(--text-color);
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             position: relative;
             display: inline-block;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
             animation: logoFloat 6s ease-in-out infinite;
         }
 
@@ -88,7 +91,7 @@
         }
 
         .tagline {
-            font-family: 'Roboto Serif', serif;
+            font-family: 'Lobster', cursive;
             font-size: 1.6rem;
             font-weight: 400;
             letter-spacing: 1.5px;
@@ -97,8 +100,8 @@
             opacity: 0.9;
             animation: fadeInUp 1s ease forwards;
             position: relative;
-            margin: 0.5rem 0; /* Further reduced */
-            padding-bottom: 1rem;
+            margin: 1rem 0; /* Reduced margin to bring carousel closer */
+            padding-bottom: 2rem;
         }
 
         .tagline::after {
@@ -124,7 +127,7 @@
             display: flex;
             overflow-x: auto;
             gap: 1.5rem;
-            margin: 1rem -2rem; /* Further reduced */
+            margin: 1.5rem -2rem;
             padding: 1rem;
             scroll-behavior: smooth;
             -ms-overflow-style: none;
@@ -144,9 +147,7 @@
             cursor: pointer;
             text-align: center;
             position: relative;
-            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(106, 27, 154, 0.1);
         }
 
         .platform-card::before {
@@ -232,10 +233,10 @@
         }
 
         .input-label {
-            font-family: 'Roboto Serif', serif;
+            font-family: 'Playfair Display', serif;
             color: var(--text-color);
             font-size: 1.1rem;
-            margin-bottom: 0.5rem; /* Reduced space above input box */
+            margin-bottom: 0.5rem; /* Reduced margin to improve appearance */
             opacity: 0.9;
         }
 
@@ -390,7 +391,7 @@
         }
 
         .feature-card h3 {
-            font-family: 'Roboto Serif', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
             margin: 1rem 0;
             color: var(--text-color);
@@ -519,7 +520,7 @@
     <div class="container">
         <div class="mysterious-header">
             <div class="logo">PenseeWeb</div>
-            <div class="tagline">Transform thoughts Into visual canvas</div>
+            <div class="tagline">Transform thoughts into visual canvas</div>
         </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
@@ -571,7 +572,7 @@
                     <div class="error-message" id="text-error"></div>
                 </div>
                 <div id="youtube-input" class="input-group" style="display: none">
-                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <label class="input-label">YouTube Video URL <small>(Best suited for videos under 25 minutes)</small></label>
                     <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
                     <div class="error-message" id="youtube-error"></div>
                 </div>
@@ -581,8 +582,8 @@
         <div class="feature-grid">
             <div class="feature-card">
                 <i class="fas fa-shield-alt"></i>
-                <h3>Data Protection</h3>
-                <p>Secure your data with top-tier encryption standards</p>
+                <h3>Enterprise Security</h3>
+                <p>Military-grade encryption for your data</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-clock"></i>
