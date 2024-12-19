@@ -49,14 +49,14 @@
             max-width: 500px;
             width: 100%;
             padding: 40px;
-            background: rgba(255,255,255,0.92);
+            background: rgba(255,255,255,0.7);
             border-radius: 20px;
             box-shadow: 0 15px 35px var(--shadow-color);
             backdrop-filter: blur(10px);
             transform: translateZ(0);
             transition: 0.3s ease;
             margin-bottom: 50px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255,255,255,0.3);
             transform-style: preserve-3d;
             perspective: 1000px;
             position: relative;
@@ -375,6 +375,45 @@
                 opacity: 1;
             }
         }
+        .completion-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(250, 234, 230, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .completion-popup .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            animation: popIn 0.5s ease;
+            box-shadow: 0 15px 35px rgba(212,117,109,0.3);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -396,7 +435,7 @@
     <div class="container">
         <div class="header">
             <h1>PenseeWeb</h1>
-            <p>Create Your Professional Mindmap</p>
+            <p>"Obsession meets perfection in every thought..."</p>
         </div>
         <form id="mindmapForm">
             <div class="form-group">
@@ -420,9 +459,8 @@
     <div class="ad-overlay" id="adOverlay">
         <div class="ad-container">
             <div class="ad-header">
-                "Dear visitor, we apologize for the brief interruption. As we strive to maintain and improve our services, 
-                we rely on ad support. Your request has already been queued, and your mindmap will be delivered within 24 hours. 
-                Thank you for your patience and understanding. ✨"
+                "Dear visitor, your request will be queued once the timer ends. As we strive to maintain and improve our services, 
+                we rely on ad support. Your mindmap will be delivered within 24 hours. Thank you for your patience and understanding. ✨"
             </div>
             <div class="tv-frame">
                 <div class="tv-brand-logo">
@@ -470,6 +508,16 @@
                     <button class="close-button" id="closeButton">Close TV</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="completion-popup" id="completionPopup">
+        <div class="popup-content">
+            <div class="success-icon">✨</div>
+            <h2>Submission Complete! 🎉</h2>
+            <p>Your mindmap will be sent to your email within 24 hours.</p>
+            <p>Don't forget to check your spam folder!</p>
+            <div class="popup-footer">✨</div>
         </div>
     </div>
 
@@ -529,27 +577,30 @@
                         totalTime--;
 
                         if (totalTime === 0) {
-                            closeButton.style.display = 'block';
-                            setInterval(rotateAds, 14000);
+                            clearInterval(countdown);
+                            handleSubmission().then(() => {
+                                document.getElementById('completionPopup').style.display = 'flex';
+                                setTimeout(() => {
+                                    window.location.href = 'index.html';
+                                }, 3000);
+                            });
                         }
                     }, 1000);
 
                     closeButton.onclick = () => {
                         clearInterval(countdown);
                         overlay.style.display = 'none';
-                        adSlots.forEach(slot => {
-                            slot.classList.remove('ad-active');
-                            slot.style.opacity = '0';
-                        });
+                        document.getElementById('completionPopup').style.display = 'flex';
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 3000);
                         resolve();
                     };
                 });
             }
         };
 
-        document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
+        async function handleSubmission() {
             const email = document.getElementById('email').value.trim();
             const storedData = JSON.parse(localStorage.getItem('penseewebFormData'));
             
@@ -564,8 +615,6 @@
                 document.getElementById('errorMessage').style.display = 'block';
                 return;
             }
-
-            await adSystem.showAds();
 
             try {
                 const ipResponse = await fetch('https://api.ipify.org?format=json');
@@ -607,6 +656,11 @@
                 document.getElementById('errorMessage').textContent = 'There was an error submitting your request. Please try again.';
                 document.getElementById('errorMessage').style.display = 'block';
             }
+        }
+
+        document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await adSystem.showAds();
         });
 
         window.onload = function() {
@@ -620,6 +674,17 @@
                     window.location.href = 'index.html';
                 }, 3000);
             }
+        };
+
+        // Handle back button
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'page2.html';
+        });
+
+        // Handle page refresh
+        window.onbeforeunload = function() {
+            window.location.href = 'index.html';
+            return null;
         };
     </script>
 </body>
