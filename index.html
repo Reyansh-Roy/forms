@@ -50,17 +50,12 @@
         }
 
         .logo {
-            width: 80px;
+            width: 150px; /* Increased size for full logo */
             height: auto;
-            margin-right: 1rem;
         }
 
         .brand-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            color: var(--accent-color);
-            text-shadow: 2px 2px 4px rgba(106,27,154,0.2);
-            transition: all 0.3s ease;
+            display: none; /* Remove text display next to logo */
         }
 
         .tagline {
@@ -290,10 +285,6 @@
                 padding: 1rem;
             }
 
-            .brand-name {
-                font-size: 2.5rem;
-            }
-
             .platform-tabs {
                 padding: 0.5rem;
             }
@@ -309,7 +300,6 @@
         <header class="header">
             <div class="logo-container floating">
                 <img src="c508c7da-06d4-4c2e-892d-db11539331d6 (1).png" alt="PenseeWeb Logo" class="logo">
-                <h1 class="brand-name">PenseeWeb</h1>
             </div>
             <p class="tagline">"Transform Your Thoughts Into Visual Masterpieces"</p>
         </header>
@@ -366,19 +356,19 @@
 
         <section class="security-features">
             <div class="security-card">
-                <i class="fas fa-lock security-icon"></i>
-                <h3>Bank-Grade Security</h3>
-                <p>Your data is protected with military-grade encryption</p>
+                <i class="fas fa-shield-alt security-icon"></i>
+                <h3>Data Privacy Ensured</h3>
+                <p>Your information remains confidential and protected.</p>
             </div>
             <div class="security-card">
                 <i class="fas fa-clock security-icon"></i>
                 <h3>24-Hour Auto-Delete</h3>
-                <p>All data automatically purged after 24 hours</p>
+                <p>All data automatically purged after 24 hours.</p>
             </div>
             <div class="security-card">
                 <i class="fas fa-gift security-icon"></i>
                 <h3>Always Free</h3>
-                <p>No credit card required, ever</p>
+                <p>No credit card required, ever.</p>
             </div>
         </section>
     </div>
