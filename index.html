@@ -27,10 +27,9 @@
             margin: 0 auto;
             padding: 2rem;
         }
-        /* Refined Header */
         .mysterious-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
             position: relative;
             padding: 3rem 0;
         }
@@ -63,8 +62,22 @@
             margin-top: 2rem;
             opacity: 0.9;
             animation: fadeInUp 1s ease forwards;
+            position: relative;
         }
-        /* Enhanced Platform Carousel */
+        .tagline::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+        .platform-carousel-container {
+            position: relative;
+            margin: 2rem 0;
+        }
         .platform-carousel {
             display: flex;
             overflow-x: auto;
@@ -86,10 +99,12 @@
             cursor: pointer;
             text-align: center;
             position: relative;
+            transform: scale(0.95);
         }
         .platform-card:hover {
-            transform: translateY(-8px);
+            transform: scale(1.05);
             box-shadow: 0 15px 30px var(--shadow-soft);
+            z-index: 1;
         }
         .platform-card.active {
             background: var(--gradient-accent);
@@ -109,14 +124,44 @@
             top: 10px;
             right: 10px;
         }
-        /* Refined Input Container */
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-accent);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        .carousel-nav:hover {
+            opacity: 1;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .carousel-nav.prev {
+            left: 10px;
+        }
+        .carousel-nav.next {
+            right: 10px;
+        }
         .form-container {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             padding: 2.5rem;
             box-shadow: 0 15px 30px var(--shadow-soft);
             transition: all 0.3s ease;
             border: 1px solid rgba(106, 27, 154, 0.1);
+            backdrop-filter: blur(10px);
+            transform: perspective(1000px) rotateX(0deg);
+        }
+        .form-container:hover {
+            transform: perspective(1000px) rotateX(2deg);
+            box-shadow: 0 20px 40px var(--shadow-soft);
         }
         .input-group {
             position: relative;
@@ -138,14 +183,15 @@
         }
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.8);
             padding: 1.2rem;
-            border: 1px solid rgba(106, 27, 154, 0.2);
+            border: 1px solid rgba(106, 27, 154, 0.3);
             border-radius: 10px;
             transition: all 0.3s ease;
             box-sizing: border-box;
             font-family: Montserrat, sans-serif;
             font-size: 1rem;
+            backdrop-filter: blur(5px);
         }
         .input-field:focus {
             border-color: var(--accent-color);
@@ -155,7 +201,6 @@
         .input-field:invalid {
             border-color: #ff4444;
         }
-        /* Refined Submit Button */
         .submit-btn {
             background: var(--gradient-accent);
             padding: 1.2rem;
@@ -209,7 +254,6 @@
             font-size: 0.9rem;
             color: #666;
         }
-        /* Refined Feature Cards */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -239,6 +283,21 @@
             color: var(--text-color);
             opacity: 0.8;
         }
+        .feature-card:first-child {
+            background: var(--gradient-accent);
+            color: white;
+        }
+        .feature-card:first-child i,
+        .feature-card:first-child h3,
+        .feature-card:first-child p {
+            color: white;
+        }
+        .feature-card:first-child h3::before {
+            content: "Mystical Security";
+        }
+        .feature-card:first-child p::before {
+            content: "Protected by shadows of encryption";
+        }
         .fas {
             font-size: 2rem;
             margin-bottom: 1rem;
@@ -258,7 +317,28 @@
             margin-top: 0.5rem;
             display: none;
         }
-        /* Mobile Optimization */
+        .mysterious-element {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--accent-color);
+            opacity: 0.1;
+            animation: rotate 20s linear infinite;
+        }
+        .mysterious-element:nth-child(1) {
+            top: 20%;
+            left: 5%;
+            transform: rotate(45deg);
+        }
+        .mysterious-element:nth-child(2) {
+            bottom: 30%;
+            right: 8%;
+            transform: rotate(-30deg);
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
         @media (max-width: 768px) {
             .logo {
                 font-size: 2.8rem;
@@ -277,50 +357,60 @@
     </style>
 </head>
 <body>
+    <div class="mysterious-element"></div>
+    <div class="mysterious-element"></div>
     <div class="container">
         <div class="mysterious-header">
             <div class="logo">PenseeWeb</div>
             <div class="tagline">"Transform thoughts into visual symphonies..."</div>
         </div>
-        <div class="platform-carousel">
-            <div class="platform-card active" onclick="switchTab('text')">
-                <i class="fas fa-pen"></i>
-                <h3>Text Input</h3>
+        <div class="platform-carousel-container">
+            <button class="carousel-nav prev" onclick="scrollCarousel('left')">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
             </div>
-            <div class="platform-card" onclick="switchTab('youtube')">
-                <i class="fab fa-youtube"></i>
-                <h3>YouTube</h3>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-facebook"></i>
-                <h3>Facebook</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <h3>TED</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-google-drive"></i>
-                <h3>Google Drive</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-vimeo"></i>
-                <h3>Vimeo</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-theater-masks"></i>
-                <h3>Metopera</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-music"></i>
-                <h3>Weverse</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
+            <button class="carousel-nav next" onclick="scrollCarousel('right')">
+                <i class="fas fa-chevron-right"></i>
+            </button>
         </div>
         <div class="form-container">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
@@ -340,8 +430,8 @@
         <div class="feature-grid">
             <div class="feature-card">
                 <i class="fas fa-shield-alt"></i>
-                <h3>Enterprise Security</h3>
-                <p>Military-grade encryption for your data</p>
+                <h3>Mystical Security</h3>
+                <p>Protected by shadows of encryption</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-clock"></i>
@@ -360,7 +450,6 @@
             const cards = document.querySelectorAll(".platform-card");
             const inputGroups = document.querySelectorAll(".input-group");
             
-            // Smooth card transition
             cards.forEach(card => {
                 card.classList.remove("active");
                 card.style.transform = "scale(0.95)";
@@ -370,7 +459,6 @@
             activeCard.classList.add("active");
             activeCard.style.transform = "scale(1)";
             
-            // Smooth input group transition
             inputGroups.forEach(group => {
                 group.classList.remove("active");
                 setTimeout(() => {
@@ -427,7 +515,6 @@
             submitButton.disabled = true;
 
             try {
-                // Store the form data in localStorage
                 const formData = {
                     content: content,
                     input_type: input_type,
@@ -437,7 +524,6 @@
 
                 localStorage.setItem('penseewebFormData', JSON.stringify(formData));
 
-                // Redirect to page2
                 window.location.href = 'page2.html';
 
             } catch (error) {
@@ -470,6 +556,16 @@
                 }
             });
         });
+
+        function scrollCarousel(direction) {
+            const carousel = document.querySelector('.platform-carousel');
+            const scrollAmount = 300;
+            if (direction === 'left') {
+                carousel.scrollLeft -= scrollAmount;
+            } else {
+                carousel.scrollLeft += scrollAmount;
+            }
+        }
     </script>
 </body>
 </html>
