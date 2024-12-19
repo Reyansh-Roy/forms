@@ -96,30 +96,29 @@
             font-weight: 400;
             letter-spacing: 1.5px;
             color: var(--accent-color);
-            margin-top: 0.5rem;
             opacity: 0.9;
             animation: fadeInUp 1s ease forwards;
             position: relative;
             margin: 0.5rem 0;
-            padding-bottom: 1rem;
+            padding-bottom: 1.5rem; /* Increased padding to push the decorative line down */
         }
 
         .tagline::after {
             content: '✧ ❈ ✧';
             position: absolute;
-            bottom: 0;
+            bottom: 0.5rem; /* Moved down by adding bottom spacing */
             left: 50%;
             transform: translateX(-50%);
-            font-size: 1.2rem;
-            letter-spacing: 1rem;
+            font-size: 1rem;
+            letter-spacing: 0.8rem;
             color: var(--accent-color);
             text-shadow: 0 0 10px var(--accent-color);
             animation: taglineGlow 3s infinite;
+            opacity: 0.8;
         }
 
         .platform-carousel-container {
-            position: relative;
-            margin-top: 0;
+            margin-top: 0.5rem;
             padding-top: 0;
         }
 
