@@ -3,26 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenseeWeb - Transform Your Thoughts</title>
+    <title>PenseeWeb - Where Thoughts Transform Into Destiny</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #f8f1fc;
             --accent-color: #6a1b9a;
             --text-color: #2c003e;
-            --shadow-color: rgba(106, 27, 154, 0.2);
+            --hover-color: #8e24aa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--primary-color);
-            font-family: Montserrat, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Montserrat', sans-serif;
             color: var(--text-color);
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(106, 27, 154, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(106, 27, 154, 0.05) 0%, transparent 20%);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
@@ -31,42 +35,64 @@
             padding: 2rem;
         }
 
+        /* Header Styles */
         .header {
             text-align: center;
-            margin-bottom: 3rem;
+            padding: 3rem 0;
             position: relative;
         }
 
-        .logo {
-            font-size: 3.5rem;
-            font-family: 'Playfair Display', serif;
-            font-weight: 700;
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px var(--shadow-color);
-            transition: transform 0.3s ease;
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
 
-        .logo:hover {
-            transform: scale(1.05);
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-right: 1rem;
+        }
+
+        .brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--accent-color);
+            text-shadow: 2px 2px 4px rgba(106,27,154,0.2);
+            transition: all 0.3s ease;
         }
 
         .tagline {
-            font-size: 1.2rem;
             font-style: italic;
+            font-size: 1.2rem;
             color: var(--accent-color);
-            margin-bottom: 2rem;
             opacity: 0.9;
+            margin: 1rem 0;
+            position: relative;
         }
 
+        .tagline::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+        }
+
+        /* Platform Navigation */
         .platform-tabs {
             display: flex;
-            overflow-x: auto;
             gap: 1rem;
             padding: 1rem;
-            margin-bottom: 2rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            -ms-overflow-style: none;
         }
 
         .platform-tabs::-webkit-scrollbar {
@@ -81,7 +107,8 @@
             white-space: nowrap;
             transition: all 0.3s ease;
             border: 2px solid transparent;
-            box-shadow: 0 4px 15px var(--shadow-color);
+            position: relative;
+            font-weight: 600;
         }
 
         .platform-tab.active {
@@ -95,72 +122,36 @@
             transform: translateY(-2px);
         }
 
-        .platform-tab.coming-soon {
-            position: relative;
-            opacity: 0.7;
-        }
-
-        .coming-soon-tooltip {
+        .coming-soon-badge {
             position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--accent-color);
+            top: -10px;
+            right: -10px;
+            background: #ff4081;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
             opacity: 0;
-            pointer-events: none;
             transition: opacity 0.3s ease;
         }
 
-        .platform-tab.coming-soon:hover .coming-soon-tooltip {
+        .platform-tab:hover .coming-soon-badge {
             opacity: 1;
         }
 
-        .input-container {
+        /* Main Content Area */
+        .content-area {
             background: white;
             border-radius: 20px;
             padding: 2rem;
-            box-shadow: 0 10px 30px var(--shadow-color);
-            margin-bottom: 2rem;
+            box-shadow: 0 15px 40px rgba(106,27,154,0.1);
+            transition: all 0.3s ease;
+            margin: 2rem 0;
         }
 
-        .security-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 20px;
-            margin-top: 3rem;
-        }
-
-        .security-feature {
-            text-align: center;
-            padding: 1.5rem;
-            border-radius: 15px;
-            transition: transform 0.3s ease;
-            background: white;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        }
-
-        .security-feature:hover {
+        .content-area:hover {
             transform: translateY(-5px);
-        }
-
-        .security-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-
-        .form-container {
-            background: #fff;
-            border-radius: 15px;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 20px 50px rgba(106,27,154,0.15);
         }
 
         .input-group {
@@ -169,263 +160,325 @@
 
         .input-label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
             font-weight: 600;
+            color: var(--text-color);
         }
 
         .input-field {
             width: 100%;
-            padding: 1rem;
+            padding: 1.2rem;
             border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            transition: border-color 0.3s;
-            box-sizing: border-box;
-            font-family: Montserrat, sans-serif;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            resize: none;
         }
 
         .input-field:focus {
             border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(106,27,154,0.1);
             outline: none;
         }
 
-        .input-field:invalid {
-            border-color: #ff4444;
-        }
-
+        /* Button Styles */
         .submit-btn {
-            background-color: var(--accent-color);
-            color: #fff;
-            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--accent-color), var(--hover-color));
+            color: white;
+            padding: 1.2rem 2.5rem;
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: 12px;
             font-weight: 600;
-            transition: transform 0.2s;
-            font-family: Montserrat, sans-serif;
-            width: 100%;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .coming-soon {
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: rgba(106,27,154,0.1);
-            border-radius: 8px;
-        }
-
-        .coming-soon h3 {
-            margin-top: 0;
-            color: var(--accent-color);
-        }
-
-        .coming-soon ul {
-            padding-left: 1.2rem;
-        }
-
-        .coming-soon li {
-            margin: 0.5rem 0;
-        }
-
-        .privacy-notice {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .tab-container {
-            display: flex;
-            margin-bottom: 2rem;
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .tab {
-            padding: 1rem 2rem;
+            font-size: 1.1rem;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
-            margin-bottom: -2px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
-        .tab:hover {
-            color: var(--accent-color);
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
         }
 
-        .tab.active {
-            border-bottom-color: var(--accent-color);
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Security Features */
+        .security-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .security-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .security-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(106,27,154,0.1);
+        }
+
+        .security-icon {
+            font-size: 2.5rem;
             color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Popup Notifications */
+        .popup {
+            position: fixed;
+            bottom: 30px;
+            right: -400px;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: right 0.5s ease;
+            max-width: 300px;
+            z-index: 1000;
+        }
+
+        .popup.show {
+            right: 30px;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+            margin-left: 10px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
         }
 
-        .submit-btn:disabled::after {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-left: 10px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
 
-        .error-message {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
+            .brand-name {
+                font-size: 2.5rem;
+            }
+
+            .platform-tabs {
+                padding: 0.5rem;
+            }
+
+            .platform-tab {
+                padding: 0.8rem 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div class="logo">PenseeWeb</div>
-            <div class="tagline">Transform Your Thoughts</div>
-            <h2>Create Beautiful Mindmaps Instantly</h2>
-        </div>
-        <div class="form-container">
-            <div class="tab-container">
-                <div class="tab active" onclick="switchTab('text')">Text Input</div>
-                <div class="tab" onclick="switchTab('youtube')">YouTube Link</div>
+        <header class="header">
+            <div class="logo-container floating">
+                <img src="c508c7da-06d4-4c2e-892d-db11539331d6 (1).png" alt="PenseeWeb Logo" class="logo">
+                <h1 class="brand-name">PenseeWeb</h1>
             </div>
+            <p class="tagline">"Transform Your Thoughts Into Visual Masterpieces"</p>
+        </header>
+
+        <nav class="platform-tabs">
+            <div class="platform-tab active" data-platform="text">Text Input</div>
+            <div class="platform-tab" data-platform="youtube">YouTube</div>
+            <div class="platform-tab" data-platform="facebook">
+                Facebook
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="platform-tab" data-platform="ted">
+                TED
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="platform-tab" data-platform="gdrive">
+                Google Drive
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="platform-tab" data-platform="vimeo">
+                Vimeo
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="platform-tab" data-platform="metopera">
+                Metopera
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+            <div class="platform-tab" data-platform="weverse">
+                Weverse
+                <span class="coming-soon-badge">Coming Soon</span>
+            </div>
+        </nav>
+
+        <main class="content-area">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
-                <div id="text-input" class="input-group">
-                    <label class="input-label">Enter Your Text (Max 1200 characters)</label>
-                    <textarea class="input-field" name="text-content" rows="6" maxlength="1200" placeholder="Enter your text here..."></textarea>
-                    <div class="error-message" id="text-error"></div>
+                <div class="input-group" id="text-input">
+                    <label class="input-label">Transform Your Ideas (Max 1200 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="1200" 
+                              placeholder="Let your thoughts flow freely..."></textarea>
                 </div>
-                <div id="youtube-input" class="input-group" style="display: none">
+                
+                <div class="input-group" id="youtube-input" style="display: none">
                     <label class="input-label">YouTube Video URL</label>
-                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
-                    <div class="error-message" id="youtube-error"></div>
+                    <input type="url" class="input-field" name="youtube-url" 
+                           placeholder="https://www.youtube.com/watch?v=...">
                 </div>
-                <button type="submit" class="submit-btn">Generate Mindmap</button>
+
+                <button type="submit" class="submit-btn">
+                    Create Your Mindmap
+                    <span class="loading-spinner" style="display: none;"></span>
+                </button>
             </form>
-            <div class="coming-soon">
-                <h3>Coming Soon: Extended Platform Support</h3>
-                <p>We're working to bring mindmap generation support for:</p>
-                <ul>
-                    <li>TED</li>
-                    <li>Facebook</li>
-                    <li>Google Drive</li>
-                    <li>Vimeo</li>
-                    <li>Metopera</li>
-                    <li>Weverse</li>
-                </ul>
+        </main>
+
+        <section class="security-features">
+            <div class="security-card">
+                <i class="fas fa-lock security-icon"></i>
+                <h3>Bank-Grade Security</h3>
+                <p>Your data is protected with military-grade encryption</p>
             </div>
-            <div class="privacy-notice">
-                <p>🔒 PenseeWeb is completely free to use. No credit card required.</p>
-                <p>Your data is encrypted and automatically deleted after 24 hours.</p>
+            <div class="security-card">
+                <i class="fas fa-clock security-icon"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>All data automatically purged after 24 hours</p>
             </div>
-        </div>
+            <div class="security-card">
+                <i class="fas fa-gift security-icon"></i>
+                <h3>Always Free</h3>
+                <p>No credit card required, ever</p>
+            </div>
+        </section>
     </div>
+
+    <div class="popup" id="feature-popup">
+        <h4>Feature Coming Soon!</h4>
+        <p>We're working hard to bring this feature to you. Stay tuned!</p>
+    </div>
+
     <script>
-        function switchTab(e) {
-            document.querySelectorAll(".tab").forEach(e => e.classList.remove("active"));
-            document.querySelector(`[onclick="switchTab('${e}')"]`).classList.add("active");
-            document.getElementById("text-input").style.display = e === "text" ? "block" : "none";
-            document.getElementById("youtube-input").style.display = e === "youtube" ? "block" : "none";
-            document.querySelectorAll(".error-message").forEach(e => {
-                e.style.display = "none";
-                e.textContent = "";
+        // Platform Tab Switching
+        document.querySelectorAll('.platform-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                if (!tab.classList.contains('active') && !tab.querySelector('.coming-soon-badge')) {
+                    document.querySelector('.platform-tab.active').classList.remove('active');
+                    tab.classList.add('active');
+                    
+                    // Toggle input visibility
+                    document.getElementById('text-input').style.display = 
+                        tab.dataset.platform === 'text' ? 'block' : 'none';
+                    document.getElementById('youtube-input').style.display = 
+                        tab.dataset.platform === 'youtube' ? 'block' : 'none';
+                } else if (tab.querySelector('.coming-soon-badge')) {
+                    showFeaturePopup();
+                }
             });
-        }
+        });
 
-        function showError(e, t) {
-            const n = document.getElementById(e);
-            n.textContent = t;
-            n.style.display = "block";
-        }
-
-        async function handleSubmit(e) {
-            e.preventDefault();
-            document.querySelectorAll(".error-message").forEach(e => {
-                e.style.display = "none";
-                e.textContent = "";
-            });
-
-            const t = document.querySelector(".tab.active").textContent.toLowerCase().trim();
-            let content, input_type;
-
-            if (t === "text input") {
-                content = document.querySelector('textarea[name="text-content"]').value;
-                input_type = "text";
-            } else {
-                content = document.querySelector('input[name="youtube-url"]').value;
-                input_type = "youtube";
-            }
-
-            if (!content) {
-                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
-                return;
-            }
-
-            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
-                showError("youtube-error", "Please enter a valid YouTube URL");
-                return;
-            }
-
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
-            submitButton.textContent = "Processing...";
-            submitButton.disabled = true;
+        // Form Submission Handler
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const button = event.target.querySelector('.submit-btn');
+            const spinner = button.querySelector('.loading-spinner');
+            
+            button.disabled = true;
+            spinner.style.display = 'inline-block';
 
             try {
-                // Store the form data in localStorage
+                const activePlatform = document.querySelector('.platform-tab.active').dataset.platform;
                 const formData = {
-                    content: content,
-                    input_type: input_type,
-                    content_length: content.length,
+                    platform: activePlatform,
+                    content: activePlatform === 'text' 
+                        ? document.querySelector('[name="text-content"]').value
+                        : document.querySelector('[name="youtube-url"]').value,
                     timestamp: new Date().toISOString()
                 };
 
                 localStorage.setItem('penseewebFormData', JSON.stringify(formData));
-
-                // Redirect to page2
                 window.location.href = 'page2.html';
 
             } catch (error) {
-                console.error("Error:", error);
-                showError(
-                    input_type === "text" ? "text-error" : "youtube-error",
-                    "There was an error processing your request. Please try again."
-                );
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
+                console.error('Error:', error);
+                showErrorPopup();
+            } finally {
+                button.disabled = false;
+                spinner.style.display = 'none';
             }
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const textArea = document.querySelector('textarea[name="text-content"]');
-            const textLabel = document.querySelector("#text-input .input-label");
-            const originalLabel = textLabel.textContent;
+        // Popup Management
+        function showFeaturePopup() {
+            const popup = document.getElementById('feature-popup');
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
 
-            textArea.addEventListener("input", () => {
-                const remaining = 1200 - textArea.value.length;
-                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
-            });
+        function showErrorPopup() {
+            const popup = document.getElementById('feature-popup');
+            popup.innerHTML = `
+                <h4>Oops!</h4>
+                <p>Something went wrong. Please try again.</p>
+            `;
+            popup.classList.add('show');
+            setTimeout(() => popup.classList.remove('show'), 3000);
+        }
 
-            const youtubeInput = document.querySelector('input[name="youtube-url"]');
-            youtubeInput.addEventListener("input", function() {
-                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
-                    showError("youtube-error", "Please enter a valid YouTube URL");
-                } else {
-                    document.getElementById("youtube-error").style.display = "none";
+        // Character Counter
+        document.querySelector('[name="text-content"]').addEventListener('input', function() {
+            const remaining = 1200 - this.value.length;
+            const label = document.querySelector('.input-label');
+            label.textContent = `Transform Your Ideas (${remaining} characters remaining)`;
+        });
+
+        // YouTube URL Validator
+        document.querySelector('[name="youtube-url"]').addEventListener('input', function() {
+            const isValid = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value);
+            this.style.borderColor = isValid ? '#e0e0e0' : '#ff4444';
+        });
+
+        // Add floating animation to security cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('floating');
                 }
             });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.security-card').forEach(card => {
+            observer.observe(card);
         });
     </script>
 </body>
