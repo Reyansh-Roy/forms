@@ -11,7 +11,9 @@
             --primary-color: #faeae6;
             --accent-color: #d4756d;
             --text-color: #2c1810;
-            --shadow-color: rgba(0,0,0,0.1);
+            --shadow-color: rgba(212, 117, 109, 0.15);
+            --gradient-soft: linear-gradient(135deg, #faeae6 0%, #f8d5d0 100%);
+            --gradient-accent: linear-gradient(135deg, #d4756d 0%, #c26259 100%);
         }
         * {
             box-sizing: border-box;
@@ -33,24 +35,49 @@
             content: '';
             position: fixed;
             inset: 0;
-            background: linear-gradient(135deg, rgba(250,234,230,0.8) 0%, rgba(212,117,109,0.1) 100%);
+            background: var(--gradient-soft);
+            background-size: 200% 200%;
+            animation: gradientFlow 15s ease infinite;
             z-index: -1;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         .container {
             max-width: 500px;
             width: 100%;
             padding: 40px;
-            background: rgba(255,255,255,0.95);
+            background: rgba(255,255,255,0.92);
             border-radius: 20px;
             box-shadow: 0 15px 35px var(--shadow-color);
             backdrop-filter: blur(10px);
             transform: translateZ(0);
             transition: 0.3s ease;
             margin-bottom: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
         }
         .container:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) rotateX(2deg);
             box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        .container::after {
+            content: '✧';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 2em;
+            color: var(--accent-color);
+            opacity: 0.5;
+            animation: float 3s ease infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
         }
         .header {
             text-align: center;
@@ -71,6 +98,8 @@
         }
         .form-group {
             margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
         }
         label {
             display: block;
@@ -82,19 +111,21 @@
         input {
             width: 100%;
             padding: 15px;
-            border: 2px solid rgba(212,117,109,0.2);
+            border: 2px solid rgba(212,117,109,0.3);
             border-radius: 12px;
             font-size: 1em;
-            transition: 0.3s ease;
-            background: rgba(255,255,255,0.9);
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
         }
         input:focus {
             border-color: var(--accent-color);
             outline: none;
-            box-shadow: 0 0 15px rgba(212,117,109,0.2);
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(212,117,109,0.2);
+            transform: translateY(-2px);
         }
         button {
-            background: linear-gradient(135deg, var(--accent-color) 0%, #c26259 100%);
+            background: var(--gradient-accent);
             color: #fff;
             padding: 15px 30px;
             border: none;
@@ -107,26 +138,41 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c26259 0%, #d4756d 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        button:hover::before {
+            opacity: 1;
         }
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(212,117,109,0.4);
         }
-
         .ad-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(250, 234, 230, 0.95);
+            background: rgba(250, 234, 230, 0.98);
             z-index: 9999;
             display: none;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
         }
-
         .ad-container {
             position: relative;
             max-width: 600px;
@@ -136,34 +182,32 @@
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(212,117,109,0.3);
             animation: slideIn 0.5s ease-out;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
-
         .ad-header {
             text-align: center;
             margin-bottom: 10px;
             color: var(--accent-color);
             font-style: italic;
             font-family: 'Playfair Display', serif;
-            line-height: 1.6;
+            line-height: 1.8;
             padding: 0 10px;
             font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(212, 117, 109, 0.2);
         }
-
         .tv-frame {
-            background: #1a1a1a;
+            background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
             padding: 20px;
             border-radius: 15px;
-            border: 8px solid #2a2a2a;
-            box-shadow: 0 0 30px rgba(0,0,0,0.5),
-                        inset 0 0 10px rgba(0,0,0,0.8);
+            border: 10px solid #2a2a2a;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.5);
             position: relative;
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
             overflow: hidden;
-            background: linear-gradient(145deg, #232323 0%, #0a0a0a 100%);
         }
-
         .tv-frame::after {
             content: '';
             position: absolute;
@@ -176,7 +220,6 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-
         .tv-brand-logo {
             position: absolute;
             top: -25px;
@@ -188,7 +231,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
             z-index: 2;
         }
-
         .tv-brand-logo span {
             font-family: 'Playfair Display', serif;
             color: white;
@@ -197,7 +239,6 @@
             letter-spacing: 2px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
-
         .tv-screen {
             position: relative;
             width: 100%;
@@ -208,7 +249,6 @@
             border: 2px solid #444;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
         }
-
         .tv-screen::before {
             content: '';
             position: absolute;
@@ -220,14 +260,19 @@
             pointer-events: none;
             z-index: 1;
         }
-
+        .tv-screen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(250,234,230,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
         .ad-space {
             position: relative;
             width: 100%;
             height: 100%;
             background: #000;
         }
-
         .ad-slot {
             position: absolute;
             top: 50%;
@@ -243,12 +288,10 @@
             align-items: center;
             justify-content: center;
         }
-
         .ad-slot.ad-active {
             display: flex;
             opacity: 1;
         }
-
         .tv-brand {
             position: absolute;
             bottom: 10px;
@@ -260,7 +303,6 @@
             text-transform: uppercase;
             opacity: 0.7;
         }
-
         .ad-controls {
             position: absolute;
             bottom: 10px;
@@ -270,7 +312,6 @@
             align-items: center;
             z-index: 3;
         }
-
         .timer {
             background: rgba(212, 117, 109, 0.9);
             color: white;
@@ -281,7 +322,6 @@
             backdrop-filter: blur(5px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-
         .close-button {
             display: none;
             background: rgba(255, 255, 255, 0.9);
@@ -294,12 +334,37 @@
             font-weight: 500;
             transition: 0.3s ease;
         }
-
         .close-button:hover {
             background: white;
             transform: translateY(-2px);
         }
-
+        .success-message {
+            display: none;
+            background: rgba(212, 117, 109, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeInScale 0.5s ease;
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 3px solid var(--accent-color);
+            background: rgba(212, 117, 109, 0.05);
+            font-style: italic;
+            border-radius: 0 10px 10px 0;
+        }
         @keyframes slideIn {
             from {
                 transform: translateY(-20px);
@@ -310,7 +375,6 @@
                 opacity: 1;
             }
         }
-
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -341,7 +405,7 @@
             </div>
             <button type="submit" id="submitButton">Complete Submission</button>
             <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage" style="display: none;">
+            <div class="success-message" id="successMessage">
                 Submission Complete! 🎉<br>
                 Your mindmap will be sent to your email within 24 hours.<br>
                 Don't forget to check your spam folder!<br>✨
