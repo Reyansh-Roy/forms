@@ -15,10 +15,10 @@
         .header h1:hover::after{transform:scaleX(1);transform-origin:left}
         .header p{color:#2d3436;font-size:1.2em;font-style:italic}
         .model-selection{display:flex;justify-content:center;gap:30px;margin-bottom:40px;perspective:1000px}
-        .model-card{background:linear-gradient(145deg,#ffffff,#f8f9ff);border:1px solid rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .5s ease;position:relative;transform-style:preserve-3d}
+        .model-card{background:linear-gradient(145deg,#ffffff,#f8f9ff);border:1px solid rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .5s ease;position:relative;transform-style:preserve-3d;opacity:0;transform:translateY(20px)}
         .model-card:hover{transform:translateY(-5px) rotateX(5deg);box-shadow:0 6px 20px rgba(0,0,0,.15)}
         .model-card.disabled{opacity:.7;pointer-events:none}
-        .coming-soon-badge{position:absolute;top:20px;right:20px;background:#ff4757;color:#fff;padding:5px 15px;border-radius:20px;font-size:.9em}
+        .coming-soon-badge{position:absolute;top:20px;right:20px;background:#ff4757;color:#fff;padding:5px 15px;border-radius:20px;font-size:.9em;animation:pulse 2s infinite}
         .model-title{font-size:1.8em;color:#2d3436;margin-bottom:20px;background:linear-gradient(90deg,#0984e3,#00b894);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
         .power-bar{background:rgba(9,132,227,0.1);height:20px;border-radius:10px;margin:15px 0;overflow:hidden;position:relative}
         .power-indicator{height:100%;border-radius:10px;transition:width .3s ease;position:relative;z-index:1}
@@ -28,8 +28,8 @@
         .v2-power{width:40%;background:linear-gradient(90deg,#74b9ff,#0984e3)}
         .v3-power{width:75%;background:linear-gradient(90deg,#55efc4,#00b894)}
         .feature-list{list-style:none;margin-bottom:25px}
-        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4;transform:translateX(0);transition:transform .3s ease}
-        .feature-list li:hover{transform:translateX(10px);color:#0984e3}
+        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4;transform:translateX(0);transition:all .3s ease;padding:8px 0;border-radius:5px}
+        .feature-list li:hover{background:rgba(9,132,227,0.05);padding-left:10px;color:#0984e3}
         .feature-list li:before{content:"•";color:#0984e3;font-weight:700;margin-right:10px}
         .select-button{background:linear-gradient(45deg,#0984e3,#00b894);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1.1em;cursor:pointer;width:100%;transition:all .3s ease;position:relative;overflow:hidden;z-index:1}
         .select-button::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#00b894,#0984e3);opacity:0;transition:opacity .3s ease;z-index:-1;border-radius:inherit}
@@ -48,6 +48,67 @@
         #loadingMessage{display:none;text-align:center;color:#0984e3;font-size:1.1em;margin-top:20px;position:relative;padding:20px;background:rgba(9,132,227,0.05);border-radius:10px;animation:pulse 1.5s infinite}
         @keyframes pulse{0%,100%{background:rgba(9,132,227,0.05)}50%{background:rgba(9,132,227,0.1)}}
         .error-message{display:none;text-align:center;color:#ff4757;font-size:1.1em;margin-top:20px;padding:10px;background:rgba(255,71,87,0.1);border-radius:8px}
+        
+        @media (max-width: 768px) {
+            .container { padding: 15px; margin: 20px auto; }
+            .header h1 { font-size: 1.8em; }
+            .header p { font-size: 1em; }
+            .model-selection { 
+                flex-direction: column; 
+                gap: 20px;
+            }
+            .model-card { 
+                width: 100%;
+                padding: 20px;
+            }
+            .continue-btn {
+                width: 100%;
+                padding: 12px 25px;
+            }
+        }
+
+        .processing-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
+            animation: popupFade 0.3s ease;
+        }
+
+        .popup-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0984e3;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes popupFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -93,48 +154,95 @@
         <div id="loadingMessage">Processing your request...</div>
         <div id="errorMessage" class="error-message"></div>
     </div>
+    <div class="processing-popup">
+        <div class="popup-content">
+            <div class="popup-spinner"></div>
+            <p>Processing your request...</p>
+        </div>
+    </div>
     <footer class="footer">
         <p>PenseeWeb - Where Obsession Meets Perfection</p>
     </footer>
 
     <script>
-        // Check for data when page loads
         window.onload = function() {
             const formData = localStorage.getItem('penseewebFormData');
             if (!formData) {
-                document.getElementById('errorMessage').textContent = 'No input data found. Please start from the beginning.';
-                document.getElementById('errorMessage').style.display = 'block';
-                document.querySelector('.continue-btn').disabled = true;
-
-                // Redirect back to index after 3 seconds
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 3000);
+                showError('Please start from the beginning.');
+                return;
             }
+            
+            // Add subtle animation to cards
+            document.querySelectorAll('.model-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            document.querySelector('.continue-btn').disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        function showProcessingPopup() {
+            document.querySelector('.processing-popup').style.display = 'flex';
+        }
+
+        function hideProcessingPopup() {
+            document.querySelector('.processing-popup').style.display = 'none';
         }
 
         function proceedToPage3() {
             const formData = localStorage.getItem('penseewebFormData');
             if (formData) {
-                document.getElementById('loadingMessage').style.display = 'block';
-                // Add a small delay to show the loading message
+                showProcessingPopup();
                 setTimeout(() => {
                     window.location.href = 'page3.html';
-                }, 800);
+                }, 1500);
             } else {
-                document.getElementById('errorMessage').textContent = 'Please complete the first step before continuing.';
-                document.getElementById('errorMessage').style.display = 'block';
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
+                showError('Please complete the first step before continuing.');
             }
         }
 
-        // Disable back button
-        history.pushState(null, null, location.href);
-        window.onpopstate = function() {
-            history.go(1);
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'index.html';
+        });
+
+        window.onbeforeunload = function() {
+            window.location.href = 'index.html';
         };
+
+        document.querySelectorAll('.model-card:not(.disabled)').forEach(card => {
+            card.addEventListener('mousemove', handleCardHover);
+            card.addEventListener('mouseleave', resetCard);
+        });
+
+        function handleCardHover(e) {
+            const card = e.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const angleX = (y - centerY) / 20;
+            const angleY = (centerX - x) / 20;
+            
+            card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+        }
+
+        function resetCard(e) {
+            const card = e.currentTarget;
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+        }
     </script>
 </body>
 </html>
