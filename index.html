@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PenseeWeb - Where Thoughts Transform Into Destiny</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -42,13 +42,11 @@
             position: relative;
         }
 
-        .logo-container {
+        .brand-name {
+            font-family: 'Kalam', cursive;
+            font-size: 3.5rem;
+            color: var(--accent-color);
             margin-bottom: 1rem;
-        }
-
-        .logo {
-            width: 200px; /* Increased size for full logo */
-            height: auto;
         }
 
         .tagline {
@@ -56,7 +54,7 @@
             font-size: 1.5rem;
             color: var(--accent-color);
             opacity: 0.9;
-            margin: 1rem 0 2rem 0; /* Adjusted margin for professional look */
+            margin: 1rem 0 2rem 0;
             position: relative;
         }
 
@@ -278,6 +276,10 @@
                 padding: 1rem;
             }
 
+            .brand-name {
+                font-size: 2.5rem;
+            }
+
             .platform-tabs {
                 padding: 0.5rem;
             }
@@ -291,9 +293,7 @@
 <body>
     <div class="container">
         <header class="header">
-            <div class="logo-container">
-                <img src="c508c7da-06d4-4c2e-892d-db11539331d6 (1).png" alt="PenseeWeb Logo" class="logo">
-            </div>
+            <div class="brand-name">PenseeWeb</div>
             <p class="tagline">Transform Your Thoughts Into Visual Masterpieces</p>
         </header>
 
@@ -329,8 +329,8 @@
         <main class="content-area">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
                 <div class="input-group" id="text-input">
-                    <label class="input-label">Transform Your Ideas (Max 1200 characters)</label>
-                    <textarea class="input-field" name="text-content" rows="6" maxlength="1200" 
+                    <label class="input-label">Transform Your Ideas (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" 
                               placeholder="Let your thoughts flow freely..."></textarea>
                 </div>
                 
@@ -440,7 +440,7 @@
 
         // Character Counter
         document.querySelector('[name="text-content"]').addEventListener('input', function() {
-            const remaining = 1200 - this.value.length;
+            const remaining = 3000 - this.value.length;
             const label = document.querySelector('.input-label');
             label.textContent = `Transform Your Ideas (${remaining} characters remaining)`;
         });
