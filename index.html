@@ -48,9 +48,9 @@
 
         .mysterious-header {
             text-align: center;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0;
             position: relative;
-            padding: 2rem 0 1.5rem;
+            padding: 1.5rem 0;
             overflow: hidden;
         }
 
@@ -91,15 +91,17 @@
         }
 
         .tagline {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 500;
+            font-family: 'Lobster', cursive;
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
             color: var(--accent-color);
-            margin: 1rem 0 0.8rem;
-            padding-bottom: 1.5rem;
-            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
             opacity: 0.9;
-            text-transform: capitalize;
+            animation: fadeInUp 1s ease forwards;
+            position: relative;
+            margin: 0.5rem 0;
+            padding-bottom: 1rem;
         }
 
         .tagline::after {
@@ -117,8 +119,8 @@
 
         .platform-carousel-container {
             position: relative;
-            margin: 0.5rem 0;
-            padding: 0.8rem 0;
+            margin-top: 0;
+            padding-top: 0;
         }
 
         .platform-carousel {
@@ -224,7 +226,7 @@
             margin-bottom: 2rem;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.5s ease;
         }
 
         .input-group.active {
@@ -233,20 +235,12 @@
         }
 
         .input-label {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Playfair Display', serif;
             color: var(--text-color);
-            font-size: 1rem;
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
-            opacity: 0.85;
-            font-weight: 500;
+            opacity: 0.9;
             display: block;
-        }
-
-        #youtube-input .input-label {
-            font-size: 0.95rem;
-            color: var(--text-color);
-            opacity: 0.85;
-            margin-bottom: 0.4rem;
         }
 
         .input-field {
@@ -255,12 +249,12 @@
             padding: 1.2rem;
             border: 1px solid rgba(106, 27, 154, 0.2);
             border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+            font-family: Montserrat, sans-serif;
             font-size: 1rem;
-            margin-top: 0.3rem;
-            resize: vertical;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
         .input-field:focus {
@@ -364,43 +358,52 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
-            margin-top: 2.5rem;
-            padding: 0.5rem;
+            margin-top: 4rem;
         }
 
         .feature-card {
             background: rgba(255, 255, 255, 0.98);
-            padding: 2.5rem 2rem;
-            border-radius: 15px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
             border: 1px solid rgba(106, 27, 154, 0.1);
             text-align: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(106, 27, 154, 0.08);
         }
 
-        .feature-card:first-child {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 241, 252, 0.98));
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
         }
 
-        .feature-card:first-child i {
-            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-size: 2.2rem;
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
         }
 
-        .feature-card:first-child h3 {
-            color: var(--accent-color);
-            font-weight: 700;
-            margin: 1rem 0 0.8rem;
+        .feature-card:hover::after {
+            transform: translateX(100%);
         }
 
-        .feature-card:first-child p {
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
             color: var(--text-color);
-            line-height: 1.6;
+        }
+
+        .feature-card p {
             font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
         }
 
         .fas {
@@ -453,7 +456,6 @@
 
             .tagline {
                 font-size: 1.3rem;
-                padding-bottom: 1.2rem;
             }
 
             .platform-card {
@@ -480,15 +482,6 @@
 
             .feature-card {
                 margin: 1rem 0;
-                padding: 2rem 1.5rem;
-            }
-
-            .input-label {
-                font-size: 0.9rem;
-            }
-
-            .platform-carousel-container {
-                margin: 0.3rem 0;
             }
         }
 
@@ -521,32 +514,6 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(106, 27, 154, 0.12);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(142, 36, 170, 0.05),
-                transparent
-            );
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .feature-card:hover::before {
-            transform: translateX(100%);
-        }
     </style>
 </head>
 <body>
@@ -556,7 +523,7 @@
     <div class="container">
         <div class="mysterious-header">
             <div class="logo">PenseeWeb</div>
-            <div class="tagline">Transform thoughts into visual canvas</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
         </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
@@ -608,8 +575,7 @@
                     <div class="error-message" id="text-error"></div>
                 </div>
                 <div id="youtube-input" class="input-group" style="display: none">
-                    <label class="input-label">YouTube Video URL</label>
-                    <small style="display: block; color: #666; margin-bottom: 0.4rem; font-size: 0.85rem;">Best suited for videos under 25 minutes</small>
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
                     <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
                     <div class="error-message" id="youtube-error"></div>
                 </div>
@@ -618,9 +584,9 @@
         </div>
         <div class="feature-grid">
             <div class="feature-card">
-                <i class="fas fa-shield-alt"></i>
-                <h3>Enterprise Security</h3>
-                <p>Bank-level data protection with end-to-end encryption ensuring your content remains private and secure.</p>
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
             </div>
             <div class="feature-card">
                 <i class="fas fa-clock"></i>
