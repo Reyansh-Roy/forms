@@ -10,49 +10,44 @@
         body{background-color:#e5efff;min-height:100vh;display:flex;flex-direction:column}
         .container{max-width:1200px;margin:40px auto;padding:0 20px}
         .header{text-align:center;margin-bottom:50px}
-        .header h1{color:#1a1a1a;font-size:2.5em;margin-bottom:15px;font-weight:600}
+        .header h1{color:#1a1a1a;font-size:2.5em;margin-bottom:15px;font-weight:600;position:relative;display:inline-block}
+        .header h1::after{content:'';position:absolute;bottom:-5px;left:0;width:100%;height:2px;background:linear-gradient(90deg,#0984e3,#00b894);transform:scaleX(0);transform-origin:right;transition:transform .5s ease}
+        .header h1:hover::after{transform:scaleX(1);transform-origin:left}
         .header p{color:#2d3436;font-size:1.2em;font-style:italic}
-        .model-selection{display:flex;justify-content:center;gap:30px;margin-bottom:40px}
-        .model-card{background:#fff;border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .3s ease;position:relative}
-        .model-card:hover{transform:translateY(-5px);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+        .model-selection{display:flex;justify-content:center;gap:30px;margin-bottom:40px;perspective:1000px}
+        .model-card{background:linear-gradient(145deg,#ffffff,#f8f9ff);border:1px solid rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .5s ease;position:relative;transform-style:preserve-3d}
+        .model-card:hover{transform:translateY(-5px) rotateX(5deg);box-shadow:0 6px 20px rgba(0,0,0,.15)}
         .model-card.disabled{opacity:.7;pointer-events:none}
         .coming-soon-badge{position:absolute;top:20px;right:20px;background:#ff4757;color:#fff;padding:5px 15px;border-radius:20px;font-size:.9em}
-        .model-title{font-size:1.8em;color:#2d3436;margin-bottom:20px}
-        .power-bar{background:#eee;height:20px;border-radius:10px;margin:15px 0}
-        .power-indicator{height:100%;border-radius:10px;transition:width .3s ease}
+        .model-title{font-size:1.8em;color:#2d3436;margin-bottom:20px;background:linear-gradient(90deg,#0984e3,#00b894);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+        .power-bar{background:rgba(9,132,227,0.1);height:20px;border-radius:10px;margin:15px 0;overflow:hidden;position:relative}
+        .power-indicator{height:100%;border-radius:10px;transition:width .3s ease;position:relative;z-index:1}
+        .power-indicator::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);z-index:2;animation:shimmer 2s infinite}
+        @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
         .power-label{font-size:.9em;color:#636e72;margin-top:5px;text-align:right;font-style:italic}
         .v2-power{width:40%;background:linear-gradient(90deg,#74b9ff,#0984e3)}
         .v3-power{width:75%;background:linear-gradient(90deg,#55efc4,#00b894)}
         .feature-list{list-style:none;margin-bottom:25px}
-        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4}
+        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4;transform:translateX(0);transition:transform .3s ease}
+        .feature-list li:hover{transform:translateX(10px);color:#0984e3}
         .feature-list li:before{content:"•";color:#0984e3;font-weight:700;margin-right:10px}
-        .select-button{background:#0984e3;color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1.1em;cursor:pointer;width:100%;transition:all .3s ease;position:relative;overflow:hidden}
-        .select-button:hover{background:#0873c7;transform:translateY(-2px);box-shadow:0 4px 15px rgba(9,132,227,.3)}
+        .select-button{background:linear-gradient(45deg,#0984e3,#00b894);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1.1em;cursor:pointer;width:100%;transition:all .3s ease;position:relative;overflow:hidden;z-index:1}
+        .select-button::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#00b894,#0984e3);opacity:0;transition:opacity .3s ease;z-index:-1;border-radius:inherit}
+        .select-button:hover::before{opacity:1}
+        .select-button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(9,132,227,.3)}
         .select-button:active{transform:translateY(0)}
         .continue-section{text-align:center;margin-top:40px}
-        .continue-btn{background:#00b894;color:#fff;border:none;padding:15px 40px;border-radius:30px;font-size:1.2em;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px}
+        .continue-btn{background:linear-gradient(45deg,#0984e3,#00b894);color:#fff;border:none;padding:15px 40px;border-radius:30px;font-size:1.2em;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;z-index:1;box-shadow:0 4px 15px rgba(9,132,227,.3)}
+        .continue-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,#00b894,#0984e3);opacity:0;transition:opacity .3s ease;border-radius:inherit;z-index:-1}
+        .continue-btn:hover::before{opacity:1}
         .continue-btn:after{content:"→";font-size:1.4em;transition:transform .3s ease;display:inline-block;margin-left:5px}
-        .continue-btn:hover{background:#00a382;transform:translateY(-2px);box-shadow:0 4px 15px rgba(0,184,148,.3)}
+        .continue-btn:hover{transform:translateY(-2px)}
         .continue-btn:hover:after{transform:translateX(5px)}
         .continue-btn:active{transform:translateY(0)}
         .footer{text-align:center;margin-top:auto;padding:20px;color:#636e72;font-style:italic}
-        #loadingMessage {
-            display: none;
-            text-align: center;
-            color: #0984e3;
-            font-size: 1.1em;
-            margin-top: 20px;
-        }
-        .error-message {
-            display: none;
-            text-align: center;
-            color: #ff4757;
-            font-size: 1.1em;
-            margin-top: 20px;
-            padding: 10px;
-            background: rgba(255,71,87,0.1);
-            border-radius: 8px;
-        }
+        #loadingMessage{display:none;text-align:center;color:#0984e3;font-size:1.1em;margin-top:20px;position:relative;padding:20px;background:rgba(9,132,227,0.05);border-radius:10px;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{background:rgba(9,132,227,0.05)}50%{background:rgba(9,132,227,0.1)}}
+        .error-message{display:none;text-align:center;color:#ff4757;font-size:1.1em;margin-top:20px;padding:10px;background:rgba(255,71,87,0.1);border-radius:8px}
     </style>
 </head>
 <body>
@@ -110,7 +105,7 @@
                 document.getElementById('errorMessage').textContent = 'No input data found. Please start from the beginning.';
                 document.getElementById('errorMessage').style.display = 'block';
                 document.querySelector('.continue-btn').disabled = true;
-                
+
                 // Redirect back to index after 3 seconds
                 setTimeout(() => {
                     window.location.href = 'index.html';
