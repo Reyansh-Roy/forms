@@ -49,13 +49,16 @@
         }
 
         .mysterious-header {
-            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             position: relative;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+            margin: 0;
         }
 
         .logo {
@@ -404,40 +407,170 @@
             display: none;
         }
 
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 3rem;
-                letter-spacing: 8px;
-            }
-
-            .tagline {
-                font-size: 1.3rem;
-            }
-
-            .platform-card {
-                min-width: 180px;
-                padding: 1.5rem;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
+        @media (max-width: 1024px) {
             .mysterious-header {
+                min-height: 60vh;
                 padding: 2rem 1rem;
             }
+            
+            .logo {
+                font-size: 4rem;
+                letter-spacing: 8px;
+            }
+            
+            .tagline {
+                font-size: 1.5rem;
+                padding: 0 1rem;
+            }
+        }
 
-            .platform-carousel {
+        @media (max-width: 768px) {
+            .mysterious-header {
+                min-height: 50vh;
+                justify-content: center;
+                padding-top: 0;
+            }
+            
+            .logo {
+                font-size: 3.5rem;
+                letter-spacing: 6px;
+            }
+            
+            .tagline {
+                font-size: 1.3rem;
+                margin-top: 1.5rem;
+            }
+            
+            .platform-card {
+                min-width: 160px;
+                padding: 1.2rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mysterious-header {
+                min-height: 70vh;
                 padding: 1rem;
             }
-
-            .carousel-nav {
-                width: 30px;
-                height: 30px;
+            
+            .logo {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
             }
+            
+            .tagline {
+                font-size: 1.1rem;
+                margin-top: 1rem;
+                padding: 0 0.5rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .platform-card {
+                min-width: 140px;
+                padding: 1rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
 
-            .feature-card {
-                margin: 1rem 0;
+        @media (max-width: 375px) {
+            .mysterious-header {
+                min-height: 60vh;
+            }
+            
+            .logo {
+                font-size: 2rem;
+                letter-spacing: 3px;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                margin-top: 0.8rem;
+            }
+            
+            .platform-card {
+                min-width: 120px;
+                padding: 0.8rem;
+            }
+            
+            .input-field {
+                padding: 0.8rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 280px) {
+            .mysterious-header {
+                min-height: 50vh;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
+                letter-spacing: 2px;
+            }
+            
+            .tagline {
+                font-size: 0.8rem;
+                margin-top: 0.5rem;
+            }
+            
+            .platform-card {
+                min-width: 100px;
+                padding: 0.6rem;
+            }
+            
+            .fas {
+                font-size: 1.2rem;
+            }
+            
+            .platform-card h3 {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media screen and (max-height: 480px) and (orientation: landscape) {
+            .mysterious-header {
+                min-height: 100vh;
+                padding: 1rem;
+            }
+            
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+                margin-top: 0.5rem;
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .platform-card:hover {
+                transform: none;
+            }
+            
+            .submit-btn:hover {
+                transform: none;
+            }
+            
+            .platform-carousel {
+                -webkit-overflow-scrolling: touch;
+                scroll-snap-type: x mandatory;
+            }
+            
+            .platform-card {
+                scroll-snap-align: center;
             }
         }
 
