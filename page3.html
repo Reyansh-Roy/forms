@@ -578,18 +578,15 @@
 
                         if (totalTime === 0) {
                             clearInterval(countdown);
-                            handleSubmission().then(() => {
-                                document.getElementById('completionPopup').style.display = 'flex';
-                                setTimeout(() => {
-                                    window.location.href = 'index.html';
-                                }, 3000);
-                            });
+                            closeButton.style.display = 'block';
+                            setInterval(rotateAds, 14000);
                         }
                     }, 1000);
 
-                    closeButton.onclick = () => {
+                    closeButton.onclick = async () => {
                         clearInterval(countdown);
                         overlay.style.display = 'none';
+                        await handleSubmission();
                         document.getElementById('completionPopup').style.display = 'flex';
                         setTimeout(() => {
                             window.location.href = 'index.html';
