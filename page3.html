@@ -571,29 +571,28 @@
                     }, 500);
                 };
 
-                return new Promise(resolve => {
-                    const countdown = setInterval(() => {
-                        timer.textContent = Math.max(0, totalTime);
-                        totalTime--;
+                const countdown = setInterval(() => {
+                    timer.textContent = Math.max(0, totalTime);
+                    totalTime--;
 
-                        if (totalTime === 0) {
-                            clearInterval(countdown);
-                            closeButton.style.display = 'block';
-                            setInterval(rotateAds, 14000);
-                        }
-                    }, 1000);
-
-                    closeButton.onclick = async () => {
+                    if (totalTime === 0) {
                         clearInterval(countdown);
-                        overlay.style.display = 'none';
-                        await handleSubmission();
-                        document.getElementById('completionPopup').style.display = 'flex';
-                        setTimeout(() => {
-                            window.location.href = 'index.html';
-                        }, 3000);
-                        resolve();
-                    };
-                });
+                        closeButton.style.display = 'block';
+                        timer.style.display = 'none'; // Hide the timer
+                        handleSubmission(); // Automatically send the request
+                        setInterval(rotateAds, 14000);
+                    }
+                }, 1000);
+
+                closeButton.onclick = async () => {
+                    clearInterval(countdown);
+                    overlay.style.display = 'none';
+                    document.getElementById('completionPopup').style.display = 'flex';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                    resolve();
+                };
             }
         };
 
