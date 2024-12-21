@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Italiana&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -27,6 +26,8 @@
             margin: 0;
             padding: 0;
             color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
         }
 
         body::before {
@@ -58,8 +59,8 @@
 
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            letter-spacing: 3px;
+            font-size: clamp(2.5rem, 8vw, 3.5rem);
+            letter-spacing: clamp(3px, 1vw, 3px);
             background: var(--gradient-accent);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -92,62 +93,50 @@
             background: var(--accent-color);
         }
 
-        /* Updated tagline styling */
         .tagline {
-            font-family: 'Italiana', serif;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
-            color: var(--accent-color);
-            letter-spacing: 2px;
-            text-transform: none;
+            font-family: 'Lobster', cursive;
+            font-size: 1.6rem;
             font-weight: 400;
-            margin-top: clamp(1rem, 3vw, 2rem);
+            letter-spacing: 1.5px;
+            color: var(--accent-color);
+            opacity: 0.9;
+            animation: fadeInUp 1s ease forwards;
             position: relative;
-            padding: 0 clamp(1rem, 3vw, 2rem);
-            text-align: center;
-            opacity: 0;
-            animation: fadeIn 2s 1s forwards;
+            margin: 0.5rem 0;
+            padding-bottom: 2rem; /* Increased padding for more vertical space */
         }
 
-        .tagline::before,
         .tagline::after {
-            content: '✧';
+            content: '✧ ❈ ✧';
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-light);
-            font-size: 0.8em;
-            opacity: 0.7;
+            bottom: 0.75rem; /* Moved down for more vertical space */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            letter-spacing: 0.8rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: taglineGlow 3s infinite;
+            opacity: 0.8;
         }
 
-        .tagline::before {
-            left: 0;
-        }
-
-        .tagline::after {
-            right: 0;
-        }
-
-        /* Modern carousel styling */
         .platform-carousel-container {
-            position: relative;
-            margin: clamp(2rem, 4vw, 4rem) 0;
-            overflow: hidden;
+            margin-top: 0.5rem;
+            padding-top: 0;
         }
 
         .platform-carousel {
             display: flex;
-            gap: clamp(1rem, 2vw, 1.5rem);
-            padding: 1rem;
             overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
             scroll-behavior: smooth;
             -ms-overflow-style: none;
             scrollbar-width: none;
+            position: relative;
             mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-        }
-
-        .platform-carousel::-webkit-scrollbar {
-            display: none;
         }
 
         .platform-card {
@@ -164,10 +153,30 @@
             position: relative;
         }
 
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: var(--gradient-light);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
         .platform-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(106, 27, 154, 0.15);
+            box-shadow: 0 15px 30px var(--shadow-soft);
             border-color: var(--accent-color);
+        }
+
+        .platform-card:hover::before,
+        .platform-card.active::before {
+            opacity: 1;
         }
 
         .platform-card.active {
@@ -180,60 +189,15 @@
             color: white;
         }
 
-        .platform-card i {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            color: var(--accent-color);
-            margin-bottom: 1rem;
-        }
-
-        .platform-card h3 {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--text-color);
-            margin: 0.5rem 0;
-        }
-
         .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
             position: absolute;
             top: 10px;
             right: 10px;
-            background: var(--gradient-accent);
-            color: white;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            font-size: clamp(0.7rem, 1.5vw, 0.8rem);
-            font-weight: 500;
-        }
-
-        /* Carousel navigation buttons */
-        .carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: clamp(40px, 5vw, 50px);
-            height: clamp(40px, 5vw, 50px);
-            background: var(--gradient-accent);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.8;
-            transition: opacity 0.3s ease;
-            z-index: 2;
-        }
-
-        .carousel-nav:hover {
-            opacity: 1;
-        }
-
-        .carousel-nav.prev {
-            left: 0;
-        }
-
-        .carousel-nav.next {
-            right: 0;
         }
 
         .form-container {
@@ -552,49 +516,46 @@
             <div class="tagline">"Transform thoughts Into visual canvas"</div>
         </div>
         <div class="platform-carousel-container">
-            <button class="carousel-nav prev" aria-label="Previous">
-                <i class="fas fa-chevron-left"></i>
-            </button>
-            
             <div class="platform-carousel">
                 <div class="platform-card active" onclick="switchTab('text')">
                     <i class="fas fa-pen"></i>
                     <h3>Text Input</h3>
                 </div>
-                
                 <div class="platform-card" onclick="switchTab('youtube')">
                     <i class="fab fa-youtube"></i>
                     <h3>YouTube</h3>
                 </div>
-                
                 <div class="platform-card coming-soon">
                     <i class="fab fa-facebook"></i>
                     <h3>Facebook</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                
                 <div class="platform-card coming-soon">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <h3>TED</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                
                 <div class="platform-card coming-soon">
                     <i class="fab fa-google-drive"></i>
                     <h3>Google Drive</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                
                 <div class="platform-card coming-soon">
                     <i class="fab fa-vimeo"></i>
                     <h3>Vimeo</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
             </div>
-            
-            <button class="carousel-nav next" aria-label="Next">
-                <i class="fas fa-chevron-right"></i>
-            </button>
         </div>
         <div class="form-container">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
@@ -630,57 +591,6 @@
         </div>
     </div>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const carousel = document.querySelector('.platform-carousel');
-            const prevBtn = document.querySelector('.carousel-nav.prev');
-            const nextBtn = document.querySelector('.carousel-nav.next');
-            
-            // Scroll controls
-            nextBtn?.addEventListener('click', () => {
-                carousel.scrollBy({
-                    left: carousel.offsetWidth,
-                    behavior: 'smooth'
-                });
-            });
-            
-            prevBtn?.addEventListener('click', () => {
-                carousel.scrollBy({
-                    left: -carousel.offsetWidth,
-                    behavior: 'smooth'
-                });
-            });
-            
-            // Touch scroll
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            carousel.addEventListener('mousedown', (e) => {
-                isDown = true;
-                carousel.style.cursor = 'grabbing';
-                startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-            });
-
-            carousel.addEventListener('mouseleave', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
-
-            carousel.addEventListener('mouseup', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
-
-            carousel.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 2;
-                carousel.scrollLeft = scrollLeft - walk;
-            });
-        });
-
         function switchTab(tab) {
             const cards = document.querySelectorAll(".platform-card");
             const inputGroups = document.querySelectorAll(".input-group");
@@ -798,6 +708,36 @@
                     document.getElementById("youtube-error").style.display = "none";
                 }
             });
+        });
+
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
         });
 
         function showLoading() {
