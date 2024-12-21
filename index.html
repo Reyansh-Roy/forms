@@ -6,27 +6,27 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #f8f1fc;
-            --accent-color: #6a1b9a;
-            --accent-light: #8e24aa;
-            --text-color: #2c003e;
-            --shadow-soft: rgba(106, 27, 154, 0.15);
-            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
-            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
-            --glass-effect: rgba(255, 255, 255, 0.1);
+            --deep-black: #000000;
+            --blood-red: #8B0000;
+            --gold: #B8860B;
+            --pearl-white: #F5F5F5;
+            --charcoal: #1a1a1a;
+            --shadow: rgba(0, 0, 0, 0.8);
         }
 
         body {
-            background-color: var(--primary-color);
-            font-family: Montserrat, sans-serif;
+            background: var(--deep-black);
             margin: 0;
-            padding: 0;
-            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--pearl-white);
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* Maya's signature cobweb-like background */
         body::before {
             content: '';
             position: fixed;
@@ -34,539 +34,277 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
-                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
-            z-index: -2;
+            background: 
+                linear-gradient(45deg, transparent 48%, rgba(184, 134, 11, 0.1) 49%, transparent 51%),
+                linear-gradient(-45deg, transparent 48%, rgba(139, 0, 0, 0.1) 49%, transparent 51%);
+            background-size: 4px 4px;
             pointer-events: none;
+            animation: backgroundShift 30s linear infinite;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        .mysterious-header {
-            text-align: center;
-            margin-bottom: 0;
+        .header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
-            padding: 1.5rem 0;
-            overflow: hidden;
+        }
+
+        .logo-container {
+            position: relative;
+            margin-bottom: 4rem;
         }
 
         .logo {
+            font-size: 5rem;
             font-family: 'Playfair Display', serif;
-            font-size: 3.5rem;
-            letter-spacing: 3px;
-            background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--pearl-white);
             position: relative;
-            display: inline-block;
-            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
-            animation: logoFloat 6s ease-in-out infinite;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: revealLogo 2s forwards;
         }
 
-        .logo::before {
+        .logo::before, .logo::after {
             content: '';
             position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%);
-            z-index: -1;
-            animation: logoPulse 4s ease-in-out infinite;
+            width: 100%;
+            height: 1px;
+            background: var(--gold);
+            left: 0;
+            animation: lineExpand 1.5s ease-in-out forwards;
         }
 
-        .logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 2px;
-            background: var(--accent-color);
-        }
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
 
         .tagline {
-            font-family: 'Lobster', cursive;
-            font-size: 1.6rem;
-            font-weight: 400;
-            letter-spacing: 1.5px;
-            color: var(--accent-color);
-            opacity: 0.9;
-            animation: fadeInUp 1s ease forwards;
-            position: relative;
-            margin: 0.5rem 0;
-            padding-bottom: 2rem; /* Increased padding for more vertical space */
+            font-size: 1.8rem;
+            color: var(--blood-red);
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
         }
 
-        .tagline::after {
-            content: '✧ ❈ ✧';
-            position: absolute;
-            bottom: 0.75rem; /* Moved down for more vertical space */
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1rem;
-            letter-spacing: 0.8rem;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px var(--accent-color);
-            animation: taglineGlow 3s infinite;
-            opacity: 0.8;
-        }
-
-        .platform-carousel-container {
-            margin-top: 0.5rem;
-            padding-top: 0;
-        }
-
-        .platform-carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 1.5rem;
-            margin: 1.5rem -2rem;
-            padding: 1rem;
-            scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        /* Obsessive attention to detail in the platform cards */
+        .platform-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2px;
+            background: var(--gold);
+            padding: 2px;
+            margin: 4rem 0;
         }
 
         .platform-card {
-            min-width: 220px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(106, 27, 154, 0.1);
-            cursor: pointer;
-            text-align: center;
+            background: var(--deep-black);
+            padding: 3rem;
             position: relative;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(106, 27, 154, 0.1);
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .platform-card::before {
             content: '';
             position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            padding: 2px;
-            background: var(--gradient-light);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(184, 134, 11, 0.1));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
-        .platform-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px var(--shadow-soft);
+        .platform-card:hover::before {
+            transform: translateX(0);
         }
 
-        .platform-card:hover::before,
-        .platform-card.active::before {
-            opacity: 1;
-        }
-
-        .platform-card.active {
-            background: var(--gradient-accent);
-            border: none;
-        }
-
-        .platform-card.active i,
-        .platform-card.active h3 {
-            color: white;
-        }
-
-        .coming-soon-badge {
-            background-color: #ff4444;
-            color: #fff;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .form-container {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 15px 30px var(--shadow-soft);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(106, 27, 154, 0.1);
+        /* Maya's obsessive input styling */
+        .input-container {
+            background: var(--charcoal);
+            padding: 4rem;
             position: relative;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
-            animation: formGlow 10s infinite linear;
-        }
-
-        .input-group {
-            position: relative;
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-        }
-
-        .input-group.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .input-label {
-            font-family: 'Playfair Display', serif;
-            color: var(--text-color);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-            display: block;
+            margin: 2rem;
         }
 
         .input-field {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--blood-red);
+            color: var(--pearl-white);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            padding: 1rem 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.2rem;
-            border: 1px solid rgba(106, 27, 154, 0.2);
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-            font-family: Montserrat, sans-serif;
-            font-size: 1rem;
-            position: relative;
             transition: all 0.3s ease;
         }
 
         .input-field:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 5px 15px var(--shadow-soft);
             outline: none;
-            transform: translateY(-2px);
+            border-bottom-color: var(--gold);
         }
 
-        .input-field:invalid {
-            border-color: #ff4444;
-        }
-
-        .highlight {
-            animation: highlight 1s ease-in-out;
-        }
-
-        @keyframes highlight {
-            0% { box-shadow: 0 0 10px 5px rgba(142, 36, 170, 0.3); }
-            100% { box-shadow: 0 0 0 0 rgba(142, 36, 170, 0); }
-        }
-
-        .submit-btn {
-            background: var(--gradient-accent);
-            padding: 1.2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            color: #fff;
+        .submit-button {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 1.5rem 3rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            margin-top: 3rem;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: Montserrat, sans-serif;
-            width: 100%;
             position: relative;
             overflow: hidden;
-            border: none;
-            transition: all 0.4s ease;
+            transition: all 0.5s ease;
         }
 
-        .submit-btn::before {
+        .submit-button::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
+            background: var(--gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
         }
 
-        .submit-btn::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
+        .submit-button:hover {
+            color: var(--deep-black);
         }
 
-        .submit-btn:hover::before {
-            left: 100%;
+        .submit-button:hover::before {
+            transform: translateX(100%);
         }
 
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
+        /* Maya's signature animations */
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
-        .submit-btn:hover::after {
-            opacity: 1;
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
         }
 
-        .submit-btn:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
+        @keyframes fadeIn {
+            to { opacity: 1; }
         }
 
-        .submit-btn:disabled::after {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-left: 10px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
+        @keyframes backgroundShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
         }
 
-        .privacy-notice {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
+        /* Obsessive hover effects */
         .feature-card {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(106, 27, 154, 0.1);
-            text-align: center;
+            background: var(--charcoal);
+            padding: 3rem;
+            margin: 2rem;
             position: relative;
             overflow: hidden;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px var(--shadow-soft);
-        }
-
-        .feature-card::after {
+        .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
+            width: 2px;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            background: var(--blood-red);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s ease;
         }
 
-        .feature-card:hover::after {
-            transform: translateX(100%);
+        .feature-card:hover::before {
+            transform: scaleY(1);
         }
 
-        .feature-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin: 1rem 0;
-            color: var(--text-color);
+        /* Maya's perfectionist details */
+        .detail-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+            margin: 4rem 0;
         }
 
-        .feature-card p {
-            font-size: 0.95rem;
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-
-        .fas {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-        }
-
-        @keyframes taglineGlow {
-            0%, 100% { opacity: 0.6; text-shadow: 0 0 10px var(--accent-color); }
-            50% { opacity: 1; text-shadow: 0 0 20px var(--accent-color); }
-        }
-
-        @keyframes formGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            color: #ff4444;
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
+        /* Responsive design with Maya's attention to detail */
         @media (max-width: 768px) {
             .logo {
-                font-size: 2.8rem;
+                font-size: 3rem;
+                letter-spacing: 8px;
             }
 
-            .tagline {
-                font-size: 1.3rem;
+            .platform-section {
+                margin: 2rem;
             }
 
-            .platform-card {
-                min-width: 180px;
-                padding: 1.5rem;
+            .input-container {
+                padding: 2rem;
             }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .mysterious-header {
-                padding: 2rem 1rem;
-            }
-
-            .platform-carousel {
-                padding: 1rem;
-            }
-
-            .carousel-nav {
-                width: 30px;
-                height: 30px;
-            }
-
-            .feature-card {
-                margin: 1rem 0;
-            }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(248, 241, 252, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--accent-light);
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
         }
     </style>
 </head>
 <body>
-    <div class="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
-    <div class="container">
-        <div class="mysterious-header">
-            <div class="logo">PenseeWeb</div>
-            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+    <div class="header">
+        <div class="logo-container">
+            <h1 class="logo">PENSEE</h1>
+            <p class="tagline">"Where thoughts become obsession"</p>
         </div>
-        <div class="platform-carousel-container">
-            <div class="platform-carousel">
-                <div class="platform-card active" onclick="switchTab('text')">
-                    <i class="fas fa-pen"></i>
-                    <h3>Text Input</h3>
-                </div>
-                <div class="platform-card" onclick="switchTab('youtube')">
-                    <i class="fab fa-youtube"></i>
-                    <h3>YouTube</h3>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-facebook"></i>
-                    <h3>Facebook</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <h3>TED</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-google-drive"></i>
-                    <h3>Google Drive</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-vimeo"></i>
-                    <h3>Vimeo</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-theater-masks"></i>
-                    <h3>Metopera</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-music"></i>
-                    <h3>Weverse</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
+    </div>
+
+    <div class="detail-line"></div>
+
+    <div class="container">
+        <div class="platform-section">
+            <div class="platform-card active" onclick="switchTab('text')">
+                <i class="fas fa-pen"></i>
+                <h3>Text Input</h3>
+            </div>
+            <div class="platform-card" onclick="switchTab('youtube')">
+                <i class="fab fa-youtube"></i>
+                <h3>YouTube</h3>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fab fa-facebook"></i>
+                <h3>Facebook</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fas fa-chalkboard-teacher"></i>
+                <h3>TED</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fab fa-google-drive"></i>
+                <h3>Google Drive</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fab fa-vimeo"></i>
+                <h3>Vimeo</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fas fa-theater-masks"></i>
+                <h3>Metopera</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
+            </div>
+            <div class="platform-card coming-soon">
+                <i class="fas fa-music"></i>
+                <h3>Weverse</h3>
+                <div class="coming-soon-badge">Coming Soon</div>
             </div>
         </div>
-        <div class="form-container">
+        <div class="input-container">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
                 <div id="text-input" class="input-group active">
                     <label class="input-label">Enter Your Text (Max 3000 characters)</label>
@@ -578,7 +316,7 @@
                     <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
                     <div class="error-message" id="youtube-error"></div>
                 </div>
-                <button type="submit" class="submit-btn">Generate Mindmap</button>
+                <button type="submit" class="submit-button">Generate Mindmap</button>
             </form>
         </div>
         <div class="feature-grid">
