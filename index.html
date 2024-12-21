@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +27,6 @@
             position: relative;
         }
 
-        /* Maya's signature cobweb-like background */
         body::before {
             content: '';
             position: fixed;
@@ -89,7 +89,6 @@
             animation: fadeIn 2s 1s forwards;
         }
 
-        /* Obsessive attention to detail in the platform cards */
         .platform-section {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -123,7 +122,6 @@
             transform: translateX(0);
         }
 
-        /* Maya's obsessive input styling */
         .input-container {
             background: var(--charcoal);
             padding: 4rem;
@@ -182,7 +180,6 @@
             transform: translateX(100%);
         }
 
-        /* Maya's signature animations */
         @keyframes revealLogo {
             0% { opacity: 0; transform: translateY(50px); }
             100% { opacity: 1; transform: translateY(0); }
@@ -202,7 +199,6 @@
             100% { background-position: 100px 100px; }
         }
 
-        /* Obsessive hover effects */
         .feature-card {
             background: var(--charcoal);
             padding: 3rem;
@@ -228,7 +224,6 @@
             transform: scaleY(1);
         }
 
-        /* Maya's perfectionist details */
         .detail-line {
             width: 100%;
             height: 1px;
@@ -236,7 +231,6 @@
             margin: 4rem 0;
         }
 
-        /* Responsive design with Maya's attention to detail */
         @media (max-width: 768px) {
             .logo {
                 font-size: 3rem;
@@ -264,9 +258,11 @@
                 <p class="tagline">"Where thoughts become obsession"</p>
             </div>
         </div>
-
         <div class="detail-line"></div>
-
+        <div class="mysterious-header">
+            <div class="logo">PenseeWeb</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+        </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
                 <div class="platform-card active" onclick="switchTab('text')">
@@ -371,7 +367,7 @@
                     activeInput.querySelector('.input-field').classList.add("highlight");
                     setTimeout(() => {
                         activeInput.querySelector('.input-field').classList.remove("highlight");
-                    }, 1000); // Remove highlight after 1 second
+                    }, 1000);
                 }, 50);
             }, 300);
         }
