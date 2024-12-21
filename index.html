@@ -6,7 +6,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --deep-black: #000000;
@@ -254,57 +254,62 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo-container">
-            <h1 class="logo">PENSEE</h1>
-            <p class="tagline">"Where thoughts become obsession"</p>
-        </div>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
     </div>
-
-    <div class="detail-line"></div>
-
     <div class="container">
-        <div class="platform-section">
-            <div class="platform-card active" onclick="switchTab('text')">
-                <i class="fas fa-pen"></i>
-                <h3>Text Input</h3>
-            </div>
-            <div class="platform-card" onclick="switchTab('youtube')">
-                <i class="fab fa-youtube"></i>
-                <h3>YouTube</h3>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-facebook"></i>
-                <h3>Facebook</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-chalkboard-teacher"></i>
-                <h3>TED</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-google-drive"></i>
-                <h3>Google Drive</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fab fa-vimeo"></i>
-                <h3>Vimeo</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-theater-masks"></i>
-                <h3>Metopera</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
-            </div>
-            <div class="platform-card coming-soon">
-                <i class="fas fa-music"></i>
-                <h3>Weverse</h3>
-                <div class="coming-soon-badge">Coming Soon</div>
+        <div class="header">
+            <div class="logo-container">
+                <h1 class="logo">PENSEE</h1>
+                <p class="tagline">"Where thoughts become obsession"</p>
             </div>
         </div>
-        <div class="input-container">
+
+        <div class="detail-line"></div>
+
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
                 <div id="text-input" class="input-group active">
                     <label class="input-label">Enter Your Text (Max 3000 characters)</label>
@@ -316,7 +321,7 @@
                     <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
                     <div class="error-message" id="youtube-error"></div>
                 </div>
-                <button type="submit" class="submit-button">Generate Mindmap</button>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
             </form>
         </div>
         <div class="feature-grid">
