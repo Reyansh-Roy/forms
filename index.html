@@ -49,16 +49,13 @@
         }
 
         .mysterious-header {
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             position: relative;
-            min-height: 100vh;
-            padding: 2rem;
-            box-sizing: border-box;
-            margin: 0;
         }
 
         .logo {
@@ -71,7 +68,6 @@
             opacity: 0;
             animation: revealLogo 2s forwards;
             text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
-            margin-bottom: 2rem;
         }
 
         .logo::before, .logo::after {
@@ -84,24 +80,16 @@
             animation: lineExpand 1.5s ease-in-out forwards;
         }
 
-        .logo::before { 
-            top: -20px; 
-        }
-
-        .logo::after { 
-            bottom: -20px;
-            margin-bottom: 1rem;
-        }
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
 
         .tagline {
             font-size: 1.8rem;
             color: var(--accent-color);
             font-style: italic;
-            margin-top: 3rem;
+            margin-top: 2rem;
             opacity: 0;
             animation: fadeIn 2s 1s forwards;
-            position: relative;
-            padding-top: 1rem;
         }
 
         .platform-carousel-container {
@@ -416,208 +404,40 @@
             display: none;
         }
 
-        @media (max-width: 1024px) {
-            .mysterious-header {
-                min-height: 60vh;
-                padding: 2rem 1rem;
-            }
-            
-            .logo {
-                font-size: 4rem;
-                letter-spacing: 8px;
-                margin-bottom: 3rem;
-            }
-            
-            .tagline {
-                font-size: 1.5rem;
-                padding: 0 1rem;
-                margin-top: 4rem;
-                padding-top: 1.5rem;
-            }
-        }
-
         @media (max-width: 768px) {
-            .mysterious-header {
-                min-height: 50vh;
-                justify-content: center;
-                padding-top: 0;
-            }
-            
             .logo {
-                font-size: 3.5rem;
-                letter-spacing: 6px;
-                margin-bottom: 3rem;
+                font-size: 3rem;
+                letter-spacing: 8px;
             }
-            
+
             .tagline {
                 font-size: 1.3rem;
-                margin-top: 4rem;
-                padding-top: 1.5rem;
             }
-            
+
             .platform-card {
-                min-width: 160px;
-                padding: 1.2rem;
+                min-width: 180px;
+                padding: 1.5rem;
             }
-            
+
             .form-container {
                 padding: 1.5rem;
-                margin-top: 2rem;
             }
-        }
 
-        @media (max-width: 480px) {
             .mysterious-header {
-                min-height: 70vh;
-                padding: 1rem;
+                padding: 2rem 1rem;
             }
-            
-            .logo {
-                font-size: 2.5rem;
-                letter-spacing: 4px;
-                margin-bottom: 2.5rem;
-            }
-            
-            .logo::before { 
-                top: -15px; 
-            }
-            
-            .logo::after { 
-                bottom: -15px;
-                margin-bottom: 1.5rem;
-            }
-            
-            .tagline {
-                font-size: 1.1rem;
-                margin-top: 3.5rem;
-                padding-top: 1rem;
-                padding: 0 0.5rem;
-            }
-            
-            .container {
-                padding: 1rem;
-            }
-            
-            .platform-card {
-                min-width: 140px;
-                padding: 1rem;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-        }
 
-        @media (max-width: 375px) {
-            .mysterious-header {
-                min-height: 60vh;
-            }
-            
-            .logo {
-                font-size: 2rem;
-                letter-spacing: 3px;
-                margin-bottom: 2rem;
-            }
-            
-            .logo::before { 
-                top: -12px; 
-            }
-            
-            .logo::after { 
-                bottom: -12px;
-                margin-bottom: 1.2rem;
-            }
-            
-            .tagline {
-                font-size: 1rem;
-                margin-top: 3rem;
-                padding-top: 0.8rem;
-            }
-            
-            .platform-card {
-                min-width: 120px;
-                padding: 0.8rem;
-            }
-            
-            .input-field {
-                padding: 0.8rem;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 280px) {
-            .mysterious-header {
-                min-height: 50vh;
-            }
-            
-            .logo {
-                font-size: 1.5rem;
-                letter-spacing: 2px;
-                margin-bottom: 1.5rem;
-            }
-            
-            .logo::before { 
-                top: -10px; 
-            }
-            
-            .logo::after { 
-                bottom: -10px;
-                margin-bottom: 1rem;
-            }
-            
-            .tagline {
-                font-size: 0.8rem;
-                margin-top: 2.5rem;
-                padding-top: 0.6rem;
-            }
-            
-            .platform-card {
-                min-width: 100px;
-                padding: 0.6rem;
-            }
-            
-            .fas {
-                font-size: 1.2rem;
-            }
-            
-            .platform-card h3 {
-                font-size: 0.9rem;
-            }
-        }
-
-        @media screen and (max-height: 480px) and (orientation: landscape) {
-            .mysterious-header {
-                min-height: 100vh;
-                padding: 1rem;
-            }
-            
-            .logo {
-                font-size: 2.5rem;
-            }
-            
-            .tagline {
-                font-size: 1rem;
-                margin-top: 0.5rem;
-            }
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            .platform-card:hover {
-                transform: none;
-            }
-            
-            .submit-btn:hover {
-                transform: none;
-            }
-            
             .platform-carousel {
-                -webkit-overflow-scrolling: touch;
-                scroll-snap-type: x mandatory;
+                padding: 1rem;
             }
-            
-            .platform-card {
-                scroll-snap-align: center;
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
             }
         }
 
@@ -651,107 +471,157 @@
             animation: spin 1s linear infinite;
         }
 
-        .scroll-indicator {
-            position: fixed;
-            right: 30px;
-            top: 50%;
-            transform: translateY(-50%);
+        .scroll-guide {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             opacity: 0;
-            animation: fadeInOut 2s ease-in-out infinite;
-            z-index: 100;
+            animation: fadeInGuide 1s ease-out 2s forwards;
+        }
+
+        .guide-text {
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .guide-text::before,
+        .guide-text::after {
+            content: '✧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .guide-text::before {
+            left: 0;
+        }
+
+        .guide-text::after {
+            right: 0;
+        }
+
+        .guide-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .guide-arrow span {
+            width: 15px;
+            height: 15px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            transform: rotate(45deg);
+            animation: arrowFloat 2s infinite;
+            opacity: 0;
+        }
+
+        .guide-arrow span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .guide-arrow span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .guide-arrow span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes arrowFloat {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        @keyframes fadeInGuide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .scroll-guide:hover {
             cursor: pointer;
         }
 
-        .scroll-arrow {
-            width: 30px;
-            height: 30px;
-            border-right: 3px solid var(--accent-color);
-            border-bottom: 3px solid var(--accent-color);
-            transform: rotate(45deg);
-            animation: bounce 2s infinite;
-            position: relative;
-        }
-
-        .scroll-arrow::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            border-right: 3px solid var(--accent-color);
-            border-bottom: 3px solid var(--accent-color);
-            opacity: 0.3;
-            animation: pulse 2s infinite;
-        }
-
-        .scroll-text {
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            color: var(--accent-color);
-            font-size: 0.9rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0.8;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: rotate(45deg) translateY(0);
-            }
-            40% {
-                transform: rotate(45deg) translateY(10px);
-            }
-            60% {
-                transform: rotate(45deg) translateY(5px);
-            }
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 0.3;
-                transform: translate(-50%, -50%) scale(1);
-            }
-            50% {
-                opacity: 0.1;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-            100% {
-                opacity: 0.3;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0.7; }
-            50% { opacity: 1; }
+        .scroll-guide:hover .guide-arrow span {
+            border-color: var(--accent-light);
         }
 
         @media (max-width: 768px) {
-            .scroll-indicator {
-                right: 15px;
+            .scroll-guide {
+                bottom: 30px;
             }
-            
-            .scroll-arrow {
-                width: 20px;
-                height: 20px;
+
+            .guide-text {
+                font-size: 0.9rem;
             }
-            
-            .scroll-text {
-                font-size: 0.8rem;
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
             }
         }
 
-        .scroll-indicator.hidden {
+        @media (max-width: 480px) {
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .scroll-guide.hidden {
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
@@ -763,10 +633,14 @@
         <div class="mysterious-header">
             <div class="logo">PENSEEWEB</div>
             <div class="tagline">"Transform thoughts Into visual canvas"</div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
-            <div class="scroll-text">Start Here</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
@@ -962,11 +836,13 @@
                 }
             });
 
-            const scrollIndicator = document.querySelector('.scroll-indicator');
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
     
-            scrollIndicator.addEventListener('click', () => {
-                document.querySelector('.form-container').scrollIntoView({
-                    behavior: 'smooth'
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
                 });
             });
 
@@ -975,16 +851,28 @@
                 clearTimeout(scrollTimeout);
                 
                 if (window.scrollY > window.innerHeight * 0.3) {
-                    scrollIndicator.classList.add('hidden');
+                    scrollGuide.classList.add('hidden');
                 } else {
-                    scrollIndicator.classList.remove('hidden');
+                    scrollGuide.classList.remove('hidden');
                 }
 
                 scrollTimeout = setTimeout(() => {
                     if (window.scrollY <= window.innerHeight * 0.3) {
-                        scrollIndicator.classList.remove('hidden');
+                        scrollGuide.classList.remove('hidden');
                     }
                 }, 1000);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.platform-card').forEach(card => {
+                observer.observe(card);
             });
         });
 
