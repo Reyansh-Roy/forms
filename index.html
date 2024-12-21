@@ -513,25 +513,6 @@
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
-
-        /* Maya's signature animations */
-        @keyframes revealLogo {
-            0% { opacity: 0; transform: translateY(50px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes lineExpand {
-            0% { transform: scaleX(0); }
-            100% { transform: scaleX(1); }
-        }
-
-        /* Maya's perfectionist details */
-        .detail-line {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(to right, transparent, var(--accent-color), transparent);
-            margin: 4rem 0;
-        }
     </style>
 </head>
 <body>
@@ -543,7 +524,6 @@
             <div class="logo">PenseeWeb</div>
             <div class="tagline">"Transform thoughts Into visual canvas"</div>
         </div>
-        <div class="detail-line"></div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
                 <div class="platform-card active" onclick="switchTab('text')">
