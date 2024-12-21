@@ -1,1 +1,687 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PenseeWeb - Professional Mindmap Creation</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet"><script src="https://unpkg.com/@supabase/supabase-js@2"></script><style>:root{--primary-color:#faeae6;--accent-color:#d4756d;--text-color:#2c1810;--shadow-color:rgba(212,117,109,0.15);--gradient-soft:linear-gradient(135deg,#faeae6 0%,#f8d5d0 100%);--gradient-accent:linear-gradient(135deg,#d4756d 0%,#c26259 100%);}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Playfair Display',serif;background-color:var(--primary-color);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative}body::before{content:'';position:fixed;inset:0;background:var(--gradient-soft);background-size:200% 200%;animation:gradientFlow 15s ease infinite;z-index:-1}@keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}.container{max-width:500px;width:100%;padding:40px;background:rgba(255,255,255,0.7);border-radius:20px;box-shadow:0 15px 35px var(--shadow-color);backdrop-filter:blur(10px);transform:translateZ(0);transition:0.3s ease;margin-bottom:50px;border:1px solid rgba(255,255,255,0.3);transform-style:preserve-3d;perspective:1000px;position:relative}.container:hover{transform:translateY(-5px) rotateX(2deg);box-shadow:0 20px 40px var(--shadow-color)}.container::after{content:'✧';position:absolute;top:-20px;right:-20px;font-size:2em;color:var(--accent-color);opacity:0.5;animation:float 3s ease infinite}@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(10deg)}}.header{text-align:center;margin-bottom:40px}.header h1{font-size:3.5em;color:var(--accent-color);margin-bottom:10px;font-weight:700;letter-spacing:1px;text-shadow:2px 2px 4px rgba(0,0,0,0.1)}.header p{font-size:1.2em;color:var(--text-color);opacity:0.8}.form-group{margin-bottom:25px;position:relative;overflow:hidden}label{display:block;margin-bottom:8px;font-size:1.1em;color:var(--text-color);font-weight:500}input{width:100%;padding:15px;border:2px solid rgba(212,117,109,0.3);border-radius:12px;font-size:1em;transition:all 0.3s ease;background:rgba(255,255,255,0.8)}input:focus{border-color:var(--accent-color);outline:none;background:rgba(255,255,255,0.95);box-shadow:0 5px 15px rgba(212,117,109,0.2);transform:translateY(-2px)}button{background:var(--gradient-accent);color:#fff;padding:15px 30px;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:0.3s ease;width:100%;font-weight:500;text-transform:uppercase;letter-spacing:1px;position:relative;overflow:hidden;z-index:1}button::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#c26259 0%,#d4756d 100%);opacity:0;z-index:-1;transition:opacity 0.3s ease}button:hover::before{opacity:1}button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(212,117,109,0.4)}.ad-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(250,234,230,0.98);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.ad-container{position:relative;max-width:600px;width:90%;background:var(--primary-color);padding:20px;border-radius:20px;box-shadow:0 15px 35px rgba(212,117,109,0.3);animation:slideIn 0.5s ease-out;transform-style:preserve-3d;perspective:1000px}.ad-header{text-align:center;margin-bottom:10px;color:var(--accent-color);font-style:italic;font-family:'Playfair Display',serif;line-height:1.8;padding:0 10px;font-size:0.9em;text-shadow:1px 1px 2px rgba(212,117,109,0.2)}.tv-frame{background:linear-gradient(145deg,#2a2a2a 0%,#1a1a1a 100%);padding:20px;border-radius:15px;border:10px solid #2a2a2a;box-shadow:0 0 30px rgba(0,0,0,0.5),inset 0 0 20px rgba(0,0,0,0.5);position:relative;width:100%;max-width:600px;margin:0 auto;overflow:hidden}.tv-frame::after{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:150px;height:5px;background:#333;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,0.5)}.tv-brand-logo{position:absolute;top:-25px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d4756d 0%,#c26259 100%);padding:5px 15px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.3);z-index:2}.tv-brand-logo span{font-family:'Playfair Display',serif;color:white;font-size:14px;font-weight:700;letter-spacing:2px;text-shadow:1px 1px 3px rgba(0,0,0,0.3)}.tv-screen{position:relative;width:100%;background:#000;border-radius:10px;overflow:hidden;aspect-ratio:16/9;border:2px solid #444;box-shadow:inset 0 0 20px rgba(0,0,0,0.8)}.tv-screen::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(212,117,109,0.1) 0%,transparent 100%);pointer-events:none;z-index:1}.tv-screen::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(250,234,230,0.05) 0%,transparent 50%);pointer-events:none}.ad-space{position:relative;width:100%;height:100%;background:#000}.ad-slot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;display:none;opacity:0;transition:opacity 0.5s ease;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center}.ad-slot.ad-active{display:flex;opacity:1}.tv-brand{position:absolute;bottom:10px;right:10px;color:#888;font-family:'Arial',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7}.ad-controls{position:absolute;bottom:10px;right:10px;display:flex;gap:10px;align-items:center;z-index:3}.timer{background:rgba(212,117,109,0.9);color:white;padding:5px 10px;border-radius:8px;font-size:12px;font-family:'Poppins',sans-serif;backdrop-filter:blur(5px);box-shadow:0 2px 10px rgba(0,0,0,0.3)}.close-button{display:none;background:rgba(255,255,255,0.9);color:var(--accent-color);border:none;padding:5px 15px;border-radius:8px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;transition:0.3s ease}.close-button:hover{background:white;transform:translateY(-2px)}.success-message{display:none;background:rgba(212,117,109,0.1);border-radius:15px;padding:20px;margin-top:20px;text-align:center;animation:fadeInScale 0.5s ease}@keyframes fadeInScale{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}.note{margin-top:20px;padding:15px;border-left:3px solid var(--accent-color);background:rgba(212,117,109,0.05);font-style:italic;border-radius:0 10px 10px 0}@keyframes slideIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}.completion-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(250,234,230,0.95);display:none;align-items:center;justify-content:center;z-index:10000;backdrop-filter:blur(10px)}.completion-popup .popup-content{background:white;padding:30px;border-radius:20px;text-align:center;animation:popIn 0.5s ease;box-shadow:0 15px 35px rgba(212,117,109,0.3)}@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}.success-icon{font-size:3em;margin-bottom:20px;animation:sparkle 2s infinite}@keyframes sparkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}@media (max-width:768px){.container{padding:20px}.header h1{font-size:2em}.ad-container{width:95%;padding:15px}.ad-header{font-size:0.8em}}</style></head><body><div class="container"><div class="header"><h1>PenseeWeb</h1><p>"Obsession meets perfection in every thought..."</p></div><form id="mindmapForm"><div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap"></div><button type="submit" id="submitButton">Complete Submission</button><div class="error-message" id="errorMessage"></div><div class="success-message" id="successMessage">Submission Complete! 🎉<br>Your mindmap will be sent to your email within 24 hours.<br>Don't forget to check your spam folder!<br>✨</div><div class="note">Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. We sincerely apologize for any delay or inconvenience. 🙏</div></form></div><div class="ad-overlay" id="adOverlay"><div class="ad-container"><div class="ad-header">"Dear visitor, your request will be queued once the timer ends. As we strive to maintain and improve our services, we rely on ad support. Your mindmap will be delivered within 24 hours. Thank you for your patience and understanding. ✨"</div><div class="tv-frame"><div class="tv-brand-logo"><span>PenseeWeb Premium</span></div><div class="tv-screen"><div class="ad-space"><div class="ad-slot ad-active" id="adSlot1"><script type="text/javascript">atOptions={'key':'6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96','format':'iframe','height':250,'width':300,'params':{}};</script><script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script></div><div class="ad-slot" id="adSlot2"><script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script><div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div></div><div class="ad-slot" id="adSlot3"><script type="text/javascript">atOptions={'key':'6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96','format':'iframe','height':250,'width':300,'params':{}};</script><script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script></div></div></div><div class="ad-controls"><div class="timer" id="adTimer">14</div><button class="close-button" id="closeButton">Close TV</button></div></div></div><div class="completion-popup" id="completionPopup"><div class="popup-content"><div class="success-icon">✨</div><h2>Submission Complete! 🎉</h2><p>Your mindmap will be sent to your email within 24 hours.</p><p>Don't forget to check your spam folder!</p><div class="popup-footer">✨</div></div></div><script>const supabaseClient=supabase.createClient('https://rgccooiyalkqiugaxzbk.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0');const adSystem={async showAds(){const e=document.getElementById('adOverlay');const t=document.getElementById('adTimer');const o=document.getElementById('closeButton');const n=document.querySelectorAll('.ad-slot');e.style.display='flex';let a=14;let r=0;n.forEach(e=>{e.classList.remove('ad-active');e.style.opacity='0'});n[0].classList.add('ad-active');n[0].style.opacity='1';const s=e=>{const t=e.querySelector('script');if(t){const o=document.createElement('script');o.type='text/javascript';o.src=t.src;t.parentNode.replaceChild(o,t)}};const i=()=>{n[r].style.opacity='0';setTimeout(()=>{n[r].classList.remove('ad-active');r=(r+1)%n.length;s(n[r]);n[r].classList.add('ad-active');setTimeout(()=>{n[r].style.opacity='1'},100)},500)};const c=setInterval(()=>{t.textContent=Math.max(0,a);a--;if(a===0){clearInterval(c);o.style.display='block';t.style.display='none';handleSubmission();setInterval(i,14000)}},1000);o.onclick=async()=>{clearInterval(c);e.style.display='none';document.getElementById('completionPopup').style.display='flex';setTimeout(()=>{window.location.href='index.html'},3000)}}};async function handleSubmission(){const e=document.getElementById('email').value.trim();const t=JSON.parse(localStorage.getItem('penseewebFormData'));if(!e){document.getElementById('errorMessage').textContent='Please enter your email address';document.getElementById('errorMessage').style.display='block';return}if(!t){document.getElementById('errorMessage').textContent='No input data found. Please start from the beginning.';document.getElementById('errorMessage').style.display='block';return}try{const o=await fetch('https://api.ipify.org?format=json');const n=await o.json();const a=n.ip;const r={email:e,content:t.content,input_type:t.input_type,content_length:t.content_length,processing_status:'pending',is_processed:false,user_ip:a,metadata:{original_timestamp:t.timestamp,submission_timestamp:new Date().toISOString()}};const{error:s}=await supabaseClient.from('penseeweb_forms').insert([r]);if(s)throw s;localStorage.removeItem('penseewebFormData');document.getElementById('successMessage').style.display='block';document.getElementById('mindmapForm').reset();history.pushState(null,null,location.href);window.onpopstate=function(){history.go(1)}}catch(o){console.error('Error:',o);document.getElementById('submitButton').disabled=false;document.getElementById('errorMessage').textContent='There was an error submitting your request. Please try again.';document.getElementById('errorMessage').style.display='block'}}document.getElementById('mindmapForm').addEventListener('submit',async e=>{e.preventDefault();await adSystem.showAds()});window.onload=function(){const e=localStorage.getItem('penseewebFormData');if(!e){document.getElementById('errorMessage').textContent='Please start from the beginning of the process.';document.getElementById('errorMessage').style.display='block';document.getElementById('submitButton').disabled=true;setTimeout(()=>{window.location.href='index.html'},3000)}};window.addEventListener('popstate',function(e){window.location.href='page2.html'});window.onbeforeunload=function(){window.location.href='index.html';return null};</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Creation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --primary-color: #faeae6;
+            --accent-color: #d4756d;
+            --text-color: #2c1810;
+            --shadow-color: rgba(212, 117, 109, 0.15);
+            --gradient-soft: linear-gradient(135deg, #faeae6 0%, #f8d5d0 100%);
+            --gradient-accent: linear-gradient(135deg, #d4756d 0%, #c26259 100%);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: var(--primary-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: var(--gradient-soft);
+            background-size: 200% 200%;
+            animation: gradientFlow 15s ease infinite;
+            z-index: -1;
+        }
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px var(--shadow-color);
+            backdrop-filter: blur(10px);
+            transform: translateZ(0);
+            transition: 0.3s ease;
+            margin-bottom: 50px;
+            border: 1px solid rgba(255,255,255,0.3);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            position: relative;
+        }
+        .container:hover {
+            transform: translateY(-5px) rotateX(2deg);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+        .container::after {
+            content: '✧';
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            font-size: 2em;
+            color: var(--accent-color);
+            opacity: 0.5;
+            animation: float 3s ease infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3.5em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .header p {
+            font-size: 1.2em;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid rgba(212,117,109,0.3);
+            border-radius: 12px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+        }
+        input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 5px 15px rgba(212,117,109,0.2);
+            transform: translateY(-2px);
+        }
+        button {
+            background: var(--gradient-accent);
+            color: #fff;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.3s ease;
+            width: 100%;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #c26259 0%, #d4756d 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+        button:hover::before {
+            opacity: 1;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212,117,109,0.4);
+        }
+        .ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(250, 234, 230, 0.98);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        .ad-container {
+            position: relative;
+            max-width: 600px;
+            width: 90%;
+            background: var(--primary-color);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(212,117,109,0.3);
+            animation: slideIn 0.5s ease-out;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .ad-header {
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            font-style: italic;
+            font-family: 'Playfair Display', serif;
+            line-height: 1.8;
+            padding: 0 10px;
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(212, 117, 109, 0.2);
+        }
+        .tv-frame {
+            background: linear-gradient(145deg, #2a2a2a 0%, #1a1a1a 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 10px solid #2a2a2a;
+            box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .tv-frame::after {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 5px;
+            background: #333;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .tv-brand-logo {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #d4756d 0%, #c26259 100%);
+            padding: 5px 15px;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 2;
+        }
+        .tv-brand-logo span {
+            font-family: 'Playfair Display', serif;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .tv-screen {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            border: 2px solid #444;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+        }
+        .tv-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(212,117,109,0.1) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .tv-screen::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(250,234,230,0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        .ad-space {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+        }
+        .ad-slot {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-slot.ad-active {
+            display: flex;
+            opacity: 1;
+        }
+        .tv-brand {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            color: #888;
+            font-family: 'Arial', sans-serif;
+            font-size: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+        .ad-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            z-index: 3;
+        }
+        .timer {
+            background: rgba(212, 117, 109, 0.9);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        .close-button {
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--accent-color);
+            border: none;
+            padding: 5px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: 0.3s ease;
+        }
+        .close-button:hover {
+            background: white;
+            transform: translateY(-2px);
+        }
+        .success-message {
+            display: none;
+            background: rgba(212, 117, 109, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            animation: fadeInScale 0.5s ease;
+        }
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            border-left: 3px solid var(--accent-color);
+            background: rgba(212, 117, 109, 0.05);
+            font-style: italic;
+            border-radius: 0 10px 10px 0;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        .completion-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(250, 234, 230, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .completion-popup .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            animation: popIn 0.5s ease;
+            box-shadow: 0 15px 35px rgba(212,117,109,0.3);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .ad-container {
+                width: 95%;
+                padding: 15px;
+            }
+            .ad-header {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PenseeWeb</h1>
+            <p>"Obsession meets perfection in every thought..."</p>
+        </div>
+        <form id="mindmapForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap">
+            </div>
+            <button type="submit" id="submitButton">Complete Submission</button>
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage">
+                Submission Complete! 🎉<br>
+                Your mindmap will be sent to your email within 24 hours.<br>
+                Don't forget to check your spam folder!<br>✨
+            </div>
+            <div class="note">
+                Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. 
+                We sincerely apologize for any delay or inconvenience. 🙏
+            </div>
+        </form>
+    </div>
+
+    <div class="ad-overlay" id="adOverlay">
+        <div class="ad-container">
+            <div class="ad-header">
+                "Dear visitor, your request will be queued once the timer ends. As we strive to maintain and improve our services, 
+                we rely on ad support. Your mindmap will be delivered within 24 hours. Thank you for your patience and understanding. ✨"
+            </div>
+            <div class="tv-frame">
+                <div class="tv-brand-logo">
+                    <span>PenseeWeb Premium</span>
+                </div>
+                <div class="tv-screen">
+                    <div class="ad-space">
+                        <!-- First Ad Slot - Adsterra -->
+                        <div class="ad-slot ad-active" id="adSlot1">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96',
+                                    'format' : 'iframe',
+                                    'height' : 250,
+                                    'width' : 300,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script>
+                        </div>
+                        
+                        <!-- Second Ad Slot - Propeller -->
+                        <div class="ad-slot" id="adSlot2">
+                            <script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script>
+                            <div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div>
+                        </div>
+
+                        <!-- Third Ad Slot - Adsterra -->
+                        <div class="ad-slot" id="adSlot3">
+                            <script type="text/javascript">
+                                atOptions = {
+                                    'key' : '6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96',
+                                    'format' : 'iframe',
+                                    'height' : 250,
+                                    'width' : 300,
+                                    'params' : {}
+                                };
+                            </script>
+                            <script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script>
+                        </div>
+                    </div>
+                </div>
+                <div class="ad-controls">
+                    <div class="timer" id="adTimer">14</div>
+                    <button class="close-button" id="closeButton">Close TV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="completion-popup" id="completionPopup">
+        <div class="popup-content">
+            <div class="success-icon">✨</div>
+            <h2>Submission Complete! 🎉</h2>
+            <p>Your mindmap will be sent to your email within 24 hours.</p>
+            <p>Don't forget to check your spam folder!</p>
+            <div class="popup-footer">✨</div>
+        </div>
+    </div>
+
+    <script>
+        const supabaseClient = supabase.createClient(
+            'https://rgccooiyalkqiugaxzbk.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0'
+        );
+
+        const adSystem = {
+            async showAds() {
+                const overlay = document.getElementById('adOverlay');
+                const timer = document.getElementById('adTimer');
+                const closeButton = document.getElementById('closeButton');
+                const adSlots = document.querySelectorAll('.ad-slot');
+                
+                overlay.style.display = 'flex';
+                let totalTime = 14;
+                let currentAdIndex = 0;
+                
+                adSlots.forEach(slot => {
+                    slot.classList.remove('ad-active');
+                    slot.style.opacity = '0';
+                });
+                
+                adSlots[0].classList.add('ad-active');
+                adSlots[0].style.opacity = '1';
+
+                const reloadAdScript = (slot) => {
+                    const adScript = slot.querySelector('script');
+                    if (adScript) {
+                        const newScript = document.createElement('script');
+                        newScript.type = 'text/javascript';
+                        newScript.src = adScript.src;
+                        adScript.parentNode.replaceChild(newScript, adScript);
+                    }
+                };
+
+                const rotateAds = () => {
+                    adSlots[currentAdIndex].style.opacity = '0';
+                    setTimeout(() => {
+                        adSlots[currentAdIndex].classList.remove('ad-active');
+                        currentAdIndex = (currentAdIndex + 1) % adSlots.length;
+                        
+                        reloadAdScript(adSlots[currentAdIndex]);
+                        
+                        adSlots[currentAdIndex].classList.add('ad-active');
+                        setTimeout(() => {
+                            adSlots[currentAdIndex].style.opacity = '1';
+                        }, 100);
+                    }, 500);
+                };
+
+                const countdown = setInterval(() => {
+                    timer.textContent = Math.max(0, totalTime);
+                    totalTime--;
+
+                    if (totalTime === 0) {
+                        clearInterval(countdown);
+                        closeButton.style.display = 'block';
+                        timer.style.display = 'none'; // Hide the timer
+                        handleSubmission(); // Automatically send the request
+                        setInterval(rotateAds, 14000);
+                    }
+                }, 1000);
+
+                closeButton.onclick = async () => {
+                    clearInterval(countdown);
+                    overlay.style.display = 'none';
+                    document.getElementById('completionPopup').style.display = 'flex';
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+                    resolve();
+                };
+            }
+        };
+
+        async function handleSubmission() {
+            const email = document.getElementById('email').value.trim();
+            const storedData = JSON.parse(localStorage.getItem('penseewebFormData'));
+            
+            if (!email) {
+                document.getElementById('errorMessage').textContent = 'Please enter your email address';
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            if (!storedData) {
+                document.getElementById('errorMessage').textContent = 'No input data found. Please start from the beginning.';
+                document.getElementById('errorMessage').style.display = 'block';
+                return;
+            }
+
+            try {
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIP = ipData.ip;
+
+                const submissionData = {
+                    email: email,
+                    content: storedData.content,
+                    input_type: storedData.input_type,
+                    content_length: storedData.content_length,
+                    processing_status: 'pending',
+                    is_processed: false,
+                    user_ip: userIP,
+                    metadata: {
+                        original_timestamp: storedData.timestamp,
+                        submission_timestamp: new Date().toISOString()
+                    }
+                };
+
+                const { error } = await supabaseClient
+                    .from('penseeweb_forms')
+                    .insert([submissionData]);
+
+                if (error) throw error;
+
+                localStorage.removeItem('penseewebFormData');
+                document.getElementById('successMessage').style.display = 'block';
+                document.getElementById('mindmapForm').reset();
+                
+                history.pushState(null, null, location.href);
+                window.onpopstate = function() {
+                    history.go(1);
+                };
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('submitButton').disabled = false;
+                document.getElementById('errorMessage').textContent = 'There was an error submitting your request. Please try again.';
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
+
+        document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await adSystem.showAds();
+        });
+
+        window.onload = function() {
+            const formData = localStorage.getItem('penseewebFormData');
+            if (!formData) {
+                document.getElementById('errorMessage').textContent = 'Please start from the beginning of the process.';
+                document.getElementById('errorMessage').style.display = 'block';
+                document.getElementById('submitButton').disabled = true;
+                
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+            }
+        };
+
+        // Handle back button
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'page2.html';
+        });
+
+        // Handle page refresh
+        window.onbeforeunload = function() {
+            window.location.href = 'index.html';
+            return null;
+        };
+    </script>
+</body>
+</html>
