@@ -1,1 +1,761 @@
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PenseeWeb - Professional Mindmap Generator</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><style>:root{--primary-color:#f8f1fc;--accent-color:#6a1b9a;--accent-light:#8e24aa;--text-color:#2c003e;--shadow-soft:rgba(106,27,154,0.15);--gradient-accent:linear-gradient(135deg,#6a1b9a 0%,#4a1269 100%);--gradient-light:linear-gradient(135deg,#8e24aa 0%,#6a1b9a 100%);--glass-effect:rgba(255,255,255,0.1);}body{background-color:var(--primary-color);font-family:Montserrat,sans-serif;margin:0;padding:0;color:var(--text-color);}body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at top right,rgba(142,36,170,0.05),transparent 70%),radial-gradient(circle at bottom left,rgba(106,27,154,0.05),transparent 70%);z-index:-2;pointer-events:none;}.container{max-width:1200px;margin:0 auto;padding:2rem;}.mysterious-header{text-align:center;margin-bottom:0;position:relative;padding:1.5rem 0;overflow:hidden;}.logo{font-family:'Playfair Display',serif;font-size:3.5rem;letter-spacing:3px;background:var(--gradient-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;position:relative;display:inline-block;text-shadow:2px 2px 4px rgba(106,27,154,0.2);animation:logoFloat 6s ease-in-out infinite;}.logo::before{content:'';position:absolute;top:-10px;left:-10px;right:-10px;bottom:-10px;background:radial-gradient(circle at center,rgba(142,36,170,0.1),transparent 70%);z-index:-1;animation:logoPulse 4s ease-in-out infinite;}.logo::after{content:'';position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:80px;height:2px;background:var(--accent-color);}.tagline{font-family:'Lobster',cursive;font-size:1.6rem;font-weight:400;letter-spacing:1.5px;color:var(--accent-color);opacity:0.9;animation:fadeInUp 1s ease forwards;position:relative;margin:0.5rem 0;padding-bottom:2rem;}.tagline::after{content:'✧ ❈ ✧';position:absolute;bottom:0.75rem;left:50%;transform:translateX(-50%);font-size:1rem;letter-spacing:0.8rem;color:var(--accent-color);text-shadow:0 0 10px var(--accent-color);animation:taglineGlow 3s infinite;opacity:0.8;}.platform-carousel-container{margin-top:0.5rem;padding-top:0;}.platform-carousel{display:flex;overflow-x:auto;gap:1.5rem;margin:1.5rem -2rem;padding:1rem;scroll-behavior:smooth;-ms-overflow-style:none;scrollbar-width:none;position:relative;mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);-webkit-mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent);}.platform-card{min-width:220px;padding:2rem;background:rgba(255,255,255,0.95);border-radius:12px;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);border:1px solid rgba(106,27,154,0.1);cursor:pointer;text-align:center;position:relative;background:rgba(255,255,255,0.95);backdrop-filter:blur(10px);border:1px solid rgba(106,27,154,0.1);}.platform-card::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:2px;background:var(--gradient-light);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity 0.3s ease;}.platform-card:hover{transform:translateY(-8px);box-shadow:0 15px 30px var(--shadow-soft);}.platform-card:hover::before,.platform-card.active::before{opacity:1;}.platform-card.active{background:var(--gradient-accent);border:none;}.platform-card.active i,.platform-card.active h3{color:white;}.coming-soon-badge{background-color:#ff4444;color:#fff;padding:0.3rem 0.6rem;border-radius:5px;font-size:0.7rem;position:absolute;top:10px;right:10px;}.form-container{background:rgba(255,255,255,0.98);border-radius:15px;padding:2.5rem;box-shadow:0 15px 30px var(--shadow-soft);transition:all 0.3s ease;border:1px solid rgba(106,27,154,0.1);position:relative;overflow:hidden;margin-top:1rem;}.form-container::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(142,36,170,0.05),transparent 70%);animation:formGlow 10s infinite linear;}.input-group{position:relative;margin-bottom:2rem;opacity:0;transform:translateY(20px);transition:all 0.5s ease;}.input-group.active{opacity:1;transform:translateY(0);}.input-label{font-family:'Playfair Display',serif;color:var(--text-color);font-size:1.1rem;margin-bottom:0.5rem;opacity:0.9;display:block;}.input-field{width:100%;background:rgba(255,255,255,0.95);padding:1.2rem;border:1px solid rgba(106,27,154,0.2);border-radius:10px;transition:all 0.3s ease;box-sizing:border-box;font-family:Montserrat,sans-serif;font-size:1rem;position:relative;transition:all 0.3s ease;}.input-field:focus{border-color:var(--accent-color);box-shadow:0 5px 15px var(--shadow-soft);outline:none;transform:translateY(-2px);}.input-field:invalid{border-color:#ff4444;}.highlight{animation:highlight 1s ease-in-out;}@keyframes highlight{0%{box-shadow:0 0 10px 5px rgba(142,36,170,0.3);}100%{box-shadow:0 0 0 0 rgba(142,36,170,0);}}.submit-btn{background:var(--gradient-accent);padding:1.2rem;border-radius:10px;font-size:1.1rem;letter-spacing:1px;color:#fff;cursor:pointer;font-weight:600;transition:all 0.3s ease;font-family:Montserrat,sans-serif;width:100%;position:relative;overflow:hidden;border:none;transition:all 0.4s ease;}.submit-btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:0.5s;}.submit-btn::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle at center,rgba(255,255,255,0.2),transparent 70%);opacity:0;transition:opacity 0.3s ease;}.submit-btn:hover::before{left:100%;}.submit-btn:hover:not(:disabled){transform:translateY(-2px);}.submit-btn:hover::after{opacity:1;}.submit-btn:disabled{opacity:0.7;cursor:not-allowed;}.submit-btn:disabled::after{content:'';display:inline-block;width:12px;height:12px;margin-left:10px;border:2px solid #fff;border-radius:50%;border-top-color:transparent;animation:spin 1s linear infinite;}.privacy-notice{margin-top:2rem;text-align:center;font-size:0.9rem;color:#666;}.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:4rem;}.feature-card{background:rgba(255,255,255,0.98);padding:2rem;border-radius:12px;transition:all 0.3s ease;border:1px solid rgba(106,27,154,0.1);text-align:center;position:relative;overflow:hidden;}.feature-card:hover{transform:translateY(-5px);box-shadow:0 10px 25px var(--shadow-soft);}.feature-card::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,transparent,rgba(255,255,255,0.1),transparent);transform:translateX(-100%);transition:transform 0.6s ease;}.feature-card:hover::after{transform:translateX(100%);}.feature-card h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin:1rem 0;color:var(--text-color);}.feature-card p{font-size:0.95rem;color:var(--text-color);opacity:0.8;}.fas{font-size:2rem;margin-bottom:1rem;color:var(--accent-color);}@keyframes fadeInUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}@keyframes logoFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}@keyframes logoPulse{0%,100%{transform:scale(1);opacity:0.5;}50%{transform:scale(1.1);opacity:0.8;}}@keyframes taglineGlow{0%,100%{opacity:0.6;text-shadow:0 0 10px var(--accent-color);}50%{opacity:1;text-shadow:0 0 20px var(--accent-color);}}@keyframes formGlow{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}.error-message{color:#ff4444;font-size:0.9rem;margin-top:0.5rem;display:none;}@media(max-width:768px){.logo{font-size:2.8rem;}.tagline{font-size:1.3rem;}.platform-card{min-width:180px;padding:1.5rem;}.form-container{padding:1.5rem;}.mysterious-header{padding:2rem 1rem;}.platform-carousel{padding:1rem;}.carousel-nav{width:30px;height:30px;}.feature-card{margin:1rem 0;}}.loading-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(248,241,252,0.9);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;pointer-events:none;transition:opacity 0.3s ease;}.loading-overlay.active{opacity:1;pointer-events:all;}.loading-spinner{width:50px;height:50px;border:3px solid var(--accent-light);border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;}</style></head><body><div class="loading-overlay"><div class="loading-spinner"></div></div><div class="container"><div class="mysterious-header"><div class="logo">PenseeWeb</div><div class="tagline">"Transform thoughts Into visual canvas"</div></div><div class="platform-carousel-container"><div class="platform-carousel"><div class="platform-card active" onclick="switchTab('text')"><i class="fas fa-pen"></i><h3>Text Input</h3></div><div class="platform-card" onclick="switchTab('youtube')"><i class="fab fa-youtube"></i><h3>YouTube</h3></div><div class="platform-card coming-soon"><i class="fab fa-facebook"></i><h3>Facebook</h3><div class="coming-soon-badge">Coming Soon</div></div><div class="platform-card coming-soon"><i class="fas fa-chalkboard-teacher"></i><h3>TED</h3><div class="coming-soon-badge">Coming Soon</div></div><div class="platform-card coming-soon"><i class="fab fa-google-drive"></i><h3>Google Drive</h3><div class="coming-soon-badge">Coming Soon</div></div><div class="platform-card coming-soon"><i class="fab fa-vimeo"></i><h3>Vimeo</h3><div class="coming-soon-badge">Coming Soon</div></div><div class="platform-card coming-soon"><i class="fas fa-theater-masks"></i><h3>Metopera</h3><div class="coming-soon-badge">Coming Soon</div></div><div class="platform-card coming-soon"><i class="fas fa-music"></i><h3>Weverse</h3><div class="coming-soon-badge">Coming Soon</div></div></div></div><div class="form-container"><form id="mindmap-form" onsubmit="handleSubmit(event)"><div id="text-input" class="input-group active"><label class="input-label">Enter Your Text (Max 3000 characters)</label><textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea><div class="error-message" id="text-error"></div></div><div id="youtube-input" class="input-group" style="display:none"><label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label><input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=..."><div class="error-message" id="youtube-error"></div></div><button type="submit" class="submit-btn">Generate Mindmap</button></form></div><div class="feature-grid"><div class="feature-card"><i class="fas fa-brain"></i><h3>Artistic Intelligence</h3><p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p></div><div class="feature-card"><i class="fas fa-clock"></i><h3>24-Hour Auto-Delete</h3><p>Your privacy is our priority</p></div><div class="feature-card"><i class="fas fa-infinity"></i><h3>Forever Free</h3><p>No hidden costs, no credit card required</p></div></div></div><script>function switchTab(e){const t=document.querySelectorAll(".platform-card"),n=document.querySelectorAll(".input-group");t.forEach(e=>{e.classList.remove("active"),e.style.transform="scale(0.95)"});const a=document.querySelector(`.platform-card[onclick="switchTab('${e}')"]`);a.classList.add("active"),a.style.transform="scale(1)",n.forEach(e=>{e.classList.remove("active"),setTimeout(()=>{e.style.display="none"},300)});const o=document.getElementById(`${e}-input`);setTimeout(()=>{o.style.display="block",setTimeout(()=>{o.classList.add("active"),o.querySelector(".input-field").classList.add("highlight"),setTimeout(()=>{o.querySelector(".input-field").classList.remove("highlight")},1e3)},50)},300)}function showError(e,t){const n=document.getElementById(e);n.textContent=t,n.style.display="block"}async function handleSubmit(e){e.preventDefault(),showLoading(),document.querySelectorAll(".error-message").forEach(e=>{e.style.display="none",e.textContent=""});const t=document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();let n,a;a="text input"===t?(n=document.querySelector('textarea[name="text-content"]').value,"text"):(n=document.querySelector('input[name="youtube-url"]').value,"youtube"),n?("youtube"===a&&!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(n)&&(showError("youtube-error","Please enter a valid YouTube URL"),hideLoading()),document.querySelector('button[type="submit"]').textContent="Processing...",document.querySelector('button[type="submit"]').disabled=!0,localStorage.setItem("penseewebFormData",JSON.stringify({content:n,input_type:a,content_length:n.length,timestamp:new Date().toISOString()})),window.location.href="page2.html"):showError("text"===a?"text-error":"youtube-error","This field is required"),hideLoading()}document.addEventListener("DOMContentLoaded",()=>{const e=document.querySelector('textarea[name="text-content"]'),t=document.querySelector("#text-input .input-label"),n=t.textContent;e.addEventListener("input",()=>{const a=3000-e.value.length;t.textContent=`${n} (${a} characters remaining)`});document.querySelector('input[name="youtube-url"]').addEventListener("input",function(){this.value&&!/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)?showError("youtube-error","Please enter a valid YouTube URL"):document.getElementById("youtube-error").style.display="none"})});const carousel=document.querySelector(".platform-carousel");let isDown,startX,scrollLeft;carousel.addEventListener("mousedown",e=>{isDown=!0,carousel.style.cursor="grabbing",startX=e.pageX-carousel.offsetLeft,scrollLeft=carousel.scrollLeft}),carousel.addEventListener("mouseleave",()=>{isDown=!1,carousel.style.cursor="grab"}),carousel.addEventListener("mouseup",()=>{isDown=!1,carousel.style.cursor="grab"}),carousel.addEventListener("mousemove",e=>{if(isDown){e.preventDefault();const t=e.pageX-carousel.offsetLeft;carousel.scrollLeft=scrollLeft-2*(t-startX)}});function showLoading(){document.querySelector(".loading-overlay").classList.add("active")}function hideLoading(){document.querySelector(".loading-overlay").classList.remove("active")}</script></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--primary-color);
+            font-family: Montserrat, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-color);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mysterious-header {
+            text-align: center;
+            margin-bottom: 0;
+            position: relative;
+            padding: 1.5rem 0;
+            overflow: hidden;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            letter-spacing: 3px;
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
+            animation: logoFloat 6s ease-in-out infinite;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%);
+            z-index: -1;
+            animation: logoPulse 4s ease-in-out infinite;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background: var(--accent-color);
+        }
+
+        .tagline {
+            font-family: 'Lobster', cursive;
+            font-size: 1.6rem;
+            font-weight: 400;
+            letter-spacing: 1.5px;
+            color: var(--accent-color);
+            opacity: 0.9;
+            animation: fadeInUp 1s ease forwards;
+            position: relative;
+            margin: 0.5rem 0;
+            padding-bottom: 2rem; /* Increased padding for more vertical space */
+        }
+
+        .tagline::after {
+            content: '✧ ❈ ✧';
+            position: absolute;
+            bottom: 0.75rem; /* Moved down for more vertical space */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+            letter-spacing: 0.8rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px var(--accent-color);
+            animation: taglineGlow 3s infinite;
+            opacity: 0.8;
+        }
+
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
+        }
+
+        .platform-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .platform-card {
+            min-width: 220px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 2px;
+            background: var(--gradient-light);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
+        }
+
+        .platform-card:hover::before,
+        .platform-card.active::before {
+            opacity: 1;
+        }
+
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
+        }
+
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: white;
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
+            animation: formGlow 10s infinite linear;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-label {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: 1px solid rgba(106, 27, 154, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: Montserrat, sans-serif;
+            font-size: 1rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 5px 15px var(--shadow-soft);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        .input-field:invalid {
+            border-color: #ff4444;
+        }
+
+        .highlight {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0% { box-shadow: 0 0 10px 5px rgba(142, 36, 170, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(142, 36, 170, 0); }
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: Montserrat, sans-serif;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            transition: all 0.4s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .submit-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:hover::after {
+            opacity: 1;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .feature-card:hover::after {
+            transform: translateX(100%);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .fas {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes taglineGlow {
+            0%, 100% { opacity: 0.6; text-shadow: 0 0 10px var(--accent-color); }
+            50% { opacity: 1; text-shadow: 0 0 20px var(--accent-color); }
+        }
+
+        @keyframes formGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.8rem;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .platform-card {
+                min-width: 180px;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .mysterious-header {
+                padding: 2rem 1rem;
+            }
+
+            .platform-carousel {
+                padding: 1rem;
+            }
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 241, 252, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="container">
+        <div class="mysterious-header">
+            <div class="logo">PenseeWeb</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+        </div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>Your privacy is our priority</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>Forever Free</h3>
+                <p>No hidden costs, no credit card required</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
+        }
+
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+        });
+
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function showLoading() {
+            document.querySelector('.loading-overlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.querySelector('.loading-overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
