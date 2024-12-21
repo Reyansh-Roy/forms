@@ -10,19 +10,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --deep-black: #000000;
-            --blood-red: #8B0000;
-            --gold: #B8860B;
-            --pearl-white: #F5F5F5;
-            --charcoal: #1a1a1a;
-            --shadow: rgba(0, 0, 0, 0.8);
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background: var(--deep-black);
+            background-color: var(--primary-color);
             margin: 0;
             font-family: 'Cormorant Garamond', serif;
-            color: var(--pearl-white);
+            color: var(--text-color);
             overflow-x: hidden;
             position: relative;
         }
@@ -34,10 +36,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                linear-gradient(45deg, transparent 48%, rgba(184, 134, 11, 0.1) 49%, transparent 51%),
-                linear-gradient(-45deg, transparent 48%, rgba(139, 0, 0, 0.1) 49%, transparent 51%);
-            background-size: 4px 4px;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
             pointer-events: none;
             animation: backgroundShift 30s linear infinite;
         }
@@ -61,12 +61,13 @@
         .logo {
             font-size: 5rem;
             font-family: 'Playfair Display', serif;
-            color: var(--pearl-white);
+            color: var(--accent-color);
             position: relative;
             letter-spacing: 12px;
             text-transform: uppercase;
             opacity: 0;
             animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
         }
 
         .logo::before, .logo::after {
@@ -74,7 +75,7 @@
             position: absolute;
             width: 100%;
             height: 1px;
-            background: var(--gold);
+            background: var(--accent-color);
             left: 0;
             animation: lineExpand 1.5s ease-in-out forwards;
         }
@@ -84,7 +85,7 @@
 
         .tagline {
             font-size: 1.8rem;
-            color: var(--blood-red);
+            color: var(--accent-color);
             font-style: italic;
             margin-top: 2rem;
             opacity: 0;
@@ -113,10 +114,10 @@
         .platform-card {
             min-width: 220px;
             padding: 2rem;
-            background: var(--deep-black);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(184, 134, 11, 0.2);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             cursor: pointer;
             text-align: center;
             position: relative;
@@ -130,7 +131,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(184, 134, 11, 0.1));
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
             transform: translateX(-100%);
             transition: transform 0.5s ease;
         }
@@ -141,17 +142,17 @@
 
         .platform-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px var(--shadow);
+            box-shadow: 0 15px 30px var(--shadow-soft);
         }
 
         .platform-card.active {
-            background: var(--blood-red);
+            background: var(--gradient-accent);
             border: none;
         }
 
         .platform-card.active i,
         .platform-card.active h3 {
-            color: var(--pearl-white);
+            color: var(--primary-color);
         }
 
         .coming-soon-badge {
@@ -166,12 +167,12 @@
         }
 
         .form-container {
-            background: var(--charcoal);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
             padding: 2.5rem;
-            box-shadow: 0 15px 30px var(--shadow);
+            box-shadow: 0 15px 30px var(--shadow-soft);
             transition: all 0.3s ease;
-            border: 1px solid rgba(184, 134, 11, 0.2);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             position: relative;
             overflow: hidden;
             margin-top: 1rem;
@@ -184,7 +185,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at center, rgba(184, 134, 11, 0.05), transparent 70%);
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
             animation: formGlow 10s infinite linear;
         }
 
@@ -203,7 +204,7 @@
 
         .input-label {
             font-family: 'Playfair Display', serif;
-            color: var(--pearl-white);
+            color: var(--text-color);
             font-size: 1.1rem;
             margin-bottom: 0.5rem;
             opacity: 0.9;
@@ -212,11 +213,11 @@
 
         .input-field {
             width: 100%;
-            background: transparent;
+            background: rgba(255, 255, 255, 0.95);
             padding: 1.2rem;
             border: none;
-            border-bottom: 1px solid var(--blood-red);
-            color: var(--pearl-white);
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             transition: all 0.3s ease;
@@ -224,7 +225,7 @@
         }
 
         .input-field:focus {
-            border-bottom-color: var(--gold);
+            border-bottom-color: var(--accent-color);
             outline: none;
         }
 
@@ -237,17 +238,17 @@
         }
 
         @keyframes highlight {
-            0% { box-shadow: 0 0 10px 5px rgba(184, 134, 11, 0.3); }
-            100% { box-shadow: 0 0 0 0 rgba(184, 134, 11, 0); }
+            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
         }
 
         .submit-btn {
-            background: transparent;
+            background: var(--gradient-accent);
             padding: 1.2rem;
             border-radius: 10px;
             font-size: 1.1rem;
             letter-spacing: 1px;
-            color: var(--gold);
+            color: white;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
@@ -272,7 +273,7 @@
         }
 
         .submit-btn:hover {
-            color: var(--deep-black);
+            background: var(--gradient-light);
         }
 
         .submit-btn:hover::before {
@@ -311,11 +312,11 @@
         }
 
         .feature-card {
-            background: var(--charcoal);
+            background: rgba(255, 255, 255, 0.98);
             padding: 2rem;
             border-radius: 12px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(184, 134, 11, 0.2);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -323,7 +324,7 @@
 
         .feature-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 25px var(--shadow);
+            box-shadow: 0 10px 25px var(--shadow-soft);
         }
 
         .feature-card::before {
@@ -333,7 +334,7 @@
             left: 0;
             width: 2px;
             height: 100%;
-            background: var(--blood-red);
+            background: var(--accent-color);
             transform: scaleY(0);
             transform-origin: top;
             transition: transform 0.5s ease;
@@ -347,19 +348,19 @@
             font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
             margin: 1rem 0;
-            color: var(--pearl-white);
+            color: var(--text-color);
         }
 
         .feature-card p {
             font-size: 0.95rem;
-            color: var(--pearl-white);
+            color: var(--text-color);
             opacity: 0.8;
         }
 
         .fas {
             font-size: 2rem;
             margin-bottom: 1rem;
-            color: var(--gold);
+            color: var(--accent-color);
         }
 
         @keyframes fadeInUp {
@@ -392,8 +393,8 @@
         }
 
         @keyframes formGlow {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
+            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
         }
 
         .error-message {
@@ -446,7 +447,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(248, 241, 252, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -464,7 +465,7 @@
         .loading-spinner {
             width: 50px;
             height: 50px;
-            border: 3px solid var(--gold);
+            border: 3px solid var(--accent-light);
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
