@@ -429,6 +429,106 @@
                 font-size: 0.8em;
             }
         }
+
+        /* Added CSS for the smart ad system */
+        .smart-ad-system {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(250, 234, 230, 0.98);
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        .native-ad-container {
+            position: relative;
+            max-width: 600px;
+            width: 90%;
+            margin: 50px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(212,117,109,0.3);
+            overflow: hidden;
+        }
+
+        .premium-content-box {
+            padding: 25px;
+        }
+
+        .premium-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .premium-badge {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .premium-body {
+            background: rgba(250, 234, 230, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .content-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(212,117,109,0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .content-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .content-info {
+            flex: 1;
+        }
+
+        .content-info h4 {
+            margin: 0 0 5px 0;
+            color: var(--text-color);
+        }
+
+        .content-info p {
+            margin: 0;
+            font-size: 0.9em;
+            color: rgba(44, 24, 16, 0.7);
+        }
+
+        .timer-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -506,6 +606,21 @@
                 <div class="ad-controls">
                     <div class="timer" id="adTimer">14</div>
                     <button class="close-button" id="closeButton">Close TV</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Ad System -->
+    <div class="smart-ad-system" id="smartAdSystem">
+        <div class="native-ad-container">
+            <div class="premium-content-box">
+                <div class="premium-header">
+                    <span class="premium-badge">Premium Content</span>
+                    <h3>Support Our Service</h3>
+                </div>
+                <div class="premium-body" id="premiumContent">
+                    <!-- Dynamic content will be inserted here -->
                 </div>
             </div>
         </div>
@@ -656,7 +771,19 @@
 
         document.getElementById('mindmapForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            await adSystem.showAds();
+            const testAd = document.createElement('div');
+            testAd.innerHTML = '&nbsp;';
+            testAd.className = 'adsbox';
+            document.body.appendChild(testAd);
+
+            setTimeout(() => {
+                if (testAd.offsetHeight === 0) {
+                    SmartAdSystem.handleAdBlock();
+                } else {
+                    adSystem.showAds();
+                }
+                testAd.remove();
+            }, 100);
         });
 
         window.onload = function() {
@@ -682,6 +809,115 @@
             window.location.href = 'index.html';
             return null;
         };
+
+        // Smart Ad System Code
+        const SmartAdSystem = {
+            adContent: [
+                {
+                    title: "Premium Mindmap Templates",
+                    description: "Exclusive access to professional mindmap templates",
+                    image: "https://via.placeholder.com/80",
+                    link: "https://example.com/premium1"
+                },
+                {
+                    title: "Advanced Thinking Techniques",
+                    description: "Learn expert methods for better thought organization",
+                    image: "https://via.placeholder.com/80",
+                    link: "https://example.com/premium2"
+                },
+                {
+                    title: "Productivity Masterclass",
+                    description: "Boost your efficiency with our proven methods",
+                    image: "https://via.placeholder.com/80",
+                    link: "https://example.com/premium3"
+                }
+            ],
+
+            init() {
+                this.detectAdBlock();
+                this.setupEventListeners();
+            },
+
+            async detectAdBlock() {
+                const testAd = document.createElement('div');
+                testAd.innerHTML = '&nbsp;';
+                testAd.className = 'adsbox';
+                document.body.appendChild(testAd);
+
+                setTimeout(() => {
+                    if (testAd.offsetHeight === 0) {
+                        this.handleAdBlock();
+                    }
+                    testAd.remove();
+                }, 100);
+            },
+
+            handleAdBlock() {
+                // Hide original ad overlay
+                document.getElementById('adOverlay').style.display = 'none';
+                
+                // Show smart ad system
+                const smartSystem = document.getElementById('smartAdSystem');
+                smartSystem.style.display = 'block';
+                
+                this.renderContent();
+                this.startTimer();
+            },
+
+            renderContent() {
+                const container = document.getElementById('premiumContent');
+                let html = '';
+                
+                this.adContent.forEach((content, index) => {
+                    html += `
+                        <div class="content-card" data-index="${index}" onclick="SmartAdSystem.handleCardClick(${index})">
+                            <img src="${content.image}" alt="${content.title}">
+                            <div class="content-info">
+                                <h4>${content.title}</h4>
+                                <p>${content.description}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML = html;
+            },
+
+            startTimer() {
+                let timeLeft = 15;
+                const timerBadge = document.createElement('div');
+                timerBadge.className = 'timer-badge';
+                document.querySelector('.premium-content-box').appendChild(timerBadge);
+
+                const timer = setInterval(() => {
+                    timerBadge.textContent = `Wait: ${timeLeft}s`;
+                    timeLeft--;
+
+                    if (timeLeft < 0) {
+                        clearInterval(timer);
+                        this.completeProcess();
+                    }
+                }, 1000);
+            },
+
+            handleCardClick(index) {
+                const content = this.adContent[index];
+                window.open(content.link, '_blank');
+            },
+
+            completeProcess() {
+                document.getElementById('smartAdSystem').style.display = 'none';
+                handleSubmission(); // Your existing submission function
+                document.getElementById('completionPopup').style.display = 'flex';
+            },
+
+            setupEventListeners() {
+                window.addEventListener('load', () => this.init());
+            }
+        };
+
+        // Initialize the smart ad system
+        SmartAdSystem.setupEventListeners();
     </script>
 </body>
 </html>
