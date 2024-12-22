@@ -56,6 +56,7 @@
             align-items: center;
             text-align: center;
             position: relative;
+            min-height: 100vh;
         }
 
         .logo {
@@ -408,10 +409,12 @@
             .logo {
                 font-size: 3rem;
                 letter-spacing: 8px;
+                margin-top: 20%;
             }
 
             .tagline {
                 font-size: 1.3rem;
+                margin-top: 1rem;
             }
 
             .platform-card {
@@ -425,19 +428,54 @@
 
             .mysterious-header {
                 padding: 2rem 1rem;
+                height: auto;
             }
 
             .platform-carousel {
                 padding: 1rem;
             }
 
-            .carousel-nav {
-                width: 30px;
-                height: 30px;
-            }
-
             .feature-card {
                 margin: 1rem 0;
+            }
+
+            .scroll-guide {
+                bottom: 30px;
+            }
+
+            .guide-text {
+                font-size: 0.9rem;
+            }
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2.5rem;
+                letter-spacing: 5px;
+                margin-top: 30%;
+            }
+
+            .tagline {
+                font-size: 1.1rem;
+                margin-top: 0.5rem;
+            }
+
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
             }
         }
 
@@ -575,36 +613,6 @@
 
         .scroll-guide:hover .guide-arrow span {
             border-color: var(--accent-light);
-        }
-
-        @media (max-width: 768px) {
-            .scroll-guide {
-                bottom: 30px;
-            }
-
-            .guide-text {
-                font-size: 0.9rem;
-            }
-
-            .guide-arrow span {
-                width: 12px;
-                height: 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .scroll-guide {
-                bottom: 20px;
-            }
-
-            .guide-text {
-                font-size: 0.8rem;
-            }
-
-            .guide-arrow span {
-                width: 10px;
-                height: 10px;
-            }
         }
 
         .scroll-guide.hidden {
