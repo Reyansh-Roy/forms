@@ -8,14 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="preload" href="page2.html" as="document">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-    <style>
-        /* Critical CSS */
-        body { display: none; }
-    </style>
-    <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
     <style>
         :root {
             --primary-color: #f8f1fc;
@@ -920,37 +912,6 @@
 
         function hideLoading() {
             document.querySelector('.loading-overlay').classList.remove('active');
-        }
-
-        // Prefetch next pages
-        const prefetchPages = () => {
-            const pages = ['page2.html', 'page3.html'];
-            pages.forEach(page => {
-                const link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = page;
-                document.head.appendChild(link);
-            });
-        };
-
-        // Initialize prefetch after main content loads
-        window.addEventListener('load', prefetchPages);
-
-        // Check for browser support and enhance features
-        const enhanceUI = () => {
-            if ('IntersectionObserver' in window) {
-                // Enhanced scroll animations
-            } else {
-                // Fallback behavior
-            }
-        };
-
-        // Initialize enhancements
-        document.addEventListener('DOMContentLoaded', enhanceUI);
-
-        // Register service worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js');
         }
     </script>
 </body>
