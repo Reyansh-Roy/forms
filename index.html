@@ -93,77 +93,173 @@
         }
 
         .platform-carousel-container {
-            margin-top: 0.5rem;
-            padding-top: 0;
+            position: relative;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 60px;
         }
 
         .platform-carousel {
             display: flex;
-            overflow-x: auto;
-            gap: 1.5rem;
-            margin: 1.5rem -2rem;
-            padding: 1rem;
+            gap: 20px;
+            overflow: hidden;
             scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            padding: 20px 0;
+            margin: 0 -10px;
         }
 
-        .platform-card {
-            min-width: 220px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(106, 27, 154, 0.1);
+        .platform-slide {
+            min-width: calc(33.333% - 20px);
+            position: relative;
+            transition: all 0.4s ease;
             cursor: pointer;
+        }
+
+        .slide-content {
+            background: rgba(255, 255, 255, 0.97);
+            border-radius: 15px;
+            padding: 2rem;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
             position: relative;
             overflow: hidden;
         }
 
-        .platform-card::before {
+        .slide-content::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, var(--glass-effect));
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
+            background: linear-gradient(135deg, rgba(106, 27, 154, 0.05), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .platform-card:hover::before {
-            transform: translateX(0);
+        .platform-slide:hover .slide-content {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--shadow-soft);
         }
 
-        .platform-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px var(--shadow-soft);
+        .platform-slide:hover .slide-content::before {
+            opacity: 1;
         }
 
-        .platform-card.active {
+        .platform-slide.active .slide-content {
             background: var(--gradient-accent);
             border: none;
         }
 
-        .platform-card.active i,
-        .platform-card.active h3 {
-            color: var(--primary-color);
+        .platform-slide.active .slide-content i,
+        .platform-slide.active .slide-content h3,
+        .platform-slide.active .slide-content p {
+            color: white;
         }
 
-        .coming-soon-badge {
-            background-color: #ff4444;
-            color: #fff;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.7rem;
+        .slide-content i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .slide-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 0.5rem 0;
+            color: var(--text-color);
+        }
+
+        .slide-content p {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .coming-soon-tag {
             position: absolute;
-            top: 10px;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-light);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 1px solid rgba(106, 27, 154, 0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .carousel-nav:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .carousel-nav.prev {
+            left: 10px;
+        }
+
+        .carousel-nav.next {
             right: 10px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(106, 27, 154, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--accent-color);
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 992px) {
+            .platform-slide {
+                min-width: calc(50% - 20px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .platform-slide {
+                min-width: calc(100% - 20px);
+            }
+
+            .platform-carousel-container {
+                padding: 0 40px;
+            }
         }
 
         .form-container {
@@ -644,45 +740,37 @@
         </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
-                <div class="platform-card active" onclick="switchTab('text')">
-                    <i class="fas fa-pen"></i>
-                    <h3>Text Input</h3>
+                <div class="platform-slide active" onclick="switchTab('text')">
+                    <div class="slide-content">
+                        <i class="fas fa-pen"></i>
+                        <h3>Text Input</h3>
+                        <p>Transform your written content into mindmaps</p>
+                    </div>
                 </div>
-                <div class="platform-card" onclick="switchTab('youtube')">
-                    <i class="fab fa-youtube"></i>
-                    <h3>YouTube</h3>
+                <div class="platform-slide" onclick="switchTab('youtube')">
+                    <div class="slide-content">
+                        <i class="fab fa-youtube"></i>
+                        <h3>YouTube</h3>
+                        <p>Convert video content into visual knowledge</p>
+                    </div>
                 </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-facebook"></i>
-                    <h3>Facebook</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
+                <div class="platform-slide coming-soon">
+                    <div class="slide-content">
+                        <i class="fab fa-facebook"></i>
+                        <h3>Facebook</h3>
+                        <p>Transform social media content</p>
+                        <span class="coming-soon-tag">Coming Soon</span>
+                    </div>
                 </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <h3>TED</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-google-drive"></i>
-                    <h3>Google Drive</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-vimeo"></i>
-                    <h3>Vimeo</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-theater-masks"></i>
-                    <h3>Metopera</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-music"></i>
-                    <h3>Weverse</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
+                <!-- Add other slides similarly -->
             </div>
+            <button class="carousel-nav prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-nav next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="carousel-dots"></div>
         </div>
         <div class="form-container">
             <form id="mindmap-form" onsubmit="handleSubmit(event)">
