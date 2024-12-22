@@ -92,323 +92,80 @@
             animation: fadeIn 2s 1s forwards;
         }
 
-        /* New Carousel Styles */
-        .platform-carousel-section {
-            --card-width: 300px;
-            --card-height: 450px;
-            --card-spacing: 40px;
-            position: relative;
-            padding: 60px 0;
-            background: linear-gradient(180deg, 
-                rgba(106, 27, 154, 0.05) 0%,
-                rgba(106, 27, 154, 0) 100%);
-        }
-
-        .carousel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 60px;
-            margin-bottom: 40px;
-        }
-
-        .section-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 60px;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 2px;
-        }
-
-        .browse-indicator {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .browse-text {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            font-weight: 500;
-        }
-
-        .arrow-indicator span {
-            display: block;
-            width: 10px;
-            height: 10px;
-            border-right: 2px solid var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-            transform: rotate(-45deg);
-            animation: arrowPulse 1.5s infinite;
-            opacity: 0;
-        }
-
-        .arrow-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .arrow-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-        .platform-carousel-wrapper {
-            position: relative;
-            padding: 40px 60px;
-            perspective: 1000px;
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
         }
 
         .platform-carousel {
             display: flex;
-            gap: var(--card-spacing);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-
-        .carousel-card {
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
             position: relative;
-            min-width: var(--card-width);
-            height: var(--card-height);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
 
-        .card-scale {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.3s ease;
-        }
-
-        .card-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            overflow: hidden;
-            background: rgba(255, 255, 255, 0.98);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .card-image {
-            position: relative;
-            width: 100%;
-            height: 60%;
-            overflow: hidden;
-        }
-
-        .image-gradient {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to bottom, 
-                rgba(0, 0, 0, 0) 0%,
-                rgba(0, 0, 0, 0.8) 100%);
-            z-index: 1;
-        }
-
-        .card-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transform: scale(1.1);
-            transition: transform 0.3s ease;
-        }
-
-        .card-details {
-            position: relative;
-            padding: 20px;
-            z-index: 2;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .primary-icon {
-            font-size: 1.8rem;
-            color: var(--accent-color);
-        }
-
-        .card-meta {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .action-button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
+        .platform-card {
+            min-width: 220px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .action-button.primary {
-            background: var(--gradient-accent);
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-button.secondary {
-            background: rgba(106, 27, 154, 0.1);
-            color: var(--accent-color);
-        }
-
-        .hover-info {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .info-content {
-            color: white;
-            padding: 30px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Hover Effects */
-        .carousel-card:hover .card-scale {
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        .carousel-card:hover .card-content {
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .carousel-card:hover .card-video {
-            transform: scale(1);
-        }
-
-        .carousel-card:hover .hover-info {
-            opacity: 1;
-        }
-
-        /* Navigation Buttons */
-        .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 100;
-        }
-
-        .nav-button.prev { left: 20px; }
-        .nav-button.next { right: 20px; }
-
-        .button-background {
+        .platform-card::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
-            border-radius: 50%;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
-        .nav-button:hover .button-background {
-            transform: scale(1);
+        .platform-card:hover::before {
+            transform: translateX(0);
         }
 
-        /* Progress Bar */
-        .carousel-progress {
-            padding: 0 60px;
-            margin-top: 30px;
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
         }
 
-        .progress-track {
-            height: 2px;
-            background: rgba(106, 27, 154, 0.1);
-            position: relative;
-            border-radius: 1px;
-            overflow: hidden;
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
         }
 
-        .progress-bar {
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
             position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: var(--accent-color);
-            transition: width 0.3s ease;
+            top: 10px;
+            right: 10px;
         }
 
-        @keyframes arrowPulse {
-            0% { opacity: 0; transform: rotate(-45deg) translate(0, 0); }
-            50% { opacity: 1; }
-            100% { opacity: 0; transform: rotate(-45deg) translate(10px, 10px); }
-        }
-
-        /* Responsive Design */
-        @media (max-width: 1200px) {
-            .platform-carousel-section {
-                --card-width: 260px;
-                --card-height: 400px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .platform-carousel-section {
-                --card-width: 220px;
-                --card-height: 350px;
-                --card-spacing: 20px;
-            }
-            
-            .carousel-header {
-                padding: 0 30px;
-            }
-            
-            .platform-carousel-wrapper {
-                padding: 30px;
-            }
-        }
-
-        /* Original Styles */
         .form-container {
             background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
@@ -885,89 +642,46 @@
                 </div>
             </div>
         </div>
-        <div class="platform-carousel-section">
-            <div class="carousel-header">
-                <h2 class="section-title">Choose Your Platform</h2>
-                <div class="browse-indicator">
-                    <span class="browse-text">Browse</span>
-                    <div class="arrow-indicator">
-                        <span></span><span></span><span></span>
-                    </div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
                 </div>
-            </div>
-
-            <div class="platform-carousel-wrapper">
-                <div class="platform-carousel">
-                    <!-- Text Input Card -->
-                    <div class="carousel-card" onclick="switchTab('text')">
-                        <div class="card-scale">
-                            <div class="card-content">
-                                <div class="card-image">
-                                    <div class="image-gradient"></div>
-                                    <video class="card-video" autoplay loop muted playsinline>
-                                        <source src="path/to/text-animation.mp4" type="video/mp4">
-                                    </video>
-                                </div>
-                                <div class="card-details">
-                                    <div class="card-header">
-                                        <i class="fas fa-pen primary-icon"></i>
-                                        <h3>Text Input</h3>
-                                    </div>
-                                    <div class="card-meta">
-                                        <span class="meta-item">
-                                            <i class="fas fa-bolt"></i>
-                                            Instant Processing
-                                        </span>
-                                        <span class="meta-item">
-                                            <i class="fas fa-brain"></i>
-                                            AI Enhanced
-                                        </span>
-                                    </div>
-                                    <p class="card-description">
-                                        Transform your written content into beautiful mindmaps
-                                    </p>
-                                    <div class="card-actions">
-                                        <button class="action-button primary">
-                                            <span>Start Now</span>
-                                            <i class="fas fa-arrow-right"></i>
-                                        </button>
-                                        <button class="action-button secondary">
-                                            <i class="fas fa-info-circle"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="hover-info">
-                                    <div class="info-content">
-                                        <h4>Features</h4>
-                                        <ul>
-                                            <li>Smart Text Analysis</li>
-                                            <li>3000+ Characters</li>
-                                            <li>Custom Styling</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- More platform cards here -->
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
                 </div>
-
-                <button class="nav-button prev">
-                    <div class="button-background"></div>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="nav-button next">
-                    <div class="button-background"></div>
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
-
-            <div class="carousel-progress">
-                <div class="progress-track">
-                    <div class="progress-bar"></div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="slide-indicators"></div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
             </div>
         </div>
         <div class="form-container">
@@ -1013,7 +727,7 @@
                 card.style.transform = "scale(0.95)";
             });
             
-            const activeCard = document.querySelector(.platform-card[onclick="switchTab('${tab}')"]);
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
             activeCard.classList.add("active");
             activeCard.style.transform = "scale(1)";
             
@@ -1024,7 +738,7 @@
                 }, 300);
             });
             
-            const activeInput = document.getElementById(${tab}-input);
+            const activeInput = document.getElementById(`${tab}-input`);
             setTimeout(() => {
                 activeInput.style.display = "block";
                 setTimeout(() => {
@@ -1110,7 +824,7 @@
 
             textArea.addEventListener("input", () => {
                 const remaining = 3000 - textArea.value.length;
-                textLabel.textContent = ${originalLabel} (${remaining} characters remaining);
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
             });
 
             const youtubeInput = document.querySelector('input[name="youtube-url"]');
