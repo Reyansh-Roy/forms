@@ -1,30 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Essential Meta Tags -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta name="description" content="PenseeWeb - Transform your thoughts into stunning visual mindmaps. Professional mindmap generator with artistic intelligence.">
-    <meta name="keywords" content="mindmap, visual thinking, thought organization, professional mindmap, AI mindmap">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="PenseeWeb - Professional Mindmap Generator">
-    <meta property="og:description" content="Transform your thoughts into visual masterpieces with our advanced mindmap generator.">
-    <meta property="og:image" content="https://yoursite.com/images/og-image.jpg">
-    <meta property="og:url" content="https://yoursite.com">
-    
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="PenseeWeb - Professional Mindmap Generator">
-    <meta name="twitter:description" content="Transform your thoughts into visual masterpieces">
-    <meta name="twitter:image" content="https://yoursite.com/images/twitter-card.jpg">
-    
-    <!-- Preload Critical Resources -->
-    <link rel="preload" href="/fonts/your-main-font.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PenseeWeb - Professional Mindmap Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -32,14 +10,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #0a0014;  /* Dark mysterious background */
-            --accent-color: #c0a080;   /* Elegant gold */
-            --accent-light: #d4b08c;   /* Light gold */
-            --text-color: #ffffff;     /* Clean white text */
-            --shadow-soft: rgba(192, 160, 128, 0.15);
-            --gradient-accent: linear-gradient(135deg, #c0a080 0%, #8c6d4a 100%);
-            --gradient-light: linear-gradient(135deg, #d4b08c 0%, #c0a080 100%);
-            --glass-effect: rgba(255, 255, 255, 0.05);
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -58,13 +36,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                url('path-to-subtle-texture.png'),
-                radial-gradient(circle at top right, rgba(192, 160, 128, 0.1), transparent 70%),
-                radial-gradient(circle at bottom left, rgba(192, 160, 128, 0.1), transparent 70%);
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
             pointer-events: none;
-            animation: mysteriousShift 30s linear infinite;
-            opacity: 0.6;
+            animation: backgroundShift 30s linear infinite;
         }
 
         .container {
@@ -81,37 +56,70 @@
             align-items: center;
             text-align: center;
             position: relative;
+            background: radial-gradient(circle at 50% 50%, rgba(142, 36, 170, 0.05) 0%, transparent 70%),
+                        linear-gradient(135deg, rgba(106, 27, 154, 0.08) 0%, transparent 75%);
+        }
+
+        .mysterious-header::before,
+        .mysterious-header::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.1;
+            animation: float 15s infinite alternate;
+        }
+
+        .mysterious-header::before {
+            background: var(--accent-color);
+            top: 10%;
+            left: 15%;
+        }
+
+        .mysterious-header::after {
+            background: var(--accent-light);
+            bottom: 10%;
+            right: 15%;
         }
 
         .logo {
             font-size: 5rem;
-            font-family: 'Cinzel', serif;  /* More elegant font */
-            color: var(--accent-color);
+            font-family: 'Playfair Display', serif;
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: none;
             position: relative;
-            letter-spacing: 15px;
+            z-index: 1;
+            letter-spacing: 12px;
             text-transform: uppercase;
             opacity: 0;
-            animation: logoReveal 2.5s ease-out;
-            text-shadow: 0 0 15px rgba(192, 160, 128, 0.3);
+            animation: revealLogo 2s forwards;
         }
 
-        .logo::before, .logo::after {
-            content: '';
+        .logo::after {
+            content: attr(data-text);
             position: absolute;
-            width: 100%;
-            height: 1px;
-            background: var(--accent-color);
-            left: 0;
-            animation: lineExpand 1.5s ease-in-out forwards;
+            left: 2px;
+            top: 2px;
+            z-index: -1;
+            background: linear-gradient(45deg, rgba(142, 36, 170, 0.2), rgba(106, 27, 154, 0.2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: blur(8px);
         }
-
-        .logo::before { top: -20px; }
-        .logo::after { bottom: -20px; }
 
         .tagline {
             font-size: 1.8rem;
-            color: var(--accent-color);
-            font-style: italic;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-top: 2rem;
             opacity: 0;
             animation: fadeIn 2s 1s forwards;
@@ -139,27 +147,29 @@
         .platform-card {
             min-width: 220px;
             padding: 2rem;
-            background: rgba(10, 0, 20, 0.8);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(192, 160, 128, 0.2);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
             text-align: center;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
+            box-shadow: 0 8px 32px rgba(106, 27, 154, 0.1);
         }
 
         .platform-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, var(--glass-effect));
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
+            inset: 0;
+            border-radius: 12px;
+            padding: 2px;
+            background: linear-gradient(45deg, var(--accent-color), var(--accent-light));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
         }
 
         .platform-card:hover::before {
@@ -167,8 +177,8 @@
         }
 
         .platform-card:hover {
-            transform: translateY(-10px) rotateX(5deg);
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
         }
 
         .platform-card.active {
@@ -179,19 +189,6 @@
         .platform-card.active i,
         .platform-card.active h3 {
             color: var(--primary-color);
-        }
-
-        .platform-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(45deg, transparent, rgba(192, 160, 128, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .platform-card:hover::after {
-            opacity: 1;
         }
 
         .coming-soon-badge {
@@ -206,16 +203,16 @@
         }
 
         .form-container {
-            background: rgba(10, 0, 20, 0.7);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
             border-radius: 15px;
             padding: 2.5rem;
-            box-shadow: 0 0 30px rgba(192, 160, 128, 0.1);
+            box-shadow: 0 15px 30px var(--shadow-soft);
             transition: all 0.3s ease;
-            border: 1px solid rgba(192, 160, 128, 0.2);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             position: relative;
             overflow: hidden;
             margin-top: 1rem;
-            backdrop-filter: blur(10px);
         }
 
         .form-container::before {
@@ -253,20 +250,21 @@
 
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(248, 241, 252, 0.5);
+            backdrop-filter: blur(5px);
             padding: 1.2rem;
-            border: 1px solid rgba(192, 160, 128, 0.3);
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
             color: var(--text-color);
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             transition: all 0.3s ease;
             box-sizing: border-box;
+            border-radius: 8px;
         }
 
         .input-field:focus {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 15px rgba(192, 160, 128, 0.2);
+            border-bottom-color: var(--accent-color);
             outline: none;
         }
 
@@ -353,7 +351,8 @@
         }
 
         .feature-card {
-            background: rgba(255, 255, 255, 0.98);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 12px;
             transition: all 0.3s ease;
@@ -361,11 +360,15 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px var(--shadow-soft);
+            transform: translateY(-5px) rotateX(5deg);
+            box-shadow: 
+                0 20px 40px rgba(106, 27, 154, 0.1),
+                0 0 0 1px rgba(106, 27, 154, 0.05);
         }
 
         .feature-card::before {
@@ -399,9 +402,12 @@
         }
 
         .fas {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: translateZ(20px);
             margin-bottom: 1rem;
-            color: var(--accent-color);
         }
 
         @keyframes fadeInUp {
@@ -419,17 +425,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes logoReveal {
-            0% { 
-                opacity: 0;
-                letter-spacing: 30px;
-            }
-            100% { 
-                opacity: 1;
-                letter-spacing: 15px;
-            }
-        }
-
         @keyframes lineExpand {
             0% { transform: scaleX(0); }
             100% { transform: scaleX(1); }
@@ -444,15 +439,24 @@
             100% { background-position: 100px 100px; }
         }
 
-        @keyframes mysteriousShift {
-            0% { background-position: 0 0; }
-            50% { background-position: 30px 30px; }
-            100% { background-position: 0 0; }
-        }
-
         @keyframes formGlow {
             0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
             100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0); }
+            100% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0) rotate(0); opacity: 0.2; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         .error-message {
@@ -505,7 +509,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 0, 20, 0.9);
+            background: rgba(248, 241, 252, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -521,18 +525,12 @@
         }
 
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid var(--accent-color);
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
             border-top-color: transparent;
             border-radius: 50%;
-            animation: mysteriousSpin 1.5s linear infinite;
-        }
-
-        @keyframes mysteriousSpin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.2); }
-            100% { transform: rotate(360deg) scale(1); }
+            animation: spin 1s linear infinite;
         }
 
         .scroll-guide {
@@ -695,7 +693,7 @@
     </div>
     <div class="container">
         <div class="mysterious-header">
-            <div class="logo">PENSEEWEB</div>
+            <div class="logo" data-text="PENSEEWEB">PENSEEWEB</div>
             <div class="tagline">"Transform thoughts Into visual canvas"</div>
             <div class="scroll-guide">
                 <div class="guide-text">Choose Your Input Method</div>
@@ -705,6 +703,7 @@
                     <span></span>
                 </div>
             </div>
+            <div class="particle-container"></div>
         </div>
         <div class="platform-carousel-container">
             <div class="platform-carousel">
@@ -977,6 +976,38 @@
         function hideLoading() {
             document.querySelector('.loading-overlay').classList.remove('active');
         }
+
+        function createParticles() {
+            const container = document.querySelector('.particle-container');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', createParticles);
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .platform-card').forEach(el => {
+            observer.observe(el);
+        });
+
     </script>
 </body>
 </html>
