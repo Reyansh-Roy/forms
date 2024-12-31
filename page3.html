@@ -1,1 +1,966 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PenseeWeb - Professional Mindmap Creation</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet"><script src="https://unpkg.com/@supabase/supabase-js@2"></script><style>:root{--primary-color:#faeae6;--accent-color:#d4756d;--text-color:#2c1810;--shadow-color:rgba(212,117,109,0.15);--gradient-soft:linear-gradient(135deg,#faeae6 0%,#f8d5d0 100%);--gradient-accent:linear-gradient(135deg,#d4756d 0%,#c26259 100%);}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Playfair Display',serif;background-color:var(--primary-color);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;position:relative}body::before{content:'';position:fixed;inset:0;background:var(--gradient-soft);background-size:200% 200%;animation:gradientFlow 15s ease infinite;z-index:-1}@keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}.container{max-width:500px;width:100%;padding:40px;background:rgba(255,255,255,0.7);border-radius:20px;box-shadow:0 15px 35px var(--shadow-color);backdrop-filter:blur(10px);transform:translateZ(0);transition:0.3s ease;margin-bottom:50px;border:1px solid rgba(255,255,255,0.3);transform-style:preserve-3d;perspective:1000px;position:relative}.container:hover{transform:translateY(-5px) rotateX(2deg);box-shadow:0 20px 40px var(--shadow-color)}.container::after{content:'✧';position:absolute;top:-20px;right:-20px;font-size:2em;color:var(--accent-color);opacity:0.5;animation:float 3s ease infinite}@keyframes float{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-10px) rotate(10deg)}}.header{text-align:center;margin-bottom:40px}.header h1{font-size:3.5em;color:var(--accent-color);margin-bottom:10px;font-weight:700;letter-spacing:1px;text-shadow:2px 2px 4px rgba(0,0,0,0.1)}.header p{font-size:1.2em;color:var(--text-color);opacity:0.8}.form-group{margin-bottom:25px;position:relative;overflow:hidden}label{display:block;margin-bottom:8px;font-size:1.1em;color:var(--text-color);font-weight:500}input{width:100%;padding:15px;border:2px solid rgba(212,117,109,0.3);border-radius:12px;font-size:1em;transition:all 0.3s ease;background:rgba(255,255,255,0.8)}input:focus{border-color:var(--accent-color);outline:none;background:rgba(255,255,255,0.95);box-shadow:0 5px 15px rgba(212,117,109,0.2);transform:translateY(-2px)}button{background:var(--gradient-accent);color:#fff;padding:15px 30px;border:none;border-radius:12px;font-size:1.1em;cursor:pointer;transition:0.3s ease;width:100%;font-weight:500;text-transform:uppercase;letter-spacing:1px;position:relative;overflow:hidden;z-index:1}button::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#c26259 0%,#d4756d 100%);opacity:0;z-index:-1;transition:opacity 0.3s ease}button:hover::before{opacity:1}button:hover{transform:translateY(-2px);box-shadow:0 5px 15px rgba(212,117,109,0.4)}.ad-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(250,234,230,0.98);z-index:9999;display:none;align-items:center;justify-content:center;backdrop-filter:blur(10px)}.ad-container{position:relative;max-width:600px;width:90%;background:var(--primary-color);padding:20px;border-radius:20px;box-shadow:0 15px 35px rgba(212,117,109,0.3);animation:slideIn 0.5s ease-out;transform-style:preserve-3d;perspective:1000px}.ad-header{text-align:center;margin-bottom:10px;color:var(--accent-color);font-style:italic;font-family:'Playfair Display',serif;line-height:1.8;padding:0 10px;font-size:0.9em;text-shadow:1px 1px 2px rgba(212,117,109,0.2)}.tv-frame{background:linear-gradient(145deg,#2a2a2a 0%,#1a1a1a 100%);padding:20px;border-radius:15px;border:10px solid #2a2a2a;box-shadow:0 0 30px rgba(0,0,0,0.5),inset 0 0 20px rgba(0,0,0,0.5);position:relative;width:100%;max-width:600px;margin:0 auto;overflow:hidden}.tv-frame::after{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:150px;height:5px;background:#333;border-radius:5px;box-shadow:0 0 10px rgba(0,0,0,0.5)}.tv-brand-logo{position:absolute;top:-25px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#d4756d 0%,#c26259 100%);padding:5px 15px;border-radius:15px;box-shadow:0 2px 10px rgba(0,0,0,0.3);z-index:2}.tv-brand-logo span{font-family:'Playfair Display',serif;color:white;font-size:14px;font-weight:700;letter-spacing:2px;text-shadow:1px 1px 3px rgba(0,0,0,0.3)}.tv-screen{position:relative;width:100%;background:#000;border-radius:10px;overflow:hidden;aspect-ratio:16/9;border:2px solid #444;box-shadow:inset 0 0 20px rgba(0,0,0,0.8)}.tv-screen::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(212,117,109,0.1) 0%,transparent 100%);pointer-events:none;z-index:1}.tv-screen::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(250,234,230,0.05) 0%,transparent 50%);pointer-events:none}.ad-space{position:relative;width:100%;height:100%;background:#000}.ad-slot{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;display:none;opacity:0;transition:opacity 0.5s ease;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center}.ad-slot.ad-active{display:flex;opacity:1}.tv-brand{position:absolute;bottom:10px;right:10px;color:#888;font-family:'Arial',sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;opacity:0.7}.ad-controls{position:absolute;bottom:10px;right:10px;display:flex;gap:10px;align-items:center;z-index:3}.timer{background:rgba(212,117,109,0.9);color:white;padding:5px 10px;border-radius:8px;font-size:12px;font-family:'Poppins',sans-serif;backdrop-filter:blur(5px);box-shadow:0 2px 10px rgba(0,0,0,0.3)}.close-button{display:none;background:rgba(255,255,255,0.9);color:var(--accent-color);border:none;padding:5px 15px;border-radius:8px;cursor:pointer;font-family:'Poppins',sans-serif;font-weight:500;transition:0.3s ease}.close-button:hover{background:white;transform:translateY(-2px)}.success-message{display:none;background:rgba(212,117,109,0.1);border-radius:15px;padding:20px;margin-top:20px;text-align:center;animation:fadeInScale 0.5s ease}@keyframes fadeInScale{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}@keyframes slideIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}.completion-popup{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(250,234,230,0.95);display:none;align-items:center;justify-content:center;z-index:10000;backdrop-filter:blur(10px)}.completion-popup .popup-content{background:white;padding:30px;border-radius:20px;text-align:center;animation:popIn 0.5s ease;box-shadow:0 15px 35px rgba(212,117,109,0.3)}@keyframes popIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}.success-icon{font-size:3em;margin-bottom:20px;animation:sparkle 2s infinite}@keyframes sparkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}.processing-info{margin-top:8px;font-size:0.85em;color:var(--text-color)}.timing-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(212,117,109,0.08);padding:6px 12px;border-radius:20px;margin-top:5px}.peak-indicator{color:var(--accent-color);font-weight:500}.time-display{color:var(--text-color);opacity:0.8}.delivery-info{margin-top:20px;padding:12px;background:rgba(212,117,109,0.05);border-radius:12px;display:flex;align-items:center;gap:10px;justify-content:center;font-size:0.9em;color:var(--text-color)}.delivery-icon{font-size:1.1em}.delivery-separator{color:var(--accent-color);opacity:0.5}.delivery-text{opacity:0.8}@media (max-width:768px){.container{padding:20px}.header h1{font-size:2em}.ad-container{width:95%;padding:15px}.ad-header{font-size:0.8em}.delivery-info{flex-direction:column;text-align:center;gap:5px}.delivery-separator{display:none}}</style></head><body><div class="container"><div class="header"><h1>PenseeWeb</h1><p>"Obsession meets perfection in every thought..."</p></div><form id="mindmapForm"><div class="form-group"><label for="email">Email Address</label><input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap"><div class="processing-info"><div class="timing-badge"><span class="peak-indicator">⚡ Peak Processing Window</span><span class="time-display">9:30 AM - 2:30 PM EST</span></div></div></div><button type="submit" id="submitButton">Complete Submission</button><div class="error-message" id="errorMessage"></div><div class="success-message" id="successMessage">Submission Complete! 🎉<br>Your mindmap will be sent to your email within 24 hours.<br>Don't forget to check your spam folder!<br>✨</div><div class="delivery-info"><span class="delivery-icon">🕒</span><span class="delivery-text">Standard processing: 24 hours</span><span class="delivery-separator">•</span><span class="delivery-text">Express processing during peak window</span></div></form></div><div class="ad-overlay" id="adOverlay"><div class="ad-container"><div class="ad-header">"Dear visitor, your request will be queued once the timer ends. As we strive to maintain and improve our services, we rely on ad support. Your mindmap will be delivered within 24 hours. Thank you for your patience and understanding. ✨"</div><div class="tv-frame"><div class="tv-brand-logo"><span>PenseeWeb Premium</span></div><div class="tv-screen"><div class="ad-space"><div class="ad-slot ad-active" id="adSlot1"><script type="text/javascript">atOptions={'key':'6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96','format':'iframe','height':250,'width':300,'params':{}};</script><script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script></div><div class="ad-slot" id="adSlot2"><script async="async" data-cfasync="false" src="//pl25301828.profitablecpmrate.com/5a0a6d52f643547f356c1aeafcfac4f7/invoke.js"></script><div id="container-5a0a6d52f643547f356c1aeafcfac4f7"></div></div><div class="ad-slot" id="adSlot3"><script type="text/javascript">atOptions={'key':'6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96','format':'iframe','height':250,'width':300,'params':{}};</script><script type="text/javascript" src="//www.highperformanceformat.com/6f4fdf5ad5f0dcd2aa64ee5fcdd1dd96/invoke.js"></script></div></div></div><div class="ad-controls"><div class="timer" id="adTimer">14</div><button class="close-button" id="closeButton">Close TV</button></div></div></div></div><div class="completion-popup" id="completionPopup"><div class="popup-content"><div class="success-icon">✨</div><h2>Submission Complete! 🎉</h2><p>Your mindmap will be sent to your email within 24 hours.</p><p>Don't forget to check your spam folder!</p><div class="popup-footer">✨</div></div></div><script>const supabaseClient=supabase.createClient('https://rgccooiyalkqiugaxzbk.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJnY2Nvb2l5YWxrcWl1Z2F4emJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjk5NjIzNzgsImV4cCI6MjA0NTUzODM3OH0.JomIxLPTFnGoxDf7WXpg41Vb9M-RKeZJ4oowSstaWT0');const adSystem={async showAds(){const overlay=document.getElementById('adOverlay');const timer=document.getElementById('adTimer');const closeButton=document.getElementById('closeButton');const adSlots=document.querySelectorAll('.ad-slot');overlay.style.display='flex';let totalTime=14;let currentAdIndex=0;adSlots.forEach(slot=>{slot.classList.remove('ad-active');slot.style.opacity='0'});adSlots[0].classList.add('ad-active');adSlots[0].style.opacity='1';const reloadAdScript=slot=>{const adScript=slot.querySelector('script');if(adScript){const newScript=document.createElement('script');newScript.type='text/javascript';newScript.src=adScript.src;adScript.parentNode.replaceChild(newScript,adScript)}};const rotateAds=()=>{adSlots[currentAdIndex].style.opacity='0';setTimeout(()=>{adSlots[currentAdIndex].classList.remove('ad-active');currentAdIndex=(currentAdIndex+1)%adSlots.length;reloadAdScript(adSlots[currentAdIndex]);adSlots[currentAdIndex].classList.add('ad-active');setTimeout(()=>{adSlots[currentAdIndex].style.opacity='1'},100)},500)};const countdown=setInterval(()=>{timer.textContent=Math.max(0,totalTime);totalTime--;if(totalTime===0){clearInterval(countdown);closeButton.style.display='block';timer.style.display='none';handleSubmission();setInterval(rotateAds,14000)}},1000);closeButton.onclick=async()=>{clearInterval(countdown);overlay.style.display='none';document.getElementById('completionPopup').style.display='flex';setTimeout(()=>{window.location.href='index.html'},3000)}}};async function handleSubmission(){const email=document.getElementById('email').value.trim();const storedData=JSON.parse(localStorage.getItem('penseewebFormData'));if(!email){document.getElementById('errorMessage').textContent='Please enter your email address';document.getElementById('errorMessage').style.display='block';return}if(!storedData){document.getElementById('errorMessage').textContent='No input data found. Please start from the beginning.';document.getElementById('errorMessage').style.display='block';return}try{const ipResponse=await fetch('https://api.ipify.org?format=json');const ipData=await ipResponse.json();const userIP=ipData.ip;const submissionData={email:email,content:storedData.content,input_type:storedData.input_type,content_length:storedData.content_length,processing_status:'pending',is_processed:false,user_ip:userIP,metadata:{original_timestamp:storedData.timestamp,submission_timestamp:new Date().toISOString()}};const{error}=await supabaseClient.from('penseeweb_forms').insert([submissionData]);if(error)throw error;localStorage.removeItem('penseewebFormData');document.getElementById('successMessage').style.display='block';document.getElementById('mindmapForm').reset();history.pushState(null,null,location.href);window.onpopstate=function(){history.go(1)}}catch(error){console.error('Error:',error);document.getElementById('submitButton').disabled=false;document.getElementById('errorMessage').textContent='There was an error submitting your request. Please try again.';document.getElementById('errorMessage').style.display='block'}}document.getElementById('mindmapForm').addEventListener('submit',async e=>{e.preventDefault();await adSystem.showAds()});window.onload=function(){const formData=localStorage.getItem('penseewebFormData');if(!formData){document.getElementById('errorMessage').textContent='Please start from the beginning of the process.';document.getElementById('errorMessage').style.display='block';document.getElementById('submitButton').disabled=true;setTimeout(()=>{window.location.href='index.html'},3000)}};window.addEventListener('popstate',function(event){window.location.href='page2.html'});window.onbeforeunload=function(){window.location.href='index.html';return null};</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--primary-color);
+            margin: 0;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
+            pointer-events: none;
+            animation: backgroundShift 30s linear infinite;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mysterious-header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            position: relative;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
+        }
+
+        .logo::before, .logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-color);
+            left: 0;
+            animation: lineExpand 1.5s ease-in-out forwards;
+        }
+
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
+        }
+
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
+        }
+
+        .platform-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .platform-card {
+            min-width: 220px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .platform-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
+        }
+
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
+        }
+
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
+        }
+
+        .platform-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .platform-card .fa-pen {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-youtube {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-facebook {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-chalkboard-teacher {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-google-drive {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-vimeo {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-theater-masks {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-music {
+            font-size: 2.8rem;
+        }
+
+        .platform-card.active i {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .platform-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
+            animation: formGlow 10s infinite linear;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-label {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-bottom-color: var(--accent-color);
+            outline: none;
+        }
+
+        .input-field:invalid {
+            border-bottom-color: #ff4444;
+        }
+
+        .highlight {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gold);
+            transition: all 0.4s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            background: var(--gradient-light);
+        }
+
+        .submit-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid var(--pearl-white);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .fas {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes formGlow {
+            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
+            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+                letter-spacing: 8px;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .platform-card {
+                min-width: 180px;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .mysterious-header {
+                padding: 2rem 1rem;
+            }
+
+            .platform-carousel {
+                padding: 1rem;
+            }
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 241, 252, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .scroll-guide {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInGuide 1s ease-out 2s forwards;
+        }
+
+        .guide-text {
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .guide-text::before,
+        .guide-text::after {
+            content: '✧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .guide-text::before {
+            left: 0;
+        }
+
+        .guide-text::after {
+            right: 0;
+        }
+
+        .guide-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .guide-arrow span {
+            width: 15px;
+            height: 15px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            transform: rotate(45deg);
+            animation: arrowFloat 2s infinite;
+            opacity: 0;
+        }
+
+        .guide-arrow span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .guide-arrow span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .guide-arrow span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes arrowFloat {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        @keyframes fadeInGuide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .scroll-guide:hover {
+            cursor: pointer;
+        }
+
+        .scroll-guide:hover .guide-arrow span {
+            border-color: var(--accent-light);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-guide {
+                bottom: 30px;
+            }
+
+            .guide-text {
+                font-size: 0.9rem;
+            }
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .scroll-guide.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="container">
+        <div class="mysterious-header">
+            <div class="logo">PENSEEWEB</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>Your privacy is our priority</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>Forever Free</h3>
+                <p>No hidden costs, no credit card required</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
+        }
+
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
+    
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollGuide.classList.add('hidden');
+                } else {
+                    scrollGuide.classList.remove('hidden');
+                }
+
+                scrollTimeout = setTimeout(() => {
+                    if (window.scrollY <= window.innerHeight * 0.3) {
+                        scrollGuide.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.platform-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function showLoading() {
+            document.querySelector('.loading-overlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.querySelector('.loading-overlay').classList.remove('active');
+        }
+    </script>
+</body>
+</html>
