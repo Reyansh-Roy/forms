@@ -357,14 +357,6 @@
                 transform: scale(1);
             }
         }
-        .note {
-            margin-top: 20px;
-            padding: 15px;
-            border-left: 3px solid var(--accent-color);
-            background: rgba(212, 117, 109, 0.05);
-            font-style: italic;
-            border-radius: 0 10px 10px 0;
-        }
         @keyframes slideIn {
             from {
                 transform: translateY(-20px);
@@ -388,7 +380,6 @@
             z-index: 10000;
             backdrop-filter: blur(10px);
         }
-
         .completion-popup .popup-content {
             background: white;
             padding: 30px;
@@ -397,23 +388,63 @@
             animation: popIn 0.5s ease;
             box-shadow: 0 15px 35px rgba(212,117,109,0.3);
         }
-
         @keyframes popIn {
             from { transform: scale(0.9); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
-
         .success-icon {
             font-size: 3em;
             margin-bottom: 20px;
             animation: sparkle 2s infinite;
         }
-
         @keyframes sparkle {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.8; }
         }
-
+        .processing-info {
+            margin-top: 8px;
+            font-size: 0.85em;
+            color: var(--text-color);
+        }
+        .timing-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 117, 109, 0.08);
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-top: 5px;
+        }
+        .peak-indicator {
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        .time-display {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        .delivery-info {
+            margin-top: 20px;
+            padding: 12px;
+            background: rgba(212, 117, 109, 0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+        .delivery-icon {
+            font-size: 1.1em;
+        }
+        .delivery-separator {
+            color: var(--accent-color);
+            opacity: 0.5;
+        }
+        .delivery-text {
+            opacity: 0.8;
+        }
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
@@ -428,6 +459,14 @@
             .ad-header {
                 font-size: 0.8em;
             }
+            .delivery-info {
+                flex-direction: column;
+                text-align: center;
+                gap: 5px;
+            }
+            .delivery-separator {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -441,6 +480,12 @@
             <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" required placeholder="Enter your email to receive the mindmap">
+                <div class="processing-info">
+                    <div class="timing-badge">
+                        <span class="peak-indicator">⚡ Peak Processing Window</span>
+                        <span class="time-display">9:30 AM - 2:30 PM EST</span>
+                    </div>
+                </div>
             </div>
             <button type="submit" id="submitButton">Complete Submission</button>
             <div class="error-message" id="errorMessage"></div>
@@ -449,9 +494,11 @@
                 Your mindmap will be sent to your email within 24 hours.<br>
                 Don't forget to check your spam folder!<br>✨
             </div>
-            <div class="note">
-                Note: Due to our limited V2 system capacity, mindmap generation might take up to 24 hours. 
-                We sincerely apologize for any delay or inconvenience. 🙏
+            <div class="delivery-info">
+                <span class="delivery-icon">🕒</span>
+                <span class="delivery-text">Standard processing: 24 hours</span>
+                <span class="delivery-separator">•</span>
+                <span class="delivery-text">Express processing during peak window</span>
             </div>
         </form>
     </div>
@@ -578,8 +625,8 @@
                     if (totalTime === 0) {
                         clearInterval(countdown);
                         closeButton.style.display = 'block';
-                        timer.style.display = 'none'; // Hide the timer
-                        handleSubmission(); // Automatically send the request
+                        timer.style.display = 'none';
+                        handleSubmission();
                         setInterval(rotateAds, 14000);
                     }
                 }, 1000);
@@ -591,7 +638,6 @@
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 3000);
-                    resolve();
                 };
             }
         };
@@ -672,12 +718,10 @@
             }
         };
 
-        // Handle back button
         window.addEventListener('popstate', function(event) {
             window.location.href = 'page2.html';
         });
 
-        // Handle page refresh
         window.onbeforeunload = function() {
             window.location.href = 'index.html';
             return null;
