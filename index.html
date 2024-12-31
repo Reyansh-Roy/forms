@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #f8f1fc;
+            --primary-color: transparent;
             --accent-color: #6a1b9a;
             --accent-light: #8e24aa;
             --text-color: #2c003e;
@@ -27,110 +27,417 @@
             color: var(--text-color);
             overflow-x: hidden;
             position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mysterious-header {
+            height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
-            height: 100vh;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            position: relative;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
+        }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
+        }
+
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
         }
 
         .platform-carousel {
             display: flex;
+            overflow-x: auto;
             gap: 1.5rem;
-            justify-content: center;
-            margin-bottom: 2rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
 
         .platform-card {
-            padding: 1rem;
+            min-width: 220px;
+            padding: 2rem;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
             cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .platform-card i {
-            font-size: 2rem;
-            color: var(--accent-color);
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
         }
 
-        .platform-card h3 {
-            margin-top: 0.5rem;
-            font-size: 1rem;
-            color: var(--text-color);
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
         }
 
         .form-container {
-            text-align: center;
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .input-group {
+            position: relative;
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .input-label {
-            display: block;
-            font-size: 1rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
             margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
         }
 
         .input-field {
             width: 100%;
-            max-width: 300px;
-            padding: 1rem;
-            border: 1px solid var(--accent-color);
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
         }
 
         .submit-btn {
-            background: var(--accent-color);
-            padding: 1rem;
-            border-radius: 5px;
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
             color: white;
             cursor: pointer;
-            font-weight: bold;
-            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--accent-light);
+            transition: all 0.4s ease;
         }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
     </style>
 </head>
 <body>
-    <div class="platform-carousel">
-        <div class="platform-card">
-            <i class="fas fa-pen"></i>
-            <h3>Text Input</h3>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="container">
+        <div class="mysterious-header">
+            <div class="logo">PENSEEWEB</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
         </div>
-        <div class="platform-card">
-            <i class="fab fa-youtube"></i>
-            <h3>YouTube</h3>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                </div>
+            </div>
         </div>
-        <div class="platform-card">
-            <i class="fab fa-facebook"></i>
-            <h3>Facebook</h3>
-        </div>
-        <div class="platform-card">
-            <i class="fas fa-chalkboard-teacher"></i>
-            <h3>TED</h3>
-        </div>
-        <div class="platform-card">
-            <i class="fab fa-google-drive"></i>
-            <h3>Google Drive</h3>
-        </div>
-        <div class="platform-card">
-            <i class="fab fa-vimeo"></i>
-            <h3>Vimeo</h3>
-        </div>
-        <div class="platform-card">
-            <i class="fas fa-theater-masks"></i>
-            <h3>Metopera</h3>
-        </div>
-        <div class="platform-card">
-            <i class="fas fa-music"></i>
-            <h3>Weverse</h3>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
         </div>
     </div>
-    <div class="form-container">
-        <label class="input-label">Enter Your Text (Max 3000 characters)</label>
-        <textarea class="input-field" name="text-content" rows="4" maxlength="3000" placeholder="Enter your text here..."></textarea>
-        <button class="submit-btn">Generate Mindmap</button>
-    </div>
+    <script>
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
+    
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollGuide.classList.add('hidden');
+                } else {
+                    scrollGuide.classList.remove('hidden');
+                }
+
+                scrollTimeout = setTimeout(() => {
+                    if (window.scrollY <= window.innerHeight * 0.3) {
+                        scrollGuide.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.platform-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function showLoading() {
+            document.querySelector('.loading-overlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.querySelector('.loading-overlay').classList.remove('active');
+        }
+    </script>
 </body>
 </html>
