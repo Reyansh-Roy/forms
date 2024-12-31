@@ -3,85 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenseeWeb</title>
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
+        }
+
         body {
+            background-color: var(--primary-color);
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f8f1fc;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            padding: 20px;
+            flex-direction: column;
+            height: 100vh;
         }
 
         .platform-carousel {
             display: flex;
-            gap: 15px;
-            max-width: 800px;
-            overflow-x: auto;
-            padding: 20px;
-            margin: 20px 0;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-bottom: 2rem;
         }
 
         .platform-card {
-            min-width: 120px;
-            padding: 15px;
-            background: white;
-            border-radius: 8px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.3s;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .platform-card:hover {
-            transform: translateY(-5px);
         }
 
         .platform-card i {
-            font-size: 24px;
-            color: #6a1b9a;
-            margin-bottom: 10px;
+            font-size: 2rem;
+            color: var(--accent-color);
         }
 
         .platform-card h3 {
-            margin: 0;
-            font-size: 14px;
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-color);
         }
 
-        .input-container {
+        .form-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-field {
             width: 100%;
-            max-width: 600px;
-            margin: 20px 0;
+            max-width: 300px;
+            padding: 1rem;
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-size: 1rem;
         }
 
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            resize: vertical;
-        }
-
-        .generate-btn {
-            background: #6a1b9a;
+        .submit-btn {
+            background: var(--accent-color);
+            padding: 1rem;
+            border-radius: 5px;
             color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            width: 100%;
-            transition: background 0.3s;
-        }
-
-        .generate-btn:hover {
-            background: #8e24aa;
+            font-weight: bold;
+            border: none;
         }
     </style>
 </head>
@@ -120,10 +127,10 @@
             <h3>Weverse</h3>
         </div>
     </div>
-
-    <div class="input-container">
-        <textarea placeholder="Enter your text here... (Max 3000 characters)"></textarea>
-        <button class="generate-btn">Generate Mindmap</button>
+    <div class="form-container">
+        <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+        <textarea class="input-field" name="text-content" rows="4" maxlength="3000" placeholder="Enter your text here..."></textarea>
+        <button class="submit-btn">Generate Mindmap</button>
     </div>
 </body>
 </html>
