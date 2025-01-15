@@ -42,31 +42,52 @@
             animation: backgroundShift 30s linear infinite;
         }
 
-        .dynamic-particles {
+        .gradient-mesh {
             position: fixed;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(142, 36, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 0%, rgba(106, 27, 154, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(142, 36, 170, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 0% 100%, rgba(106, 27, 154, 0.1) 0%, transparent 50%);
+            filter: blur(60px);
+            z-index: -1;
+            animation: meshShift 20s ease infinite alternate;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(106, 27, 154, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(106, 27, 154, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+            opacity: 0.5;
+            animation: gridFloat 15s linear infinite;
+        }
+
+        .neural-network {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: 0;
+            z-index: 1;
         }
 
-        .particle {
+        .synapse {
             position: absolute;
-            background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+            width: 2px;
+            height: 2px;
+            background: var(--accent-color);
             border-radius: 50%;
-            opacity: 0.3;
-            animation: floatParticle 15s infinite linear;
-        }
-
-        @keyframes floatParticle {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            100% {
-                transform: translate(var(--moveX), var(--moveY)) rotate(360deg);
-            }
+            filter: blur(1px);
+            opacity: 0.6;
+            animation: synapseFloat 3s infinite ease-in-out;
         }
 
         .container {
@@ -122,10 +143,6 @@
         .platform-carousel-container {
             margin-top: 0.5rem;
             padding-top: 0;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.3s;
         }
 
         .platform-carousel {
@@ -145,16 +162,18 @@
         .platform-card {
             min-width: 220px;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(106, 27, 154, 0.1),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.4);
             border-radius: 12px;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(106, 27, 154, 0.1);
             cursor: pointer;
             text-align: center;
             position: relative;
             overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1000px;
         }
 
         .platform-card::before {
@@ -174,22 +193,13 @@
         }
 
         .platform-card:hover {
-            transform: translateY(-8px) rotateX(10deg);
-            box-shadow: 0 15px 30px var(--shadow-soft),
-                        0 5px 15px rgba(106, 27, 154, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
         }
 
         .platform-card.active {
             background: var(--gradient-accent);
             border: none;
-            box-shadow: 0 0 30px rgba(106, 27, 154, 0.2);
-            animation: glowPulse 2s infinite;
-        }
-
-        @keyframes glowPulse {
-            0% { box-shadow: 0 0 30px rgba(106, 27, 154, 0.2); }
-            50% { box-shadow: 0 0 40px rgba(106, 27, 154, 0.4); }
-            100% { box-shadow: 0 0 30px rgba(106, 27, 154, 0.2); }
         }
 
         .platform-card.active i,
@@ -266,10 +276,6 @@
             position: relative;
             overflow: hidden;
             margin-top: 1rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.6s;
         }
 
         .form-container::before {
@@ -307,7 +313,8 @@
 
         .input-field {
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
             padding: 1.2rem;
             border: none;
             border-bottom: 1px solid rgba(106, 27, 154, 0.2);
@@ -319,6 +326,11 @@
         }
 
         .input-field:focus {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 0 0 2px rgba(106, 27, 154, 0.2),
+                0 15px 25px rgba(106, 27, 154, 0.1);
+            transform: translateY(-2px);
             border-bottom-color: var(--accent-color);
             outline: none;
         }
@@ -337,7 +349,7 @@
         }
 
         .submit-btn {
-            background: var(--gradient-accent);
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
             padding: 1.2rem;
             border-radius: 10px;
             font-size: 1.1rem;
@@ -349,37 +361,30 @@
             width: 100%;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--gold);
-            background-size: 200% 100%;
-            background-position: right bottom;
-            transition: all 0.5s ease-out;
+            border: none;
+            transition: all 0.5s ease;
         }
 
         .submit-btn::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--gold);
-            transition: transform 0.5s ease;
-            z-index: -1;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            transform: rotate(45deg);
+            animation: buttonGlow 2s linear infinite;
         }
 
         .submit-btn:hover {
-            background-position: left bottom;
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(106, 27, 154, 0.3);
-        }
-
-        .submit-btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .submit-btn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 5px 10px rgba(106, 27, 154, 0.2);
         }
 
         .submit-btn:disabled {
@@ -411,10 +416,6 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             margin-top: 4rem;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
-            animation-delay: 0.9s;
         }
 
         .feature-card {
@@ -501,6 +502,22 @@
         @keyframes formGlow {
             0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
             100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        @keyframes meshShift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(3deg); }
+        }
+
+        @keyframes gridFloat {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.05); }
+            100% { transform: translateY(0) scale(1); }
+        }
+
+        @keyframes synapseFloat {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 0.8; }
         }
 
         .error-message {
@@ -732,6 +749,8 @@
     </style>
 </head>
 <body>
+    <div class="gradient-mesh"></div>
+    <div class="grid-overlay"></div>
     <div class="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
@@ -924,8 +943,6 @@
         }
 
         document.addEventListener("DOMContentLoaded", () => {
-            createParticles();
-
             const textArea = document.querySelector('textarea[name="text-content"]');
             const textLabel = document.querySelector("#text-input .input-label");
             const originalLabel = textLabel.textContent;
@@ -982,6 +999,29 @@
             document.querySelectorAll('.platform-card').forEach(card => {
                 observer.observe(card);
             });
+
+            // Add mesh and grid overlays
+            const mesh = document.createElement('div');
+            mesh.className = 'gradient-mesh';
+            document.body.appendChild(mesh);
+
+            const grid = document.createElement('div');
+            grid.className = 'grid-overlay';
+            document.body.appendChild(grid);
+
+            // Initialize neural network
+            createNeuralNetwork();
+
+            // Add magnetic effect to buttons
+            document.querySelectorAll('.submit-btn').forEach(button => {
+                button.addEventListener('mousemove', (e) => {
+                    const rect = button.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    button.style.setProperty('--x', `${x}px`);
+                    button.style.setProperty('--y', `${y}px`);
+                });
+            });
         });
 
         const carousel = document.querySelector('.platform-carousel');
@@ -1022,23 +1062,31 @@
             document.querySelector('.loading-overlay').classList.remove('active');
         }
 
-        function createParticles() {
+        function createNeuralNetwork() {
             const container = document.createElement('div');
-            container.className = 'dynamic-particles';
+            container.className = 'neural-network';
             document.body.appendChild(container);
 
-            for (let i = 0; i < 20; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.width = Math.random() * 15 + 5 + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.left = Math.random() * 100 + 'vw';
-                particle.style.top = Math.random() * 100 + 'vh';
-                particle.style.setProperty('--moveX', (Math.random() * 200 - 100) + 'px');
-                particle.style.setProperty('--moveY', (Math.random() * 200 - 100) + 'px');
-                particle.style.animationDelay = -Math.random() * 15 + 's';
-                container.appendChild(particle);
+            for (let i = 0; i < 50; i++) {
+                createSynapse(container);
             }
+        }
+
+        function createSynapse(container) {
+            const synapse = document.createElement('div');
+            synapse.className = 'synapse';
+            positionSynapse(synapse);
+            container.appendChild(synapse);
+
+            synapse.addEventListener('animationend', () => {
+                positionSynapse(synapse);
+            });
+        }
+
+        function positionSynapse(synapse) {
+            synapse.style.left = Math.random() * 100 + 'vw';
+            synapse.style.top = Math.random() * 100 + 'vh';
+            synapse.style.animationDelay = Math.random() * 2 + 's';
         }
     </script>
 </body>
