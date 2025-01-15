@@ -3,47 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenseeWeb - AI-Powered Mindmap Generator</title>
+    <title>PenseeWeb - Professional Mindmap Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Three.js for 3D effects -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- GSAP for smooth animations -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <style>
         :root {
-            --primary-bg: #0a0a0f;
-            --secondary-bg: #13131f;
-            --accent-primary: #6d28d9;
-            --accent-secondary: #7c3aed;
-            --text-primary: #ffffff;
-            --text-secondary: #94a3b8;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.05);
-            --glass-shadow: rgba(0, 0, 0, 0.1);
-            --neon-glow: 0 0 20px rgba(124, 58, 237, 0.5);
-            --gradient-primary: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
-            --gradient-dark: linear-gradient(135deg, #0f0f17 0%, #1a1a2e 100%);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Space Grotesk', sans-serif;
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
         }
 
         body {
-            background: var(--primary-bg);
-            color: var(--text-primary);
+            background-color: var(--primary-color);
+            margin: 0;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-color);
             overflow-x: hidden;
             position: relative;
         }
 
-        /* Neural Network Background Effect */
-        .neural-bg {
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
+            pointer-events: none;
+            animation: backgroundShift 30s linear infinite;
+        }
+
+        .dynamic-particles {
             position: fixed;
             top: 0;
             left: 0;
@@ -51,220 +50,510 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
-            opacity: 0.2;
         }
 
-        /* Glassmorphic Container */
-        .glass-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            box-shadow: 0 8px 32px var(--glass-shadow);
+        .particle {
+            position: absolute;
+            background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatParticle 15s infinite linear;
         }
 
-        /* Modern Header */
-        .ai-header {
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            100% {
+                transform: translate(var(--moveX), var(--moveY)) rotate(360deg);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mysterious-header {
             height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            text-align: center;
             position: relative;
-            overflow: hidden;
         }
 
-        .ai-logo {
-            font-size: 4.5rem;
-            font-weight: 700;
-            background: linear-gradient(to right, #fff, #7c3aed);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            letter-spacing: -2px;
-            transform: translateY(-20px);
+        .logo {
+            font-size: 5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            position: relative;
+            letter-spacing: 12px;
+            text-transform: uppercase;
             opacity: 0;
-            animation: fadeInUp 1s forwards;
+            animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
         }
 
-        .ai-tagline {
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            margin-bottom: 3rem;
+        .logo::before, .logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-color);
+            left: 0;
+            animation: lineExpand 1.5s ease-in-out forwards;
+        }
+
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 2rem;
             opacity: 0;
-            animation: fadeInUp 1s 0.3s forwards;
+            animation: fadeIn 2s 1s forwards;
         }
 
-        /* Modern AI Components */
-        .ai-features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 2rem;
-            perspective: 1000px;
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: 0.3s;
         }
 
-        .ai-card {
-            background: var(--gradient-dark);
-            border-radius: 20px;
+        .platform-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .platform-card {
+            min-width: 220px;
             padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            cursor: pointer;
+            text-align: center;
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            perspective: 1000px;
         }
 
-        .ai-card::before {
+        .platform-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(124, 58, 237, 0.1));
-            transform: translateZ(-1px);
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
         }
 
-        .ai-card:hover {
-            transform: translateY(-10px) rotateX(10deg);
+        .platform-card:hover::before {
+            transform: translateX(0);
         }
 
-        /* Neural Network Animation */
-        .neural-node {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: pulse 2s infinite;
+        .platform-card:hover {
+            transform: translateY(-8px) rotateX(10deg);
+            box-shadow: 0 15px 30px var(--shadow-soft),
+                        0 5px 15px rgba(106, 27, 154, 0.2);
         }
 
-        .neural-connection {
-            position: absolute;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-primary), transparent);
-            transform-origin: left;
-            animation: connect 3s infinite;
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
+            box-shadow: 0 0 30px rgba(106, 27, 154, 0.2);
+            animation: glowPulse 2s infinite;
         }
 
-        /* Modern Input Fields */
-        .ai-input {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(124, 58, 237, 0.2);
-            border-radius: 12px;
-            padding: 1.2rem;
-            color: var(--text-primary);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            width: 100%;
+        @keyframes glowPulse {
+            0% { box-shadow: 0 0 30px rgba(106, 27, 154, 0.2); }
+            50% { box-shadow: 0 0 40px rgba(106, 27, 154, 0.4); }
+            100% { box-shadow: 0 0 30px rgba(106, 27, 154, 0.2); }
+        }
+
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
+        }
+
+        .platform-card i {
+            font-size: 2.5rem;
             margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
         }
 
-        .ai-input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+        .platform-card .fa-pen {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-youtube {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-facebook {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-chalkboard-teacher {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-google-drive {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-vimeo {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-theater-masks {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-music {
+            font-size: 2.8rem;
+        }
+
+        .platform-card.active i {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .platform-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: 0.6s;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
+            animation: formGlow 10s infinite linear;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-label {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-bottom-color: var(--accent-color);
             outline: none;
         }
 
-        /* Floating Elements */
-        .floating-element {
-            position: absolute;
-            pointer-events: none;
-            opacity: 0.5;
-            filter: blur(2px);
-            animation: float 20s infinite linear;
+        .input-field:invalid {
+            border-bottom-color: #ff4444;
         }
 
-        /* AI Processing Button */
-        .ai-button {
-            background: var(--gradient-primary);
-            border: none;
-            border-radius: 12px;
-            padding: 1rem 2rem;
+        .highlight {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
             color: white;
-            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-family: 'Cormorant Garamond', serif;
+            width: 100%;
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--gold);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: all 0.5s ease-out;
         }
 
-        .ai-button::before {
+        .submit-btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
+            background: var(--gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
         }
 
-        .ai-button:hover::before {
-            left: 100%;
+        .submit-btn:hover {
+            background-position: left bottom;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(106, 27, 154, 0.3);
         }
 
-        /* Platform Selection */
-        .platform-selector {
-            display: flex;
-            gap: 1.5rem;
-            margin: 2rem 0;
-            perspective: 1000px;
+        .submit-btn:hover::before {
+            transform: translateX(100%);
         }
 
-        .platform-option {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            cursor: pointer;
+        .submit-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(106, 27, 154, 0.2);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid var(--pearl-white);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: 0.9s;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            transform-style: preserve-3d;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .platform-option:hover {
-            transform: translateZ(20px);
-            box-shadow: var(--neon-glow);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
         }
 
-        /* Advanced Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.5); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s ease;
         }
 
-        @keyframes connect {
-            0% { transform: scaleX(0); opacity: 0; }
-            50% { transform: scaleX(1); opacity: 1; }
-            100% { transform: scaleX(0); opacity: 0; }
+        .feature-card:hover::before {
+            transform: scaleY(1);
         }
 
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(var(--moveX, 100px), var(--moveY, 100px)) rotate(360deg); }
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .fas {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes formGlow {
+            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
+            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+                letter-spacing: 8px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .platform-card {
+                min-width: 180px;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .mysterious-header {
+                padding: 2rem 1rem;
+            }
+
+            .platform-carousel {
+                padding: 1rem;
+            }
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
             }
         }
 
-        /* Loading Animation */
-        .ai-loading {
+        .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(10, 10, 15, 0.9);
+            background: rgba(248, 241, 252, 0.9);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -274,547 +563,482 @@
             transition: opacity 0.3s ease;
         }
 
-        .ai-loading.active {
+        .loading-overlay.active {
             opacity: 1;
             pointer-events: all;
         }
 
-        .ai-loader {
-            width: 60px;
-            height: 60px;
-            border: 3px solid transparent;
-            border-top-color: var(--accent-primary);
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
+            border-top-color: transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
         }
 
-        .ai-loader::before,
-        .ai-loader::after {
-            content: '';
+        .scroll-guide {
             position: absolute;
-            border: 3px solid transparent;
-            border-radius: 50%;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInGuide 1s ease-out 2s forwards;
         }
 
-        .ai-loader::before {
-            top: 5px;
-            left: 5px;
-            right: 5px;
-            bottom: 5px;
-            border-top-color: var(--accent-secondary);
-            animation: spin 2s linear infinite;
+        .guide-text {
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding: 0 20px;
         }
 
-        .ai-loader::after {
-            top: 15px;
-            left: 15px;
-            right: 15px;
-            bottom: 15px;
-            border-top-color: var(--text-primary);
-            animation: spin 1.5s linear infinite;
+        .guide-text::before,
+        .guide-text::after {
+            content: '✧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .guide-text::before {
+            left: 0;
+        }
+
+        .guide-text::after {
+            right: 0;
+        }
+
+        .guide-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .guide-arrow span {
+            width: 15px;
+            height: 15px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            transform: rotate(45deg);
+            animation: arrowFloat 2s infinite;
+            opacity: 0;
+        }
+
+        .guide-arrow span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .guide-arrow span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .guide-arrow span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes arrowFloat {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        @keyframes fadeInGuide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .scroll-guide:hover {
+            cursor: pointer;
+        }
+
+        .scroll-guide:hover .guide-arrow span {
+            border-color: var(--accent-light);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-guide {
+                bottom: 30px;
+            }
+
+            .guide-text {
+                font-size: 0.9rem;
+            }
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .scroll-guide.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <div class="neural-bg" id="neuralNetwork"></div>
-    <div class="ai-loading">
-        <div class="ai-loader"></div>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
     </div>
-    
     <div class="container">
-        <div class="ai-header">
-            <div class="floating-element" style="--moveX: 200px; --moveY: -100px">
-                <svg width="50" height="50" viewBox="0 0 100 100">
-                    <circle cx="50" cy="50" r="40" stroke="rgba(124, 58, 237, 0.2)" fill="none"/>
-                </svg>
-            </div>
-            <div class="ai-logo">PENSEEWEB</div>
-            <div class="ai-tagline">Transform Thoughts into Neural Landscapes</div>
-            <div class="ai-header-graphics">
-                <div class="neural-visualization"></div>
+        <div class="mysterious-header">
+            <div class="logo">PENSEEWEB</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </div>
-
-        <div class="platform-selector-container glass-container">
-            <div class="platform-selector">
-                <div class="platform-option active" data-platform="text">
-                    <div class="platform-icon">
-                        <i class="fas fa-brain"></i>
-                    </div>
-                    <div class="platform-details">
-                        <h3>Neural Text</h3>
-                        <p>Direct thought processing</p>
-                    </div>
-                    <div class="platform-hover-effect"></div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
                 </div>
-                
-                <div class="platform-option" data-platform="youtube">
-                    <div class="platform-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <div class="platform-details">
-                        <h3>Video Analysis</h3>
-                        <p>AI-powered video processing</p>
-                    </div>
-                    <div class="platform-hover-effect"></div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
                 </div>
-
-                <!-- Future Platforms with Premium Badge -->
-                <div class="platform-option premium-locked">
-                    <div class="premium-badge">Coming Soon</div>
-                    <div class="platform-icon">
-                        <i class="fas fa-microchip"></i>
-                    </div>
-                    <div class="platform-details">
-                        <h3>Advanced AI</h3>
-                        <p>Next-gen processing</p>
-                    </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-            </div>
-
-            <div class="input-container">
-                <div id="text-input" class="ai-input-group active">
-                    <div class="input-header">
-                        <span class="input-icon"><i class="fas fa-synapses"></i></span>
-                        <h3>Neural Text Processing</h3>
-                    </div>
-                    <textarea 
-                        class="ai-input" 
-                        placeholder="Input your thoughts for AI processing..."
-                        maxlength="3000"
-                    ></textarea>
-                    <div class="character-counter">
-                        <div class="counter-bar">
-                            <div class="counter-fill"></div>
-                        </div>
-                        <span class="counter-text">3000 characters remaining</span>
-                    </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-
-                <div id="youtube-input" class="ai-input-group">
-                    <div class="input-header">
-                        <span class="input-icon"><i class="fas fa-video-plus"></i></span>
-                        <h3>Video Neural Analysis</h3>
-                    </div>
-                    <input 
-                        type="url" 
-                        class="ai-input" 
-                        placeholder="Enter YouTube URL for AI analysis..."
-                    >
-                    <div class="url-validator">
-                        <div class="validator-icon"></div>
-                        <span class="validator-text"></span>
-                    </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-
-                <button class="ai-button process-button">
-                    <span class="button-text">Generate Neural Map</span>
-                    <span class="button-icon"><i class="fas fa-brain-circuit"></i></span>
-                </button>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
             </div>
         </div>
-
-        <div class="ai-features-grid">
-            <div class="ai-card">
-                <div class="card-icon">
-                    <i class="fas fa-neural-network"></i>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
                 </div>
-                <h3>Advanced Neural Processing</h3>
-                <p>State-of-the-art AI algorithms transform your input into sophisticated mind maps</p>
-                <div class="card-particles"></div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
             </div>
-
-            <div class="ai-card">
-                <div class="card-icon">
-                    <i class="fas fa-shield-ai"></i>
-                </div>
-                <h3>Quantum-Safe Security</h3>
-                <p>Enterprise-grade encryption with 24-hour data auto-deletion</p>
-                <div class="card-particles"></div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>Your privacy is our priority</p>
             </div>
-
-            <div class="ai-card">
-                <div class="card-icon">
-                    <i class="fas fa-infinity-plus"></i>
-                </div>
-                <h3>Unlimited Processing</h3>
-                <p>No restrictions, no hidden costs - pure AI power at your fingertips</p>
-                <div class="card-particles"></div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>Forever Free</h3>
+                <p>No hidden costs, no credit card required</p>
             </div>
         </div>
     </div>
-
     <script>
-        // Neural Network Background
-        class NeuralNetwork {
-            constructor() {
-                this.canvas = document.createElement('canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.nodes = [];
-                this.connections = [];
-                this.init();
-            }
-
-            init() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-                document.getElementById('neuralNetwork').appendChild(this.canvas);
-                this.createNodes();
-                this.animate();
-            }
-
-            createNodes() {
-                for(let i = 0; i < 50; i++) {
-                    this.nodes.push({
-                        x: Math.random() * this.canvas.width,
-                        y: Math.random() * this.canvas.height,
-                        vx: (Math.random() - 0.5) * 2,
-                        vy: (Math.random() - 0.5) * 2
-                    });
-                }
-            }
-
-            drawConnections() {
-                this.ctx.strokeStyle = 'rgba(124, 58, 237, 0.1)';
-                this.ctx.lineWidth = 1;
-
-                for(let i = 0; i < this.nodes.length; i++) {
-                    for(let j = i + 1; j < this.nodes.length; j++) {
-                        let dx = this.nodes[j].x - this.nodes[i].x;
-                        let dy = this.nodes[j].y - this.nodes[i].y;
-                        let distance = Math.sqrt(dx * dx + dy * dy);
-
-                        if(distance < 150) {
-                            this.ctx.beginPath();
-                            this.ctx.moveTo(this.nodes[i].x, this.nodes[i].y);
-                            this.ctx.lineTo(this.nodes[j].x, this.nodes[j].y);
-                            this.ctx.stroke();
-                        }
-                    }
-                }
-            }
-
-            animate() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.updateNodes();
-                this.drawConnections();
-                requestAnimationFrame(() => this.animate());
-            }
-
-            updateNodes() {
-                this.nodes.forEach(node => {
-                    node.x += node.vx;
-                    node.y += node.vy;
-
-                    if(node.x < 0 || node.x > this.canvas.width) node.vx *= -1;
-                    if(node.y < 0 || node.y > this.canvas.height) node.vy *= -1;
-                });
-            }
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
         }
 
-        // Modern Platform Switching and Interactions
-        class AIInterface {
-            constructor() {
-                this.initializeElements();
-                this.bindEvents();
-                this.initializeAnimations();
-            }
-
-            initializeElements() {
-                this.platformOptions = document.querySelectorAll('.platform-option');
-                this.inputGroups = document.querySelectorAll('.ai-input-group');
-                this.processButton = document.querySelector('.process-button');
-                this.textArea = document.querySelector('textarea.ai-input');
-                this.youtubeInput = document.querySelector('input[type="url"].ai-input');
-                this.counterBar = document.querySelector('.counter-fill');
-                this.counterText = document.querySelector('.counter-text');
-            }
-
-            bindEvents() {
-                // Platform switching
-                this.platformOptions.forEach(option => {
-                    if (!option.classList.contains('premium-locked')) {
-                        option.addEventListener('click', (e) => this.switchPlatform(e));
-                    }
-                });
-
-                // Text input handling
-                this.textArea.addEventListener('input', (e) => this.handleTextInput(e));
-                
-                // YouTube URL validation
-                this.youtubeInput.addEventListener('input', (e) => this.validateYoutubeUrl(e));
-                
-                // Process button
-                this.processButton.addEventListener('click', (e) => this.processInput(e));
-
-                // Mouse movement effects
-                document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
-            }
-
-            initializeAnimations() {
-                // Initialize GSAP animations
-                gsap.from('.ai-card', {
-                    duration: 1,
-                    y: 50,
-                    opacity: 0,
-                    stagger: 0.2,
-                    ease: "power3.out",
-                    scrollTrigger: {
-                        trigger: '.ai-features-grid',
-                        start: 'top center+=100',
-                        toggleActions: 'play none none reverse'
-                    }
-                });
-
-                // Particle system for cards
-                this.initializeParticles();
-            }
-
-            switchPlatform(e) {
-                const platform = e.currentTarget.dataset.platform;
-                
-                // Remove active states
-                this.platformOptions.forEach(opt => opt.classList.remove('active'));
-                this.inputGroups.forEach(group => {
-                    gsap.to(group, {
-                        opacity: 0,
-                        y: 20,
-                        duration: 0.3,
-                        onComplete: () => {
-                            group.classList.remove('active');
-                            group.style.display = 'none';
-                        }
-                    });
-                });
-
-                // Add active states
-                e.currentTarget.classList.add('active');
-                const targetInput = document.getElementById(`${platform}-input`);
-                targetInput.style.display = 'block';
-                gsap.to(targetInput, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    delay: 0.2
-                });
-                targetInput.classList.add('active');
-            }
-
-            handleTextInput(e) {
-                const maxLength = 3000;
-                const currentLength = e.target.value.length;
-                const remaining = maxLength - currentLength;
-                
-                // Update counter
-                this.counterText.textContent = `${remaining} characters remaining`;
-                
-                // Update progress bar
-                const percentage = (currentLength / maxLength) * 100;
-                gsap.to(this.counterBar, {
-                    width: `${percentage}%`,
-                    duration: 0.3
-                });
-
-                // Color transitions based on length
-                if (percentage > 90) {
-                    this.counterBar.style.backgroundColor = '#ef4444';
-                } else if (percentage > 70) {
-                    this.counterBar.style.backgroundColor = '#f59e0b';
-                } else {
-                    this.counterBar.style.backgroundColor = '#10b981';
-                }
-            }
-
-            validateYoutubeUrl(e) {
-                const url = e.target.value;
-                const validatorIcon = document.querySelector('.validator-icon');
-                const validatorText = document.querySelector('.validator-text');
-
-                if (url.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/)) {
-                    validatorIcon.className = 'validator-icon valid';
-                    validatorText.textContent = 'Valid YouTube URL';
-                    validatorText.style.color = '#10b981';
-                } else {
-                    validatorIcon.className = 'validator-icon invalid';
-                    validatorText.textContent = 'Please enter a valid YouTube URL';
-                    validatorText.style.color = '#ef4444';
-                }
-            }
-
-            async processInput(e) {
-                e.preventDefault();
-                const activePlatform = document.querySelector('.platform-option.active').dataset.platform;
-                let content, isValid = true;
-
-                if (activePlatform === 'text') {
-                    content = this.textArea.value;
-                    isValid = content.length > 0;
-                } else {
-                    content = this.youtubeInput.value;
-                    isValid = content.match(/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/);
-                }
-
-                if (!isValid) {
-                    this.showError('Please provide valid input');
-                    return;
-                }
-
-                // Show processing animation
-                this.showProcessing();
-
-                try {
-                    const formData = {
-                        content: content,
-                        platform: activePlatform,
-                        timestamp: new Date().toISOString()
-                    };
-
-                    localStorage.setItem('penseewebFormData', JSON.stringify(formData));
-                    
-                    // Simulate AI processing with visual feedback
-                    await this.simulateProcessing();
-                    
-                    // Redirect to results page
-                    window.location.href = 'page2.html';
-
-                } catch (error) {
-                    this.hideProcessing();
-                    this.showError('An error occurred during processing');
-                }
-            }
-
-            async simulateProcessing() {
-                return new Promise(resolve => {
-                    const processingSteps = [
-                        'Initializing neural networks...',
-                        'Analyzing input patterns...',
-                        'Generating semantic connections...',
-                        'Optimizing visual layout...'
-                    ];
-
-                    let step = 0;
-                    const interval = setInterval(() => {
-                        if (step < processingSteps.length) {
-                            this.updateProcessingStatus(processingSteps[step]);
-                            step++;
-                        } else {
-                            clearInterval(interval);
-                            resolve();
-                        }
-                    }, 800);
-                });
-            }
-
-            showProcessing() {
-                document.querySelector('.ai-loading').classList.add('active');
-            }
-
-            hideProcessing() {
-                document.querySelector('.ai-loading').classList.remove('active');
-            }
-
-            updateProcessingStatus(message) {
-                // Add processing status updates
-                const statusElement = document.createElement('div');
-                statusElement.className = 'processing-status';
-                statusElement.textContent = message;
-                document.querySelector('.ai-loading').appendChild(statusElement);
-                
-                gsap.from(statusElement, {
-                    opacity: 0,
-                    y: 20,
-                    duration: 0.5
-                });
-            }
-
-            showError(message) {
-                // Modern error notification
-                const notification = document.createElement('div');
-                notification.className = 'ai-notification error';
-                notification.textContent = message;
-                document.body.appendChild(notification);
-
-                gsap.to(notification, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.5,
-                    onComplete: () => {
-                        setTimeout(() => {
-                            gsap.to(notification, {
-                                opacity: 0,
-                                y: -20,
-                                duration: 0.5,
-                                onComplete: () => notification.remove()
-                            });
-                        }, 3000);
-                    }
-                });
-            }
-
-            handleMouseMove(e) {
-                // Parallax effect for cards
-                const cards = document.querySelectorAll('.ai-card');
-                const mouseX = e.clientX;
-                const mouseY = e.clientY;
-
-                cards.forEach(card => {
-                    const rect = card.getBoundingClientRect();
-                    const cardX = rect.left + rect.width / 2;
-                    const cardY = rect.top + rect.height / 2;
-
-                    const angleX = (mouseY - cardY) / 30;
-                    const angleY = (mouseX - cardX) / -30;
-
-                    gsap.to(card, {
-                        rotationX: angleX,
-                        rotationY: angleY,
-                        duration: 0.1,
-                        ease: 'power2.out'
-                    });
-                });
-            }
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
         }
 
-        // Initialize everything when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            new NeuralNetwork();
-            new AIInterface();
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
 
-            // Initialize any additional modules
-            initializeParticleEffects();
-            setupScrollAnimations();
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            createParticles();
+
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
+    
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollGuide.classList.add('hidden');
+                } else {
+                    scrollGuide.classList.remove('hidden');
+                }
+
+                scrollTimeout = setTimeout(() => {
+                    if (window.scrollY <= window.innerHeight * 0.3) {
+                        scrollGuide.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.platform-card').forEach(card => {
+                observer.observe(card);
+            });
         });
 
-        // Particle effects initialization
-        function initializeParticleEffects() {
-            const particles = document.querySelectorAll('.card-particles');
-            particles.forEach(container => {
-                for (let i = 0; i < 50; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.setProperty('--delay', `${Math.random() * 4}s`);
-                    container.appendChild(particle);
-                }
-            });
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function showLoading() {
+            document.querySelector('.loading-overlay').classList.add('active');
         }
 
-        // Scroll-based animations
-        function setupScrollAnimations() {
-            gsap.registerPlugin(ScrollTrigger);
+        function hideLoading() {
+            document.querySelector('.loading-overlay').classList.remove('active');
+        }
 
-            gsap.utils.toArray('.ai-card').forEach(card => {
-                gsap.from(card, {
-                    scrollTrigger: {
-                        trigger: card,
-                        start: 'top center+=100',
-                        toggleActions: 'play none none reverse'
-                    },
-                    opacity: 0,
-                    y: 50,
-                    duration: 1,
-                    ease: 'power3.out'
-                });
-            });
+        function createParticles() {
+            const container = document.createElement('div');
+            container.className = 'dynamic-particles';
+            document.body.appendChild(container);
+
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.width = Math.random() * 15 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.setProperty('--moveX', (Math.random() * 200 - 100) + 'px');
+                particle.style.setProperty('--moveY', (Math.random() * 200 - 100) + 'px');
+                particle.style.animationDelay = -Math.random() * 15 + 's';
+                container.appendChild(particle);
+            }
         }
     </script>
 </body>
