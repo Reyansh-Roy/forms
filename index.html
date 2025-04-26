@@ -2,222 +2,958 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Platform Carousel Reinvented</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
+        }
+
         body {
+            background-color: var(--primary-color);
             margin: 0;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f7fafc;
-            color: #222;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
         }
-        header {
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
+            pointer-events: none;
+            animation: backgroundShift 30s linear infinite;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 2rem;
-            background: linear-gradient(90deg, #1976d2 0%, #2196f3 100%);
-            color: #fff;
+        }
+
+        .mysterious-header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            position: relative;
         }
+
+        .logo {
+            font-size: 5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            position: relative;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
+        }
+
+        .logo::before, .logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-color);
+            left: 0;
+            animation: lineExpand 1.5s ease-in-out forwards;
+        }
+
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
+        }
+
         .platform-carousel-container {
-            margin: 2rem auto;
-            width: 90%;
-            max-width: 1000px;
-            overflow: visible;
+            margin-top: 0.5rem;
+            padding-top: 0;
         }
+
         .platform-carousel {
             display: flex;
-            gap: 1.5rem;
             overflow-x: auto;
-            padding: 2rem 1rem;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
             scroll-behavior: smooth;
-            border-radius: 18px;
-            background: #fff;
-            box-shadow: 0 2px 20px 0 rgba(60,60,80,0.08);
-            cursor: grab;
-            user-select: none;
-            will-change: scroll-position;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
         }
+
         .platform-card {
-            min-width: 250px;
-            max-width: 320px;
-            background: #e3f2fd;
+            min-width: 220px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .platform-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
+        }
+
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
+        }
+
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
+        }
+
+        .platform-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .platform-card .fa-pen {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-youtube {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-facebook {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-chalkboard-teacher {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-google-drive {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-vimeo {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-theater-masks {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-music {
+            font-size: 2.8rem;
+        }
+
+        .platform-card.active i {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .platform-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
-            box-shadow: 0 2px 6px rgba(25, 118, 210, 0.08);
-            padding: 1.5rem;
-            transition: box-shadow 0.2s;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
+            animation: formGlow 10s infinite linear;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(20px);
+            transition: all 0.5s ease;
         }
-        .platform-card:focus {
-            outline: 2px solid #1565c0;
-            box-shadow: 0 6px 20px rgba(30, 100, 200, 0.25);
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
         }
-        /* Card float animation */
-        @keyframes cardFloat {
-            0% {
-                opacity: 0;
-                transform: translateY(40px) scale(0.98);
+
+        .input-label {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-bottom-color: var(--accent-color);
+            outline: none;
+        }
+
+        .input-field:invalid {
+            border-bottom-color: #ff4444;
+        }
+
+        .highlight {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gold);
+            transition: all 0.4s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            background: var(--gradient-light);
+        }
+
+        .submit-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid var(--pearl-white);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .fas {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes formGlow {
+            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
+            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+                letter-spacing: 8px;
             }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .platform-card {
+                min-width: 180px;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .mysterious-header {
+                padding: 2rem 1rem;
+            }
+
+            .platform-carousel {
+                padding: 1rem;
+            }
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
             }
         }
-        /* Loading overlay styles */
+
         .loading-overlay {
             position: fixed;
-            top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.4);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 241, 252, 0.9);
             display: flex;
-            align-items: center;
             justify-content: center;
-            z-index: 2000;
+            align-items: center;
+            z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.2s;
+            transition: opacity 0.3s ease;
         }
+
         .loading-overlay.active {
             opacity: 1;
             pointer-events: all;
         }
-        .loader {
-            width: 60px;
-            height: 60px;
-            border: 6px solid #2196f3;
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin 0.9s linear infinite;
+            animation: spin 1s linear infinite;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg);}
+
+        .scroll-guide {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInGuide 1s ease-out 2s forwards;
         }
-        /* Action button */
-        .show-loading-btn {
-            margin: 2rem auto 0 auto;
-            display: block;
-            padding: 0.75rem 2.5rem;
-            background: #1976d2;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
+
+        .guide-text {
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .guide-text::before,
+        .guide-text::after {
+            content: '✧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .guide-text::before {
+            left: 0;
+        }
+
+        .guide-text::after {
+            right: 0;
+        }
+
+        .guide-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .guide-arrow span {
+            width: 15px;
+            height: 15px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            transform: rotate(45deg);
+            animation: arrowFloat 2s infinite;
+            opacity: 0;
+        }
+
+        .guide-arrow span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .guide-arrow span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .guide-arrow span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes arrowFloat {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        @keyframes fadeInGuide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .scroll-guide:hover {
             cursor: pointer;
-            transition: background 0.2s;
         }
-        .show-loading-btn:hover {
-            background: #1254a2;
+
+        .scroll-guide:hover .guide-arrow span {
+            border-color: var(--accent-light);
         }
-        /* Small screens */
-        @media (max-width: 600px) {
-            .platform-card { min-width: 80vw; }
+
+        @media (max-width: 768px) {
+            .scroll-guide {
+                bottom: 30px;
+            }
+
+            .guide-text {
+                font-size: 0.9rem;
+            }
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .scroll-guide.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Enhanced Platform Carousel 🚀</h1>
-        <p>Scroll, drag or swipe through cards. Animations and loading overlay demo included!</p>
-    </header>
-    <main>
-        <section class="platform-carousel-container" aria-label="Platform carousel">
-            <div class="platform-carousel" tabindex="0" aria-live="polite">
-                <div class="platform-card" tabindex="0">
-                    <h3>Platform One</h3>
-                    <p>Powerful features and beautiful design for productivity.</p>
-                </div>
-                <div class="platform-card" tabindex="0">
-                    <h3>Platform Two</h3>
-                    <p>Seamless integration and robust security for enterprises.</p>
-                </div>
-                <div class="platform-card" tabindex="0">
-                    <h3>Platform Three</h3>
-                    <p>Intuitive workflows for teams and individuals alike.</p>
-                </div>
-                <div class="platform-card" tabindex="0">
-                    <h3>Platform Four</h3>
-                    <p>Scalable, reliable, and cloud native for modern apps.</p>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div class="container">
+        <div class="mysterious-header">
+            <div class="logo">PENSEEWEB</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
-        </section>
-        <button class="show-loading-btn" onclick="showLoadingDemo()">Show Loading Overlay</button>
-    </main>
-    <div class="loading-overlay" role="alert" aria-live="assertive">
-        <div class="loader" aria-label="Loading"></div>
+        </div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>Your privacy is our priority</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>Forever Free</h3>
+                <p>No hidden costs, no credit card required</p>
+            </div>
+        </div>
     </div>
     <script>
-        // 1. Intersection Observer for card animation
-        document.addEventListener('DOMContentLoaded', () => {
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
+        }
+
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
+        }
+
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
+
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
+
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
+
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
+
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
+
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
+    
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollGuide.classList.add('hidden');
+                } else {
+                    scrollGuide.classList.remove('hidden');
+                }
+
+                scrollTimeout = setTimeout(() => {
+                    if (window.scrollY <= window.innerHeight * 0.3) {
+                        scrollGuide.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.animation = 'cardFloat 1s ease-out forwards';
-                        observer.unobserve(entry.target); // Animate-once
                     }
                 });
             }, { threshold: 0.1 });
+
             document.querySelectorAll('.platform-card').forEach(card => {
                 observer.observe(card);
             });
         });
 
-        // 2. Carousel drag/scroll (mouse & touch)
         const carousel = document.querySelector('.platform-carousel');
         let isDown = false;
-        let startX, scrollLeft;
+        let startX;
+        let scrollLeft;
 
-        if (carousel) {
-            carousel.addEventListener('mousedown', (e) => {
-                isDown = true;
-                carousel.style.cursor = 'grabbing';
-                startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-            });
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
 
-            carousel.addEventListener('mouseleave', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
 
-            carousel.addEventListener('mouseup', () => {
-                isDown = false;
-                carousel.style.cursor = 'grab';
-            });
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
 
-            carousel.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 2;
-                carousel.scrollLeft = scrollLeft - walk;
-            });
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
 
-            // Touch support for mobile
-            let isTouching = false, lastTouchX = 0, touchScrollLeft = 0;
-            carousel.addEventListener('touchstart', (e) => {
-                isTouching = true;
-                lastTouchX = e.touches[0].pageX - carousel.offsetLeft;
-                touchScrollLeft = carousel.scrollLeft;
-            });
-            carousel.addEventListener('touchend', () => {
-                isTouching = false;
-            });
-            carousel.addEventListener('touchmove', (e) => {
-                if (!isTouching) return;
-                const x = e.touches[0].pageX - carousel.offsetLeft;
-                const walk = (x - lastTouchX) * 2;
-                carousel.scrollLeft = touchScrollLeft - walk;
-            });
-
-            // Keyboard navigation (left/right arrows)
-            carousel.addEventListener('keydown', (e) => {
-                if (e.key === 'ArrowRight') {
-                    carousel.scrollBy({ left: 300, behavior: 'smooth' });
-                } else if (e.key === 'ArrowLeft') {
-                    carousel.scrollBy({ left: -300, behavior: 'smooth' });
-                }
-            });
-        }
-
-        // 3. Loading overlay functions
         function showLoading() {
             document.querySelector('.loading-overlay').classList.add('active');
         }
@@ -225,14 +961,6 @@
         function hideLoading() {
             document.querySelector('.loading-overlay').classList.remove('active');
         }
-
-        // 4. Demo: show loading overlay for 2 seconds
-        function showLoadingDemo() {
-            showLoading();
-            setTimeout(hideLoading, 2000);
-        }
-        // Expose to global for button
-        window.showLoadingDemo = showLoadingDemo;
     </script>
 </body>
 </html>
