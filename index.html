@@ -95,6 +95,7 @@
         .platform-carousel-container {
             margin-top: 0.5rem;
             padding-top: 0;
+            position: relative;
         }
 
         .platform-carousel {
@@ -109,6 +110,7 @@
             position: relative;
             mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
             -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            animation: float 9s ease-in-out infinite alternate;
         }
 
         .platform-card {
@@ -116,33 +118,19 @@
             padding: 2rem;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.2s cubic-bezier(.21,1.11,.84,1);
             border: 1px solid rgba(106, 27, 154, 0.1);
             cursor: pointer;
             text-align: center;
             position: relative;
             overflow: hidden;
-        }
-
-        .platform-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, var(--glass-effect));
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-
-        .platform-card:hover::before {
-            transform: translateX(0);
+            opacity: 0;
+            transition: opacity 0.8s cubic-bezier(.23,1.24,.39,1);
         }
 
         .platform-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px var(--shadow-soft);
+            transform: scale(1.05) translateY(-8px) rotateZ(-1.5deg);
+            box-shadow: 0 8px 32px rgba(30,30,80,0.20);
         }
 
         .platform-card.active {
@@ -496,7 +484,7 @@
             width: 100%;
             height: 100%;
             background: rgba(248, 241, 252, 0.9);
-            display: flex;
+            display: none;
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -508,6 +496,7 @@
         .loading-overlay.active {
             opacity: 1;
             pointer-events: all;
+            display: flex;
         }
 
         .loading-spinner {
@@ -517,6 +506,20 @@
             border-top-color: transparent;
             border-radius: 50%;
             animation: spin 1s linear infinite;
+        }
+
+        .carousel-progress {
+            width: 100%;
+            height: 4px;
+            background: #eee;
+            position: relative;
+        }
+
+        .carousel-progress-bar {
+            height: 100%;
+            background: #34a853;
+            width: 0;
+            transition: width 0.3s;
         }
 
         .scroll-guide {
@@ -671,11 +674,75 @@
                 transform: translateY(0);
             }
         }
+
+        #backToTop {
+            display: none;
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            padding: 1em;
+            border: none;
+            border-radius: 50%;
+            background: #34a853;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2em;
+            box-shadow: 0 2px 8px #0002;
+        }
+
+        #darkModeToggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 999;
+            background: #fff;
+            border-radius: 50%;
+            border: none;
+            padding: 0.7em;
+            box-shadow: 0 2px 12px #0002;
+            cursor: pointer;
+        }
+
+        body.dark-mode {
+            background: #181c22;
+            color: #f3f3f3;
+        }
+
+        body.dark-mode .platform-card {
+            background: #222634;
+            color: #eee;
+        }
+
+        body.dark-mode .carousel-progress-bar {
+            background: #6ecbff;
+        }
+
+        body.dark-mode #backToTop {
+            background: #444b6e;
+        }
+
+        .platform-card[data-tooltip]:hover:after {
+            content: attr(data-tooltip);
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%, -110%);
+            background: #222a;
+            color: #fff;
+            padding: 0.4em 1em;
+            border-radius: 4px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
     <div class="loading-overlay">
-        <div class="loading-spinner"></div>
+        <svg class="spinner" viewBox="0 0 50 50" width="60" height="60">
+            <circle class="spinner-path" cx="25" cy="25" r="20" fill="none" stroke-width="5"/>
+        </svg>
     </div>
     <div class="container">
         <div class="mysterious-header">
@@ -691,41 +758,45 @@
             </div>
         </div>
         <div class="platform-carousel-container">
+            <div class="carousel-progress">
+                <div class="carousel-progress-bar"></div>
+            </div>
+            <div id="cardCount" style="position:absolute;left:2rem;top:0.5rem;z-index:99;background:#fff4;padding:0.3em 1.2em;border-radius:2em;font-weight:600;font-size:1em;">Cards: <span id="currentCardNum">1</span>/<span id="totalCardNum"></span></div>
             <div class="platform-carousel">
-                <div class="platform-card active" onclick="switchTab('text')">
+                <div class="platform-card active" onclick="switchTab('text')" data-tooltip="Input text directly">
                     <i class="fas fa-pen"></i>
                     <h3>Text Input</h3>
                 </div>
-                <div class="platform-card" onclick="switchTab('youtube')">
+                <div class="platform-card" onclick="switchTab('youtube')" data-tooltip="Input YouTube video link">
                     <i class="fab fa-youtube"></i>
                     <h3>YouTube</h3>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fab fa-facebook"></i>
                     <h3>Facebook</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <h3>TED</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fab fa-google-drive"></i>
                     <h3>Google Drive</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fab fa-vimeo"></i>
                     <h3>Vimeo</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fas fa-theater-masks"></i>
                     <h3>Metopera</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
                 </div>
-                <div class="platform-card coming-soon">
+                <div class="platform-card coming-soon" data-tooltip="Coming soon!">
                     <i class="fas fa-music"></i>
                     <h3>Weverse</h3>
                     <div class="coming-soon-badge">Coming Soon</div>
@@ -765,6 +836,8 @@
             </div>
         </div>
     </div>
+    <button id="backToTop">↑</button>
+    <button id="darkModeToggle">🌙</button>
     <script>
         function switchTab(tab) {
             const cards = document.querySelectorAll(".platform-card");
@@ -915,6 +988,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                        entry.target.classList.add('fade-in');
                     }
                 });
             }, { threshold: 0.1 });
@@ -954,6 +1028,45 @@
             carousel.scrollLeft = scrollLeft - walk;
         });
 
+        let touchStartX = 0;
+        let touchScrollLeft = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].pageX - carousel.offsetLeft;
+            touchScrollLeft = carousel.scrollLeft;
+        }, { passive: true });
+
+        carousel.addEventListener('touchmove', (e) => {
+            const x = e.touches[0].pageX - carousel.offsetLeft;
+            const walk = (x - touchStartX) * 2;
+            carousel.scrollLeft = touchScrollLeft - walk;
+        }, { passive: true });
+
+        const progressBar = document.querySelector('.carousel-progress-bar');
+        carousel.addEventListener('scroll', () => {
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            const percent = (carousel.scrollLeft / maxScroll) * 100;
+            progressBar.style.width = percent + '%';
+        });
+
+        const backToTop = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            darkModeToggle.textContent = document.body.classList.contains('dark-mode') ? "☀️" : "🌙";
+        });
+
         function showLoading() {
             document.querySelector('.loading-overlay').classList.add('active');
         }
@@ -961,6 +1074,45 @@
         function hideLoading() {
             document.querySelector('.loading-overlay').classList.remove('active');
         }
+
+        const cards = document.querySelectorAll('.platform-card');
+        document.getElementById('totalCardNum').textContent = cards.length;
+        function updateCurrentCard() {
+            let mid = carousel.scrollLeft + carousel.clientWidth/2;
+            let inView = Array.from(cards).findIndex(card => {
+                let rect = card.getBoundingClientRect();
+                return rect.left < window.innerWidth/2 && rect.right > window.innerWidth/2;
+            });
+            document.getElementById('currentCardNum').textContent = inView + 1;
+        }
+        carousel.addEventListener('scroll', updateCurrentCard);
+        updateCurrentCard();
+
+        function confettiBurst(card) {
+    const colors = ['#34a853', '#fbbc05', '#ea4335', '#4285f4'];
+            for (let i = 0; i < 24; i++) {
+                const confetto = document.createElement('div');
+                confetto.style.position = 'absolute';
+                confetto.style.width = confetto.style.height = '8px';
+                confetto.style.borderRadius = '50%';
+                confetto.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetto.style.top = card.offsetTop + (card.offsetHeight / 2) + 'px';
+                confetto.style.left = card.offsetLeft + (card.offsetWidth / 2) + 'px';
+                confetto.style.pointerEvents = 'none';
+                confetto.style.zIndex = 1999;
+                confetto.style.transition = 'all 1s cubic-bezier(.4,2,.13,1)';
+                document.body.appendChild(confetto);
+                setTimeout(() => {
+                    confetto.style.transform = `translate(${(Math.random() - 0.5) * 300}px, ${-Math.random() * 180 - 60}px) scale(${Math.random() + 0.5})`;
+                    confetto.style.opacity = 0;
+                }, 10);
+                setTimeout(() => confetto.remove(), 1100);
+            }
+        }
+
+        document.querySelectorAll('.platform-card').forEach(card => {
+            card.addEventListener('click', () => confettiBurst(card));
+        });
     </script>
 </body>
 </html>
