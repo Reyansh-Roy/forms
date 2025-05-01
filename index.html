@@ -1,456 +1,1063 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PenseeWeb – AI Mindmaps for Smarter Study</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-  <!-- Icons (Feather) -->
-  <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #5a47fa;
-      --primary-dark: #3b2dcf;
-      --accent: #f8c630;
-      --bg: #f7f8fa;
-      --card: #fff;
-      --text: #23272f;
-      --muted: #7a7f8a;
-      --radius: 1.2rem;
-      --shadow: 0 2px 24px 0 rgba(90,71,250,0.07);
-    }
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    a { color: var(--primary); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    /* NAVBAR */
-    .navbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 2rem 6vw 1.2rem 6vw;
-      background: var(--card);
-      box-shadow: var(--shadow);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-    .navbar .logo {
-      font-size: 2.1rem;
-      font-weight: 800;
-      letter-spacing: -1px;
-      color: var(--primary-dark);
-    }
-    .navbar nav {
-      display: flex;
-      gap: 2.2rem;
-    }
-    .navbar nav a {
-      font-weight: 600;
-      color: var(--text);
-      transition: color .2s;
-    }
-    .navbar nav a:hover { color: var(--primary); }
-    .cta-btn {
-      background: var(--primary);
-      color: #fff;
-      border: none;
-      border-radius: .7rem;
-      padding: .78rem 2.1rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      box-shadow: 0 1px 8px 0 rgba(90,71,250,0.09);
-      transition: background .2s, box-shadow .2s;
-      cursor: pointer;
-    }
-    .cta-btn:hover {
-      background: var(--primary-dark);
-      box-shadow: 0 4px 20px 0 rgba(90,71,250,0.14);
-    }
-    /* HERO */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 7vw 4vw 4vw 4vw;
-      background: linear-gradient(120deg, #f7f8fa 70%, #ece7fe 100%);
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-bg-shape {
-      position: absolute;
-      top: -60px;
-      right: -120px;
-      width: 380px;
-      height: 380px;
-      background: radial-gradient(circle at 60% 40%, #5a47fa22 60%, transparent 100%);
-      z-index: 0;
-      pointer-events: none;
-    }
-    .hero h1 {
-      font-size: 2.8rem;
-      font-weight: 800;
-      margin: 0 0 1.1rem 0;
-      letter-spacing: -1px;
-      z-index: 1;
-    }
-    .hero p {
-      font-size: 1.3rem;
-      color: var(--muted);
-      margin-bottom: 2.3rem;
-      z-index: 1;
-    }
-    .hero .cta-btn {
-      font-size: 1.15rem;
-      padding: 1.05rem 2.3rem;
-      margin-bottom: 1.5rem;
-      z-index: 1;
-    }
-    /* FEATURES */
-    .features-section {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2.5rem;
-      margin: 0 auto;
-      max-width: 1100px;
-      padding: 3rem 2vw 1.5rem 2vw;
-    }
-    .feature-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 2.2rem 2.2rem 2rem 2.2rem;
-      flex: 1 1 270px;
-      max-width: 340px;
-      min-width: 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      transition: transform .18s, box-shadow .18s;
-      position: relative;
-      overflow: hidden;
-    }
-    .feature-card:hover {
-      transform: translateY(-7px) scale(1.025);
-      box-shadow: 0 8px 32px 0 rgba(90,71,250,0.15);
-    }
-    .feature-card .icon {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 1.1rem;
-    }
-    .feature-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 0 0 .5rem 0;
-    }
-    .feature-card p {
-      color: var(--muted);
-      font-size: 1.02rem;
-      margin: 0;
-    }
-    /* PRICING */
-    .pricing-section {
-      background: #ece7fe;
-      padding: 3.5rem 0 3rem 0;
-      text-align: center;
-    }
-    .pricing-section h2 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 2.2rem;
-    }
-    .pricing-cards {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2.2rem;
-      margin-top: 1.2rem;
-    }
-    .pricing-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 2.1rem 2.4rem;
-      min-width: 250px;
-      max-width: 320px;
-      flex: 1 1 260px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      transition: transform .18s, box-shadow .18s;
-      position: relative;
-      overflow: hidden;
-    }
-    .pricing-card.featured {
-      border: 2.5px solid var(--primary);
-      box-shadow: 0 8px 32px 0 rgba(90,71,250,0.12);
-      transform: scale(1.04);
-    }
-    .pricing-card h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      margin: 0 0 .7rem 0;
-    }
-    .pricing-card .price {
-      font-size: 2.1rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin-bottom: .7rem;
-    }
-    .pricing-card ul {
-      list-style: none;
-      padding: 0;
-      color: var(--muted);
-      font-size: 1.04rem;
-      margin-bottom: 1.3rem;
-      text-align: left;
-    }
-    .pricing-card ul li {
-      margin-bottom: .5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    /* FORM */
-    .form-section {
-      max-width: 420px;
-      margin: 3.5rem auto 2rem auto;
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 2.2rem 2.5rem 2.5rem 2.5rem;
-      text-align: center;
-    }
-    .form-section h2 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 1.2rem;
-    }
-    .form-section form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-    .form-section input[type="text"],
-    .form-section input[type="email"] {
-      border: 1.5px solid #e0e0e6;
-      border-radius: .7rem;
-      padding: .95rem 1.1rem;
-      font-size: 1.08rem;
-      outline: none;
-      background: #f7f8fa;
-      transition: border .2s;
-    }
-    .form-section input:focus {
-      border-color: var(--primary);
-    }
-    .form-section button {
-      margin-top: .7rem;
-    }
-    .form-section .form-note {
-      color: var(--muted);
-      font-size: .98rem;
-      margin-top: .4rem;
-    }
-    /* FOOTER */
-    .footer {
-      background: #23272f;
-      color: #fff;
-      padding: 2.5rem 0 2rem 0;
-      text-align: center;
-      font-size: 1.05rem;
-      margin-top: 3rem;
-    }
-    .footer .footer-links {
-      margin-bottom: 1.1rem;
-      display: flex;
-      justify-content: center;
-      gap: 2.5rem;
-      flex-wrap: wrap;
-    }
-    .footer a {
-      color: #fff;
-      opacity: .85;
-      transition: opacity .18s;
-    }
-    .footer a:hover { opacity: 1; }
-    .footer .socials {
-      margin-top: 1.1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1.3rem;
-    }
-    .footer .socials a {
-      font-size: 1.4rem;
-      opacity: .8;
-      transition: opacity .18s;
-    }
-    .footer .socials a:hover { opacity: 1; }
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .features-section, .pricing-cards {
-        flex-direction: column;
-        align-items: center;
-      }
-      .navbar {
-        flex-direction: column;
-        gap: 1.1rem;
-        padding: 1.2rem 4vw;
-      }
-    }
-    @media (max-width: 600px) {
-      .hero h1 { font-size: 2rem; }
-      .hero p { font-size: 1.05rem; }
-      .form-section { padding: 1.2rem .7rem 1.5rem .7rem; }
-      .navbar { padding: 1rem 2vw; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #f8f1fc;
+            --accent-color: #6a1b9a;
+            --accent-light: #8e24aa;
+            --text-color: #2c003e;
+            --shadow-soft: rgba(106, 27, 154, 0.15);
+            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
+            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
+            --glass-effect: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--primary-color);
+            margin: 0;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
+                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
+            pointer-events: none;
+            animation: backgroundShift 30s linear infinite;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .mysterious-header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 5rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-color);
+            position: relative;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: revealLogo 2s forwards;
+            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
+        }
+
+        .logo::before, .logo::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            background: var(--accent-color);
+            left: 0;
+            animation: lineExpand 1.5s ease-in-out forwards;
+        }
+
+        .logo::before { top: -20px; }
+        .logo::after { bottom: -20px; }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            font-style: italic;
+            margin-top: 2rem;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
+        }
+
+        .platform-carousel-container {
+            margin-top: 0.5rem;
+            padding-top: 0;
+        }
+
+        .platform-carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 1.5rem -2rem;
+            padding: 1rem;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
+        }
+
+        .platform-card {
+            min-width: 220px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            cursor: pointer;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .platform-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, var(--glass-effect));
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .platform-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .platform-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px var(--shadow-soft);
+        }
+
+        .platform-card.active {
+            background: var(--gradient-accent);
+            border: none;
+        }
+
+        .platform-card.active i,
+        .platform-card.active h3 {
+            color: var(--primary-color);
+        }
+
+        .platform-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .platform-card .fa-pen {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-youtube {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-facebook {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-chalkboard-teacher {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-google-drive {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-vimeo {
+            font-size: 2.8rem;
+        }
+
+        .platform-card .fa-theater-masks {
+            font-size: 2.5rem;
+        }
+
+        .platform-card .fa-music {
+            font-size: 2.8rem;
+        }
+
+        .platform-card.active i {
+            color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .platform-card:hover i {
+            transform: scale(1.1);
+        }
+
+        .coming-soon-badge {
+            background-color: #ff4444;
+            color: #fff;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 0.7rem;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 15px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px var(--shadow-soft);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            position: relative;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
+            animation: formGlow 10s infinite linear;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .input-group.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .input-label {
+            font-family: 'Playfair Display', serif;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1.2rem;
+            border: none;
+            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
+            color: var(--text-color);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            border-bottom-color: var(--accent-color);
+            outline: none;
+        }
+
+        .input-field:invalid {
+            border-bottom-color: #ff4444;
+        }
+
+        .highlight {
+            animation: highlight 1s ease-in-out;
+        }
+
+        @keyframes highlight {
+            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
+            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
+        }
+
+        .submit-btn {
+            background: var(--gradient-accent);
+            padding: 1.2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Cormorant Garamond', serif;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--gold);
+            transition: all 0.4s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: transform 0.5s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover {
+            background: var(--gradient-light);
+        }
+
+        .submit-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .submit-btn:disabled::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-left: 10px;
+            border: 2px solid var(--pearl-white);
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+
+        .privacy-notice {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 2rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(106, 27, 154, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px var(--shadow-soft);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--accent-color);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.5s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin: 1rem 0;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            font-size: 0.95rem;
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .fas {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-color);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes revealLogo {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes lineExpand {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes backgroundShift {
+            0% { background-position: 0 0; }
+            100% { background-position: 100px 100px; }
+        }
+
+        @keyframes formGlow {
+            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
+            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+                letter-spacing: 8px;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .platform-card {
+                min-width: 180px;
+                padding: 1.5rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .mysterious-header {
+                padding: 2rem 1rem;
+            }
+
+            .platform-carousel {
+                padding: 1rem;
+            }
+
+            .carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+
+            .feature-card {
+                margin: 1rem 0;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(248, 241, 252, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--accent-light);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .scroll-guide {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            opacity: 0;
+            animation: fadeInGuide 1s ease-out 2s forwards;
+        }
+
+        .guide-text {
+            color: var(--accent-color);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        .guide-text::before,
+        .guide-text::after {
+            content: '✧';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-color);
+            opacity: 0.6;
+        }
+
+        .guide-text::before {
+            left: 0;
+        }
+
+        .guide-text::after {
+            right: 0;
+        }
+
+        .guide-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .guide-arrow span {
+            width: 15px;
+            height: 15px;
+            border-right: 2px solid var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+            transform: rotate(45deg);
+            animation: arrowFloat 2s infinite;
+            opacity: 0;
+        }
+
+        .guide-arrow span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .guide-arrow span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .guide-arrow span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes arrowFloat {
+            0% {
+                opacity: 0;
+                transform: rotate(45deg) translate(-5px, -5px);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: rotate(45deg) translate(5px, 5px);
+            }
+        }
+
+        @keyframes fadeInGuide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
+
+        .scroll-guide:hover {
+            cursor: pointer;
+        }
+
+        .scroll-guide:hover .guide-arrow span {
+            border-color: var(--accent-light);
+        }
+
+        @media (max-width: 768px) {
+            .scroll-guide {
+                bottom: 30px;
+            }
+
+            .guide-text {
+                font-size: 0.9rem;
+            }
+
+            .guide-arrow span {
+                width: 12px;
+                height: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-guide {
+                bottom: 20px;
+            }
+
+            .guide-text {
+                font-size: 0.8rem;
+            }
+
+            .guide-arrow span {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        .scroll-guide.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        @keyframes cardFloat {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        #prototypePopup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(255, 255, 255, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            backdrop-filter: blur(10px);
+        }
+
+        #prototypePopup div {
+            background: rgba(255, 255, 255, 0.6);
+            max-width: 600px;
+            max-height: 80%;
+            overflow-y: auto;
+            padding: 20px;
+            font-size: 1.1rem;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        @media (max-width: 600px) {
+            #prototypePopup div {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+        }
+
+        @media (min-width: 601px) and (max-width: 1024px) {
+            #prototypePopup div {
+                font-size: 1rem;
+                padding: 15px;
+            }
+        }
+
+        @media (min-width: 1025px) {
+            #prototypePopup div {
+                font-size: 1.1rem;
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+    <div id="prototypePopup">
+        <div>
+            🚧 Prototype in Progress
+            Welcome to PenseeWeb's mindmap lab - you're about to try our early demo.
+            This isn't the final product. It's a raw glimpse of what we're building:
+            
+            🧠 Thematic Intelligence – Every future mindmap will think with your subject.
+            📐 Minimalist Clarity – Designed for brains that hate clutter and love clarity.
+            ⏳ Precision Takes Time – Full mindmaps take ~4 minutes to generate.
+            🔥 High Demand Alert – This demo may or may not complete your request.
+            
+            Our real engine is under wraps for a reason:
+            
+            👉 It's smart. It's culturally tuned. It's syllabus-aware.
+            But this version? A sneak peek - not the symphony.
+            
+            We're glad you're here early. Just don't judge us by the sketch.
+            The masterpiece is loading…
+        </div>
+    </div>
+    <div class="container">
+        <div class="mysterious-header">
+            <div class="logo">PENSEEWEB</div>
+            <div class="tagline">"Transform thoughts Into visual canvas"</div>
+            <div class="scroll-guide">
+                <div class="guide-text">Choose Your Input Method</div>
+                <div class="guide-arrow">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+        <div class="platform-carousel-container">
+            <div class="platform-carousel">
+                <div class="platform-card active" onclick="switchTab('text')">
+                    <i class="fas fa-pen"></i>
+                    <h3>Text Input</h3>
+                </div>
+                <div class="platform-card" onclick="switchTab('youtube')">
+                    <i class="fab fa-youtube"></i>
+                    <h3>YouTube</h3>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-facebook"></i>
+                    <h3>Facebook</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>TED</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-google-drive"></i>
+                    <h3>Google Drive</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fab fa-vimeo"></i>
+                    <h3>Vimeo</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-theater-masks"></i>
+                    <h3>Metopera</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+                <div class="platform-card coming-soon">
+                    <i class="fas fa-music"></i>
+                    <h3>Weverse</h3>
+                    <div class="coming-soon-badge">Coming Soon</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-container">
+            <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                <div id="text-input" class="input-group active">
+                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
+                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
+                    <div class="error-message" id="text-error"></div>
+                </div>
+                <div id="youtube-input" class="input-group" style="display: none">
+                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
+                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="error-message" id="youtube-error"></div>
+                </div>
+                <button type="submit" class="submit-btn">Generate Mindmap</button>
+            </form>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-brain"></i>
+                <h3>Artistic Intelligence</h3>
+                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-clock"></i>
+                <h3>24-Hour Auto-Delete</h3>
+                <p>Your privacy is our priority</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-infinity"></i>
+                <h3>Forever Free</h3>
+                <p>No hidden costs, no credit card required</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        function switchTab(tab) {
+            const cards = document.querySelectorAll(".platform-card");
+            const inputGroups = document.querySelectorAll(".input-group");
+            
+            cards.forEach(card => {
+                card.classList.remove("active");
+                card.style.transform = "scale(0.95)";
+            });
+            
+            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
+            activeCard.classList.add("active");
+            activeCard.style.transform = "scale(1)";
+            
+            inputGroups.forEach(group => {
+                group.classList.remove("active");
+                setTimeout(() => {
+                    group.style.display = "none";
+                }, 300);
+            });
+            
+            const activeInput = document.getElementById(`${tab}-input`);
+            setTimeout(() => {
+                activeInput.style.display = "block";
+                setTimeout(() => {
+                    activeInput.classList.add("active");
+                    activeInput.querySelector('.input-field').classList.add("highlight");
+                    setTimeout(() => {
+                        activeInput.querySelector('.input-field').classList.remove("highlight");
+                    }, 1000); // Remove highlight after 1 second
+                }, 50);
+            }, 300);
+        }
 
-  <!-- NAVBAR -->
-  <div class="navbar">
-    <div class="logo">PenseeWeb</div>
-    <nav>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#form">Get Early Access</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <a class="cta-btn" href="#form">Try Free</a>
-  </div>
+        function showError(e, t) {
+            const n = document.getElementById(e);
+            n.textContent = t;
+            n.style.display = "block";
+        }
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-bg-shape"></div>
-    <h1>Redefining How India Studies</h1>
-    <p>Turn your syllabus chaos into crystal-clear mindmaps-AI-powered, syllabus-aligned, and ready to ace your exams. Study smarter, not harder.</p>
-    <a class="cta-btn" href="#form">Generate Free Mindmap</a>
-    <div style="margin-top:1.2rem;">
-      <img src="https://assets-global.website-files.com/63e3e1b6e2c3a1a6e6e5e2a5/63e3e1b6e2c3a1a6e6e5e2a7_mindmap-hero.svg" alt="AI Mindmap" style="max-width: 340px; width: 100%; border-radius: 1.1rem; box-shadow: 0 2px 24px 0 rgba(90,71,250,0.07);">
-    </div>
-  </section>
+        async function handleSubmit(e) {
+            e.preventDefault();
+            showLoading();
+            document.querySelectorAll(".error-message").forEach(e => {
+                e.style.display = "none";
+                e.textContent = "";
+            });
 
-  <!-- FEATURES -->
-  <section class="features-section" id="features">
-    <div class="feature-card">
-      <span class="icon"><i data-feather="zap"></i></span>
-      <h3>Instant AI Mindmaps</h3>
-      <p>Upload your syllabus, notes, or voice-get a clean, syllabus-aligned mindmap in seconds. No more 3AM panic notes.</p>
-    </div>
-    <div class="feature-card">
-      <span class="icon"><i data-feather="target"></i></span>
-      <h3>Panic Button™</h3>
-      <p>One tap to highlight high-probability exam topics. Focus where it matters most, when it matters most.</p>
-    </div>
-    <div class="feature-card">
-      <span class="icon"><i data-feather="star"></i></span>
-      <h3>Student-Friendly Pricing</h3>
-      <p>Freemium plans, pay-per-map, and bulk discounts. Accessible for every student, every exam season.</p>
-    </div>
-    <div class="feature-card">
-      <span class="icon"><i data-feather="globe"></i></span>
-      <h3>Regional Language Support</h3>
-      <p>Upload notes in your language. Our AI adapts to Indian syllabi, icons, and cultural cues.</p>
-    </div>
-  </section>
+            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
+            let content, input_type;
 
-  <!-- PRICING -->
-  <section class="pricing-section" id="pricing">
-    <h2>Simple, Transparent Pricing</h2>
-    <div class="pricing-cards">
-      <div class="pricing-card">
-        <h3>Freemium</h3>
-        <div class="price">₹0</div>
-        <ul>
-          <li><i data-feather="check-circle"></i> 3 free mindmaps on signup</li>
-          <li><i data-feather="check-circle"></i> 2 free maps/month</li>
-          <li><i data-feather="check-circle"></i> WhatsApp login</li>
-        </ul>
-        <a class="cta-btn" href="#form">Get Started</a>
-      </div>
-      <div class="pricing-card featured">
-        <h3>Pay-Per-Map</h3>
-        <div class="price">₹9–30 <span style="font-size:1rem;">/map</span></div>
-        <ul>
-          <li><i data-feather="check-circle"></i> AI or user notes</li>
-          <li><i data-feather="check-circle"></i> Bulk discounts</li>
-          <li><i data-feather="check-circle"></i> Syllabus-aligned</li>
-        </ul>
-        <a class="cta-btn" href="#form">Try Now</a>
-      </div>
-      <div class="pricing-card">
-        <h3>Subscription</h3>
-        <div class="price">From ₹100 <span style="font-size:1rem;">/week</span></div>
-        <ul>
-          <li><i data-feather="check-circle"></i> 10–600 maps/month</li>
-          <li><i data-feather="check-circle"></i> 20% annual discount</li>
-          <li><i data-feather="check-circle"></i> Exam crunch features</li>
-        </ul>
-        <a class="cta-btn" href="#form">Subscribe</a>
-      </div>
-    </div>
-  </section>
+            if (t === "text input") {
+                content = document.querySelector('textarea[name="text-content"]').value;
+                input_type = "text";
+            } else {
+                content = document.querySelector('input[name="youtube-url"]').value;
+                input_type = "youtube";
+            }
 
-  <!-- FORM -->
-  <section class="form-section" id="form">
-    <h2>Get Early Access</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Email Address" required>
-      <button class="cta-btn" type="submit">Join Waitlist</button>
-      <div class="form-note">We’ll notify you when we launch. No spam, ever.</div>
-    </form>
-  </section>
+            if (!content) {
+                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
+                hideLoading();
+                return;
+            }
 
-  <!-- FOOTER -->
-  <footer class="footer" id="contact">
-    <div class="footer-links">
-      <a href="#">Home</a>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#form">Get Early Access</a>
-      <a href="mailto:support@penseeweb.com">Support</a>
-    </div>
-    <div class="socials">
-      <a href="#"><i data-feather="twitter"></i></a>
-      <a href="#"><i data-feather="instagram"></i></a>
-      <a href="#"><i data-feather="linkedin"></i></a>
-    </div>
-    <div style="margin-top:1.1rem;opacity:.7;">
-      &copy; 2025 PenseeWeb. All rights reserved.
-    </div>
-  </footer>
+            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
+                showError("youtube-error", "Please enter a valid YouTube URL");
+                hideLoading();
+                return;
+            }
 
-  <!-- Feather Icons JS -->
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  <script>
-    feather.replace();
-    // Optional: Add smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.onclick = function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) target.scrollIntoView({ behavior: 'smooth' });
-      };
-    });
-    // Optional: Form submission (replace with your backend logic)
-    document.querySelector('.form-section form').onsubmit = function(e) {
-      e.preventDefault();
-      alert('Thank you for joining the waitlist!');
-      this.reset();
-    };
-  </script>
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = "Processing...";
+            submitButton.disabled = true;
+
+            try {
+                const formData = {
+                    content: content,
+                    input_type: input_type,
+                    content_length: content.length,
+                    timestamp: new Date().toISOString()
+                };
+
+                localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+
+                window.location.href = 'page2.html';
+
+            } catch (error) {
+                console.error("Error:", error);
+                showError(
+                    input_type === "text" ? "text-error" : "youtube-error",
+                    "There was an error processing your request. Please try again."
+                );
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+            hideLoading();
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const textArea = document.querySelector('textarea[name="text-content"]');
+            const textLabel = document.querySelector("#text-input .input-label");
+            const originalLabel = textLabel.textContent;
+
+            textArea.addEventListener("input", () => {
+                const remaining = 3000 - textArea.value.length;
+                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            });
+
+            const youtubeInput = document.querySelector('input[name="youtube-url"]');
+            youtubeInput.addEventListener("input", function() {
+                if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
+                    showError("youtube-error", "Please enter a valid YouTube URL");
+                } else {
+                    document.getElementById("youtube-error").style.display = "none";
+                }
+            });
+
+            const scrollGuide = document.querySelector('.scroll-guide');
+            const carousel = document.querySelector('.platform-carousel-container');
+    
+            scrollGuide.addEventListener('click', () => {
+                carousel.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+
+            let scrollTimeout;
+            window.addEventListener('scroll', () => {
+                clearTimeout(scrollTimeout);
+                
+                if (window.scrollY > window.innerHeight * 0.3) {
+                    scrollGuide.classList.add('hidden');
+                } else {
+                    scrollGuide.classList.remove('hidden');
+                }
+
+                scrollTimeout = setTimeout(() => {
+                    if (window.scrollY <= window.innerHeight * 0.3) {
+                        scrollGuide.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.platform-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+
+        const carousel = document.querySelector('.platform-carousel');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        carousel.addEventListener('mousedown', (e) => {
+            isDown = true;
+            carousel.style.cursor = 'grabbing';
+            startX = e.pageX - carousel.offsetLeft;
+            scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mouseup', () => {
+            isDown = false;
+            carousel.style.cursor = 'grab';
+        });
+
+        carousel.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - carousel.offsetLeft;
+            const walk = (x - startX) * 2;
+            carousel.scrollLeft = scrollLeft - walk;
+        });
+
+        function showLoading() {
+            document.querySelector('.loading-overlay').classList.add('active');
+        }
+
+        function hideLoading() {
+            document.querySelector('.loading-overlay').classList.remove('active');
+        }
+
+        window.addEventListener('load', () => {
+            const popup = document.getElementById('prototypePopup');
+            if (!popup) return;
+
+            // Add close button
+            const closeButton = document.createElement('button');
+            closeButton.textContent = 'Close';
+            closeButton.style.position = 'absolute';
+            closeButton.style.top = '10px';
+            closeButton.style.right = '10px';
+            closeButton.style.padding = '5px 10px';
+            closeButton.style.background = 'rgba(0,0,0,0.3)';
+            closeButton.style.color = 'white';
+            closeButton.style.border = 'none';
+            closeButton.style.borderRadius = '5px';
+            closeButton.style.cursor = 'pointer';
+            closeButton.style.fontSize = '16px';
+            closeButton.style.zIndex = '10001';
+
+            closeButton.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+
+            popup.appendChild(closeButton);
+
+            // Auto close after 10 seconds
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 10000);
+        });
+    </script>
 </body>
 </html>
