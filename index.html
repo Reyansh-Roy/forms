@@ -1,428 +1,729 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PenseeWeb – Redefining How India Studies</title>
-  <link href="https://fonts.googleapis.com/css?family=Inter:400,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    :root {
-      --primary: #5b2ff6;
-      --accent: #ffb300;
-      --bg: #f7f9fc;
-      --text: #22223b;
-      --muted: #8d99ae;
-      --card-bg: #fff;
-      --shadow: 0 4px 24px rgba(91,47,246,0.07);
-    }
-    body {
-      margin: 0;
-      font-family: 'Inter', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-    }
-    header {
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      padding: 1.2rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: auto;
-    }
-    nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    nav .logo {
-      font-weight: 700;
-      font-size: 1.5rem;
-      color: var(--primary);
-      letter-spacing: 1px;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 2rem;
-      margin: 0;
-      padding: 0;
-    }
-    nav ul li a {
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-    nav ul li a:hover {
-      color: var(--primary);
-    }
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      padding: 4rem 0 2rem 0;
-      gap: 2rem;
-    }
-    .hero-text {
-      flex: 1 1 350px;
-    }
-    .hero-text h1 {
-      font-size: 2.8rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-      color: var(--primary);
-      line-height: 1.1;
-    }
-    .hero-text p {
-      font-size: 1.2rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-    }
-    .cta-btn {
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-      color: #fff;
-      padding: 1rem 2.5rem;
-      border: none;
-      border-radius: 2rem;
-      font-size: 1.1rem;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: var(--shadow);
-      transition: background 0.2s;
-    }
-    .cta-btn:hover {
-      background: linear-gradient(90deg, var(--accent), var(--primary));
-    }
-    .hero-img {
-      flex: 1 1 300px;
-      text-align: center;
-    }
-    .hero-img img {
-      max-width: 350px;
-      width: 100%;
-      border-radius: 1.5rem;
-      box-shadow: var(--shadow);
-      animation: float 2.5s infinite ease-in-out alternate;
-    }
-    @keyframes float {
-      0% { transform: translateY(0);}
-      100% { transform: translateY(-18px);}
-    }
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-      gap: 2rem;
-      margin: 4rem 0 2rem 0;
-    }
-    .feature-card {
-      background: var(--card-bg);
-      border-radius: 1.2rem;
-      box-shadow: var(--shadow);
-      padding: 2rem;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .feature-card:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 8px 32px rgba(91,47,246,0.12);
-    }
-    .feature-card i {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 1rem;
-    }
-    .feature-card h3 {
-      margin-bottom: 0.8rem;
-      font-size: 1.3rem;
-      color: var(--primary);
-    }
-    .feature-card p {
-      color: var(--muted);
-      font-size: 1rem;
-    }
-    .process {
-      background: linear-gradient(90deg, #ede7f6 60%, #fff 100%);
-      border-radius: 1.2rem;
-      padding: 3rem 2rem;
-      margin: 2rem 0;
-      box-shadow: var(--shadow);
-    }
-    .process h2 {
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    .steps {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-      align-items: flex-start;
-    }
-    .step {
-      flex: 1 1 200px;
-      background: #fff;
-      border-radius: 1rem;
-      padding: 1.5rem;
-      box-shadow: var(--shadow);
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .step span {
-      display: inline-block;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 50%;
-      width: 2.2rem;
-      height: 2.2rem;
-      line-height: 2.2rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      margin-bottom: 0.7rem;
-    }
-    .pricing {
-      margin: 4rem 0 2rem 0;
-    }
-    .pricing h2 {
-      text-align: center;
-      color: var(--primary);
-      margin-bottom: 2rem;
-    }
-    .pricing-cards {
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .pricing-card {
-      background: var(--card-bg);
-      border-radius: 1.2rem;
-      box-shadow: var(--shadow);
-      padding: 2rem;
-      flex: 1 1 260px;
-      min-width: 260px;
-      max-width: 320px;
-      text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .pricing-card.highlight {
-      border: 2px solid var(--primary);
-      background: #ede7f6;
-      transform: scale(1.04);
-    }
-    .pricing-card h3 {
-      color: var(--primary);
-      margin-bottom: 0.7rem;
-    }
-    .pricing-card ul {
-      list-style: none;
-      padding: 0;
-      margin: 1.2rem 0;
-      color: var(--muted);
-      font-size: 1rem;
-      text-align: left;
-    }
-    .pricing-card li {
-      margin-bottom: 0.6rem;
-    }
-    .pricing-card .price {
-      font-size: 2rem;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .newsletter {
-      background: var(--primary);
-      color: #fff;
-      padding: 2.5rem 1.5rem;
-      border-radius: 1.2rem;
-      text-align: center;
-      margin: 4rem 0 2rem 0;
-      box-shadow: var(--shadow);
-    }
-    .newsletter input[type="email"] {
-      padding: 0.8rem 1.2rem;
-      border: none;
-      border-radius: 2rem;
-      margin-right: 0.7rem;
-      font-size: 1rem;
-      width: 230px;
-      max-width: 80vw;
-    }
-    .newsletter button {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      border-radius: 2rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.2s;
-    }
-    .newsletter button:hover {
-      background: var(--primary);
-    }
-    footer {
-      background: #22223b;
-      color: #fff;
-      padding: 2rem 0;
-      text-align: center;
-      font-size: 1rem;
-      border-radius: 1.2rem 1.2rem 0 0;
-    }
-    @media (max-width: 900px) {
-      .hero {
-        flex-direction: column-reverse;
-        padding: 2rem 0;
-      }
-      .features, .pricing-cards {
-        grid-template-columns: 1fr;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-      .steps {
-        flex-direction: column;
-        gap: 1rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>PenseeWeb – Redefining How India Studies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #2d6cdf;
+            --primary-dark: #1a3a6b;
+            --accent: #ffb300;
+            --bg: #f7fafd;
+            --card-bg: #fff;
+            --text: #222;
+            --muted: #6c7a89;
+            --border: #e2e8f0;
+            --radius: 18px;
+            --shadow: 0 6px 32px rgba(44, 108, 223, 0.10);
+        }
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--primary) 60%, var(--accent) 100%);
+            color: #fff;
+            padding: 0;
+            box-shadow: 0 2px 12px rgba(44, 108, 223, 0.08);
+        }
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+        }
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .logo i {
+            color: var(--accent);
+        }
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.05rem;
+            position: relative;
+            transition: color 0.2s;
+        }
+        nav a:after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width .2s;
+            border-radius: 2px;
+            margin-top: 2px;
+        }
+        nav a:hover {
+            color: var(--accent);
+        }
+        nav a:hover:after {
+            width: 100%;
+        }
+        .cta-btn {
+            background: var(--accent);
+            color: #222;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.7rem 1.6rem;
+            font-weight: 700;
+            font-size: 1.08rem;
+            margin-left: 1.5rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s, background 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 179, 0, 0.16);
+        }
+        .cta-btn:hover {
+            background: #ffd54f;
+            box-shadow: 0 4px 18px rgba(255, 179, 0, 0.22);
+        }
+
+        /* Hero */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3.5rem 1.5rem 2rem;
+            gap: 2.5rem;
+        }
+        .hero-content {
+            flex: 1 1 350px;
+            z-index: 2;
+        }
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 1.2rem;
+            letter-spacing: -1px;
+            color: var(--primary-dark);
+        }
+        .hero-title span {
+            color: var(--primary);
+            background: linear-gradient(90deg, var(--primary) 60%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            max-width: 520px;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .hero-actions .cta-btn {
+            font-size: 1.1rem;
+            padding: 0.85rem 2.2rem;
+        }
+        .hero-img {
+            flex: 1 1 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 280px;
+        }
+        .hero-img img {
+            width: 100%;
+            max-width: 380px;
+            border-radius: 2.5rem;
+            box-shadow: 0 8px 40px rgba(44, 108, 223, 0.13);
+            object-fit: cover;
+            background: #eaf1ff;
+            animation: float 3s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0);}
+            50% { transform: translateY(-12px);}
+        }
+
+        /* Features Section */
+        .features {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            justify-content: space-between;
+        }
+        .feature-card {
+            flex: 1 1 320px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 2rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            min-width: 260px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(44, 108, 223, 0.19);
+        }
+        .feature-icon {
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .feature-desc {
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        /* Pricing Section */
+        .pricing-section {
+            background: linear-gradient(90deg, #f2f6ff 60%, #fffbe7 100%);
+            padding: 3rem 1.5rem 2.5rem;
+        }
+        .pricing-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .pricing-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            flex: 1 1 270px;
+            min-width: 240px;
+            max-width: 340px;
+            padding: 2rem 1.4rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .pricing-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 14px 40px rgba(44, 108, 223, 0.13);
+        }
+        .pricing-badge {
+            position: absolute;
+            top: 1.1rem;
+            right: 1.2rem;
+            background: var(--primary);
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 0.3rem 0.8rem;
+            border-radius: 1.2rem;
+        }
+        .pricing-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+        .pricing-price {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 0.6rem;
+        }
+        .pricing-desc {
+            color: var(--muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.2rem;
+        }
+        .pricing-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.2rem 0;
+        }
+        .pricing-list li {
+            font-size: 1.03rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .pricing-list li i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+        .pricing-cta {
+            margin-top: auto;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.7rem 1.4rem;
+            font-weight: 700;
+            font-size: 1.02rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .pricing-cta:hover {
+            background: var(--accent);
+            color: #222;
+        }
+
+        /* Process Section */
+        .process-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.5rem;
+        }
+        .process-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+        }
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: space-between;
+        }
+        .process-step {
+            flex: 1 1 240px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem 1.2rem;
+            min-width: 210px;
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+        }
+        .step-number {
+            background: var(--accent);
+            color: #222;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.8rem;
+            box-shadow: 0 2px 10px rgba(255, 179, 0, 0.13);
+        }
+        .step-title {
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .step-desc {
+            color: var(--muted);
+            font-size: 1.01rem;
+        }
+
+        /* News Section */
+        .news-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 1.5rem;
+        }
+        .news-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 1.2rem;
+        }
+        .news-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.3rem 1.1rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.2rem;
+        }
+        .news-date {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.05rem;
+            min-width: 90px;
+        }
+        .news-content {
+            flex: 1;
+        }
+        .news-headline {
+            font-size: 1.12rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .news-desc {
+            color: var(--muted);
+            font-size: 1rem;
+        }
+
+        /* Newsletter */
+        .newsletter-section {
+            background: var(--primary);
+            color: #fff;
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+        }
+        .newsletter-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.7rem;
+        }
+        .newsletter-desc {
+            font-size: 1.08rem;
+            color: #eaf1ff;
+            margin-bottom: 1.2rem;
+        }
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            gap: 0.7rem;
+            max-width: 420px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+        .newsletter-form input[type="email"] {
+            padding: 0.7rem 1rem;
+            border-radius: var(--radius);
+            border: none;
+            font-size: 1.05rem;
+            outline: none;
+            width: 220px;
+            margin-bottom: 0.6rem;
+        }
+        .newsletter-form button {
+            padding: 0.7rem 1.4rem;
+            border-radius: var(--radius);
+            border: none;
+            background: var(--accent);
+            color: #222;
+            font-weight: 700;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .newsletter-form button:hover {
+            background: #ffd54f;
+        }
+        .newsletter-policy {
+            margin-top: 0.7rem;
+            font-size: 0.92rem;
+            color: #eaf1ff;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-dark);
+            color: #eaf1ff;
+            padding: 2rem 1.5rem 1rem;
+            margin-top: auto;
+        }
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .footer-logo {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #fff;
+        }
+        .footer-links, .footer-social {
+            display: flex;
+            gap: 1.3rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.7rem;
+        }
+        .footer-links a, .footer-social a {
+            color: #eaf1ff;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover, .footer-social a:hover {
+            color: var(--accent);
+        }
+        .footer-copy {
+            font-size: 0.95rem;
+            color: #bfc9d6;
+            margin-top: 1.2rem;
+        }
+        .footer-social a {
+            font-size: 1.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .hero, .features, .pricing-container, .process-steps, .footer-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .hero-img {
+                margin-top: 1.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .navbar, .hero, .features, .pricing-container, .process-section, .news-section, .footer-container {
+                padding: 1rem 0.7rem;
+            }
+            .hero-title {
+                font-size: 2.1rem;
+            }
+            .newsletter-section {
+                padding: 1.5rem 0.7rem;
+            }
+            .newsletter-form {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .newsletter-form input[type="email"] {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <div class="logo">PenseeWeb</div>
-        <ul>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#process">How It Works</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#newsletter">Newsletter</a></li>
-          <li><a href="#about">About</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+    <!-- Header -->
+    <header>
+        <div class="navbar">
+            <div class="logo"><i class="fa-solid fa-brain"></i> PenseeWeb</div>
+            <nav>
+                <a href="#">About</a>
+                <a href="#">Careers</a>
+                <a href="#">News</a>
+                <a href="#">Contact</a>
+                <button class="cta-btn">Support Our Mission</button>
+            </nav>
+        </div>
+    </header>
 
-  <main>
-    <section class="container hero">
-      <div class="hero-text">
-        <h1>Redefining How India Studies</h1>
-        <p>Ditch the 3 AM panic notes. Our AI turns your “What even is photosynthesis?” into a mindmap so clean, your teacher will suspect cheating.</p>
-        <button class="cta-btn">Generate Free Mindmap</button>
-      </div>
-      <div class="hero-img">
-        <img src="https://storyset.com/illustration/online-learning/amico" alt="AI Mindmap Illustration">
-      </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-title">REDEFINING HOW <span>INDIA STUDIES</span></div>
+            <div class="hero-desc">
+                Ditch the 3 AM panic notes. Our AI turns your “What even is photosynthesis?” into a mindmap so clean, your teacher will suspect cheating.
+            </div>
+            <div class="hero-actions">
+                <button class="cta-btn">Generate Free Mindmap</button>
+                <a href="#features" class="cta-btn" style="background:var(--primary); color:#fff;">Discover PenseeWeb</a>
+            </div>
+        </div>
+        <div class="hero-img">
+            <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80" alt="Mindmap illustration">
+        </div>
     </section>
 
-    <section class="container features" id="features">
-      <div class="feature-card">
-        <i class="fa-solid fa-brain"></i>
-        <h3>AI-Powered Mindmaps</h3>
-        <p>Transform textbooks, PDFs, and even voice notes into syllabus-aligned, auto-tagged mindmaps in seconds.</p>
-      </div>
-      <div class="feature-card">
-        <i class="fa-solid fa-bolt"></i>
-        <h3>Panic Button™</h3>
-        <p>One-tap focus on high-probability exam nodes, distilled from predictive analytics. Your last-minute savior.</p>
-      </div>
-      <div class="feature-card">
-        <i class="fa-solid fa-wallet"></i>
-        <h3>Student-Friendly Pricing</h3>
-        <p>Freemium, pay-per-map, and bulk discounts-study smarter, not costlier.</p>
-      </div>
-      <div class="feature-card">
-        <i class="fa-solid fa-language"></i>
-        <h3>Regional Language Support</h3>
-        <p>Upload content in your native tongue. Our AI adapts, ensuring no learner is left behind.</p>
-      </div>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="feature-title">From Chaos to Clarity in 3 Clicks</div>
+            <div class="feature-desc">
+                Upload. Click. Breathe. PenseeWeb turns your 50-page Textbook into a visual cheat code-auto-tagged, syllabus-aligned, and ready to crush exams.
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
+            <div class="feature-title">Student-Friendly, Wallet-Approved</div>
+            <div class="feature-desc">
+                Freemium: 3 free mindmaps on sign-up, then 2 free/month. Pay-per-map, bulk discounts, and flexible subscriptions for every exam crunch.
+            </div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div class="feature-title">Exam Crunch? Activate the Panic Button™</div>
+            <div class="feature-desc">
+                Last-minute savior-auto-highlight critical nodes with a 70% pass probability. Your exam-day guardian angel, engineered for high stakes and low time.
+            </div>
+        </div>
     </section>
 
-    <section class="container process" id="process">
-      <h2>The PenseeWeb Process</h2>
-      <div class="steps">
-        <div class="step">
-          <span>1</span>
-          <h4>Drop Your World</h4>
-          <p>Upload syllabus PDFs, textbook pages, lecture recordings, or voice notes-even in your regional language.</p>
+    <!-- Pricing Section -->
+    <section class="pricing-section" id="pricing">
+        <div class="pricing-container">
+            <div class="pricing-card">
+                <span class="pricing-badge">Freemium</span>
+                <div class="pricing-title">Starter</div>
+                <div class="pricing-price">Free</div>
+                <div class="pricing-desc">3 mindmaps on sign-up, then 2 free/month.</div>
+                <ul class="pricing-list">
+                    <li><i class="fa-solid fa-check-circle"></i> WhatsApp OTP login</li>
+                    <li><i class="fa-solid fa-check-circle"></i> Syllabus-aligned</li>
+                    <li><i class="fa-solid fa-check-circle"></i> No credit card needed</li>
+                </ul>
+                <button class="pricing-cta">Get Started</button>
+            </div>
+            <div class="pricing-card">
+                <span class="pricing-badge" style="background:var(--accent);color:#222;">Pay-Per-Map</span>
+                <div class="pricing-title">Flexible</div>
+                <div class="pricing-price">₹9–30/map</div>
+                <div class="pricing-desc">User or AI-generated notes, bulk discounts available.</div>
+                <ul class="pricing-list">
+                    <li><i class="fa-solid fa-check-circle"></i> Up to 6 pages/25 mins</li>
+                    <li><i class="fa-solid fa-check-circle"></i> ₹6 per 5 extra pages</li>
+                    <li><i class="fa-solid fa-check-circle"></i> 8-hour video pack (15% off)</li>
+                </ul>
+                <button class="pricing-cta">Buy a Map</button>
+            </div>
+            <div class="pricing-card">
+                <span class="pricing-badge">Subscription</span>
+                <div class="pricing-title">Unlimited</div>
+                <div class="pricing-price">₹100–2,800</div>
+                <div class="pricing-desc">Weekly, monthly, and annual plans for power users.</div>
+                <ul class="pricing-list">
+                    <li><i class="fa-solid fa-check-circle"></i> 10–600 maps</li>
+                    <li><i class="fa-solid fa-check-circle"></i> 20% off annual</li>
+                    <li><i class="fa-solid fa-check-circle"></i> Priority support</li>
+                </ul>
+                <button class="pricing-cta">Subscribe</button>
+            </div>
         </div>
-        <div class="step">
-          <span>2</span>
-          <h4>Mindmap Reincarnation</h4>
-          <p>Our AI transmutes your content into immersive, syllabus-aligned maps-fractal visuals, semantic icons, and more.</p>
-        </div>
-        <div class="step">
-          <span>3</span>
-          <h4>Dominate With Precision</h4>
-          <p>Target “hot” nodes, attack PYQs, and glide through exams with neuro-optimized memory tools.</p>
-        </div>
-      </div>
     </section>
 
-    <section class="container pricing" id="pricing">
-      <h2>Student-Friendly, Wallet-Approved</h2>
-      <div class="pricing-cards">
-        <div class="pricing-card">
-          <h3>Freemium</h3>
-          <div class="price">Free</div>
-          <ul>
-            <li>3 free mindmaps on sign-up</li>
-            <li>2 free/month after</li>
-            <li>WhatsApp OTP login</li>
-          </ul>
+    <!-- Process Section -->
+    <section class="process-section">
+        <div class="process-title">The PenseeWeb Process</div>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">1</div>
+                <div class="step-title">Drop Your World</div>
+                <div class="step-desc">
+                    Upload syllabus PDFs, textbook pages, lecture recordings, or even voice notes in your regional language.
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">2</div>
+                <div class="step-title">Mindmap Reincarnation</div>
+                <div class="step-desc">
+                    Our AI transmutes your content into immersive, syllabus-aligned maps-fractal visuals, semantic icons, regional motifs, and all.
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="step-number">3</div>
+                <div class="step-title">Dominate With Precision</div>
+                <div class="step-desc">
+                    Target “hot” nodes, attack PYQs orbiting key topics, and glide through exams with neuro-optimized memory tools.
+                </div>
+            </div>
         </div>
-        <div class="pricing-card highlight">
-          <h3>Pay-Per-Map</h3>
-          <div class="price">₹9–15/map</div>
-          <ul>
-            <li>Up to 6 pages/25 mins</li>
-            <li>₹6 per 5 extra pages/15 mins</li>
-            <li>AI-generated notes: ₹15–30/map</li>
-          </ul>
-        </div>
-        <div class="pricing-card">
-          <h3>Subscriptions</h3>
-          <div class="price">₹100–2,800</div>
-          <ul>
-            <li>Weekly: ₹100 (10 maps)</li>
-            <li>Monthly: ₹350 (50 maps)</li>
-            <li>Annual: ₹2,800 (600 maps, 20% off)</li>
-          </ul>
-        </div>
-      </div>
     </section>
 
-    <section class="container newsletter" id="newsletter">
-      <h2>Join Our Newsletter</h2>
-      <p>Get weekly updates, study tips, and exclusive offers. No spam.</p>
-      <form>
-        <input type="email" placeholder="Your email address" required>
-        <button type="submit">Subscribe</button>
-      </form>
+    <!-- News Section -->
+    <section class="news-section">
+        <div class="news-title">News & Resources</div>
+        <div class="news-card">
+            <div class="news-date">11/17/24</div>
+            <div class="news-content">
+                <div class="news-headline">PenseeWeb Launches AI-Driven Mindmapping Revolution</div>
+                <div class="news-desc">The Future of Visual Learning – Experience the Next Era of Studying.</div>
+            </div>
+        </div>
     </section>
 
-    <section class="container" id="about" style="margin-bottom: 3rem;">
-      <h2 style="color:var(--primary); text-align:center;">About PenseeWeb</h2>
-      <p style="max-width:700px; margin:auto; color:var(--muted); text-align:center;">
-        PenseeWeb is India’s most advanced AI-powered mindmapping platform. We transform your raw ideas into living, breathing visual narratives-immersive, insightful, and syllabus-aligned. Our mission: make learning systems smarter, more intuitive, and radically efficient for students, educators, and teams.
-      </p>
+    <!-- Newsletter -->
+    <section class="newsletter-section">
+        <div class="newsletter-title">Join our newsletter</div>
+        <div class="newsletter-desc">We’ll send you a nice letter once per week. No spam.</div>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <div class="newsletter-policy">
+            We care about your data in our <a href="#" style="color:var(--accent);text-decoration:underline;">privacy policy</a>.
+        </div>
     </section>
-  </main>
 
-  <footer>
-    <div>
-      &copy; 2025 PenseeWeb AI. All rights reserved.<br>
-      Made with <span style="color:#ffb300;">&#10084;&#65039;</span> by the PenseeWeb Team
-    </div>
-  </footer>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div>
+                <div class="footer-logo"><i class="fa-solid fa-brain"></i> PenseeWeb</div>
+                <div class="footer-copy">
+                    © 2025 PenseeWeb AI. All rights reserved.<br>
+                    Made with ❤️ by the PenseeWeb Team
+                </div>
+            </div>
+            <div>
+                <div class="footer-links">
+                    <a href="#">Home</a>
+                    <a href="#">About us</a>
+                    <a href="#">Careers</a>
+                    <a href="#">News</a>
+                    <a href="#">Contact</a>
+                </div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Your existing scripts remain unchanged below -->
+    <script>
+        // Your existing JavaScript for carousel, IntersectionObserver, loading overlay, etc.
+        // (Paste your JS code here, as per your original file)
+    </script>
 </body>
 </html>
