@@ -1,729 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>PenseeWeb – Redefining How India Studies</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
-    <style>
-        :root {
-            --primary: #2d6cdf;
-            --primary-dark: #1a3a6b;
-            --accent: #ffb300;
-            --bg: #f7fafd;
-            --card-bg: #fff;
-            --text: #222;
-            --muted: #6c7a89;
-            --border: #e2e8f0;
-            --radius: 18px;
-            --shadow: 0 6px 32px rgba(44, 108, 223, 0.10);
-        }
-        html, body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            min-height: 100vh;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        /* Header */
-        header {
-            background: linear-gradient(90deg, var(--primary) 60%, var(--accent) 100%);
-            color: #fff;
-            padding: 0;
-            box-shadow: 0 2px 12px rgba(44, 108, 223, 0.08);
-        }
-        .navbar {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1.2rem 1.5rem;
-        }
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .logo i {
-            color: var(--accent);
-        }
-        nav {
-            display: flex;
-            gap: 2rem;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.05rem;
-            position: relative;
-            transition: color 0.2s;
-        }
-        nav a:after {
-            content: '';
-            display: block;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width .2s;
-            border-radius: 2px;
-            margin-top: 2px;
-        }
-        nav a:hover {
-            color: var(--accent);
-        }
-        nav a:hover:after {
-            width: 100%;
-        }
-        .cta-btn {
-            background: var(--accent);
-            color: #222;
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.7rem 1.6rem;
-            font-weight: 700;
-            font-size: 1.08rem;
-            margin-left: 1.5rem;
-            cursor: pointer;
-            transition: box-shadow 0.2s, background 0.2s;
-            box-shadow: 0 2px 8px rgba(255, 179, 0, 0.16);
-        }
-        .cta-btn:hover {
-            background: #ffd54f;
-            box-shadow: 0 4px 18px rgba(255, 179, 0, 0.22);
-        }
-
-        /* Hero */
-        .hero {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3.5rem 1.5rem 2rem;
-            gap: 2.5rem;
-        }
-        .hero-content {
-            flex: 1 1 350px;
-            z-index: 2;
-        }
-        .hero-title {
-            font-size: 2.8rem;
-            font-weight: 800;
-            line-height: 1.15;
-            margin-bottom: 1.2rem;
-            letter-spacing: -1px;
-            color: var(--primary-dark);
-        }
-        .hero-title span {
-            color: var(--primary);
-            background: linear-gradient(90deg, var(--primary) 60%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hero-desc {
-            font-size: 1.25rem;
-            color: var(--muted);
-            margin-bottom: 2rem;
-            max-width: 520px;
-        }
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-        .hero-actions .cta-btn {
-            font-size: 1.1rem;
-            padding: 0.85rem 2.2rem;
-        }
-        .hero-img {
-            flex: 1 1 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 280px;
-        }
-        .hero-img img {
-            width: 100%;
-            max-width: 380px;
-            border-radius: 2.5rem;
-            box-shadow: 0 8px 40px rgba(44, 108, 223, 0.13);
-            object-fit: cover;
-            background: #eaf1ff;
-            animation: float 3s infinite ease-in-out;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0);}
-            50% { transform: translateY(-12px);}
-        }
-
-        /* Features Section */
-        .features {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2.5rem;
-            justify-content: space-between;
-        }
-        .feature-card {
-            flex: 1 1 320px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 2rem 1.5rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            min-width: 260px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-        .feature-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 12px 40px rgba(44, 108, 223, 0.19);
-        }
-        .feature-icon {
-            font-size: 2.2rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .feature-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.6rem;
-        }
-        .feature-desc {
-            color: var(--muted);
-            font-size: 1.05rem;
-        }
-
-        /* Pricing Section */
-        .pricing-section {
-            background: linear-gradient(90deg, #f2f6ff 60%, #fffbe7 100%);
-            padding: 3rem 1.5rem 2.5rem;
-        }
-        .pricing-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: center;
-        }
-        .pricing-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            flex: 1 1 270px;
-            min-width: 240px;
-            max-width: 340px;
-            padding: 2rem 1.4rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .pricing-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 14px 40px rgba(44, 108, 223, 0.13);
-        }
-        .pricing-badge {
-            position: absolute;
-            top: 1.1rem;
-            right: 1.2rem;
-            background: var(--primary);
-            color: #fff;
-            font-size: 0.95rem;
-            font-weight: 600;
-            padding: 0.3rem 0.8rem;
-            border-radius: 1.2rem;
-        }
-        .pricing-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.7rem;
-        }
-        .pricing-price {
-            font-size: 2.1rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 0.6rem;
-        }
-        .pricing-desc {
-            color: var(--muted);
-            font-size: 1.05rem;
-            margin-bottom: 1.2rem;
-        }
-        .pricing-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1.2rem 0;
-        }
-        .pricing-list li {
-            font-size: 1.03rem;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .pricing-list li i {
-            color: var(--accent);
-            font-size: 1.1rem;
-        }
-        .pricing-cta {
-            margin-top: auto;
-            background: var(--primary);
-            color: #fff;
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.7rem 1.4rem;
-            font-weight: 700;
-            font-size: 1.02rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .pricing-cta:hover {
-            background: var(--accent);
-            color: #222;
-        }
-
-        /* Process Section */
-        .process-section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem 1.5rem;
-        }
-        .process-title {
-            font-size: 2rem;
-            font-weight: 800;
-            color: var(--primary-dark);
-            margin-bottom: 1.5rem;
-        }
-        .process-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            justify-content: space-between;
-        }
-        .process-step {
-            flex: 1 1 240px;
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 1.5rem 1.2rem;
-            min-width: 210px;
-            border: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            position: relative;
-        }
-        .step-number {
-            background: var(--accent);
-            color: #222;
-            font-weight: 800;
-            font-size: 1.1rem;
-            border-radius: 50%;
-            width: 2.2rem;
-            height: 2.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0.8rem;
-            box-shadow: 0 2px 10px rgba(255, 179, 0, 0.13);
-        }
-        .step-title {
-            font-size: 1.12rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-        .step-desc {
-            color: var(--muted);
-            font-size: 1.01rem;
-        }
-
-        /* News Section */
-        .news-section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 2.5rem 1.5rem 1.5rem;
-        }
-        .news-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            color: var(--primary-dark);
-            margin-bottom: 1.2rem;
-        }
-        .news-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 1.3rem 1.1rem;
-            border: 1px solid var(--border);
-            margin-bottom: 1.2rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1.2rem;
-        }
-        .news-date {
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.05rem;
-            min-width: 90px;
-        }
-        .news-content {
-            flex: 1;
-        }
-        .news-headline {
-            font-size: 1.12rem;
-            font-weight: 700;
-            margin-bottom: 0.4rem;
-        }
-        .news-desc {
-            color: var(--muted);
-            font-size: 1rem;
-        }
-
-        /* Newsletter */
-        .newsletter-section {
-            background: var(--primary);
-            color: #fff;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
-        }
-        .newsletter-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 0.7rem;
-        }
-        .newsletter-desc {
-            font-size: 1.08rem;
-            color: #eaf1ff;
-            margin-bottom: 1.2rem;
-        }
-        .newsletter-form {
-            display: flex;
-            justify-content: center;
-            gap: 0.7rem;
-            max-width: 420px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-        .newsletter-form input[type="email"] {
-            padding: 0.7rem 1rem;
-            border-radius: var(--radius);
-            border: none;
-            font-size: 1.05rem;
-            outline: none;
-            width: 220px;
-            margin-bottom: 0.6rem;
-        }
-        .newsletter-form button {
-            padding: 0.7rem 1.4rem;
-            border-radius: var(--radius);
-            border: none;
-            background: var(--accent);
-            color: #222;
-            font-weight: 700;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .newsletter-form button:hover {
-            background: #ffd54f;
-        }
-        .newsletter-policy {
-            margin-top: 0.7rem;
-            font-size: 0.92rem;
-            color: #eaf1ff;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary-dark);
-            color: #eaf1ff;
-            padding: 2rem 1.5rem 1rem;
-            margin-top: auto;
-        }
-        .footer-container {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 2rem;
-        }
-        .footer-logo {
-            font-size: 1.35rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            color: #fff;
-        }
-        .footer-links, .footer-social {
-            display: flex;
-            gap: 1.3rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.7rem;
-        }
-        .footer-links a, .footer-social a {
-            color: #eaf1ff;
-            text-decoration: none;
-            font-size: 1rem;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover, .footer-social a:hover {
-            color: var(--accent);
-        }
-        .footer-copy {
-            font-size: 0.95rem;
-            color: #bfc9d6;
-            margin-top: 1.2rem;
-        }
-        .footer-social a {
-            font-size: 1.25rem;
-        }
-
-        /* Responsive */
-        @media (max-width: 900px) {
-            .hero, .features, .pricing-container, .process-steps, .footer-container {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .hero-img {
-                margin-top: 1.5rem;
-            }
-        }
-        @media (max-width: 600px) {
-            .navbar, .hero, .features, .pricing-container, .process-section, .news-section, .footer-container {
-                padding: 1rem 0.7rem;
-            }
-            .hero-title {
-                font-size: 2.1rem;
-            }
-            .newsletter-section {
-                padding: 1.5rem 0.7rem;
-            }
-            .newsletter-form {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .newsletter-form input[type="email"] {
-                width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>PenseeWeb – AI Study Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Google Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #2d6cdf;
+      --accent: #ffb300;
+      --bg: #f7fafc;
+      --card: #fff;
+      --text: #1a2233;
+      --muted: #6b7a8f;
+      --border: #e2e8f0;
+      --radius: 18px;
+      --shadow: 0 6px 32px rgba(44, 108, 223, 0.10);
+      --transition: 0.18s cubic-bezier(.4,0,.2,1);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--card);
+      box-shadow: 0 2px 8px rgba(44, 108, 223, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      letter-spacing: -1px;
+    }
+    .navbar nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+    .navbar a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.06rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .navbar a:hover, .navbar a:focus {
+      background: var(--primary);
+      color: #fff;
+    }
+    /* Main Tool Area */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding-top: 5rem;
+      padding-bottom: 2rem;
+    }
+    .tool-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem 2rem 2rem;
+      width: 100%;
+      max-width: 370px;
+      min-width: 270px;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      border: 1px solid var(--border);
+      transition: box-shadow var(--transition), border var(--transition);
+      animation: fadeInUp 0.7s cubic-bezier(.4,0,.2,1) 0.1s forwards;
+      opacity: 0;
+      transform: translateY(32px);
+    }
+    @keyframes fadeInUp {
+      100% {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    .tool-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 1.1rem;
+      text-align: center;
+    }
+    .input-label {
+      font-size: 1.01rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+      font-weight: 500;
+    }
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+      margin-bottom: 1.4rem;
+    }
+    input[type="url"], input[type="text"] {
+      padding: 0.85rem 1.1rem;
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      font-size: 1.05rem;
+      background: #f4f7fb;
+      color: var(--text);
+      outline: none;
+      transition: border var(--transition), box-shadow var(--transition);
+    }
+    input[type="url"]:focus, input[type="text"]:focus {
+      border: 1.5px solid var(--primary);
+      background: #fff;
+    }
+    .tool-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    .tool-btn {
+      padding: 0.8rem 1.7rem;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.08rem;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition), color var(--transition);
+      box-shadow: 0 2px 8px rgba(44, 108, 223, 0.12);
+      letter-spacing: 0.1px;
+    }
+    .tool-btn:hover, .tool-btn:focus {
+      background: var(--accent);
+      color: #222;
+      box-shadow: 0 8px 30px rgba(255, 179, 0, 0.13);
+    }
+    .footer {
+      margin-top: auto;
+      padding: 1.5rem 2rem;
+      background: var(--card);
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.97rem;
+      border-top: 1px solid var(--border);
+    }
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.7rem 1rem;
+      }
+      .main-content {
+        padding-top: 4.5rem;
+      }
+      .tool-card {
+        padding: 1.3rem 0.7rem 1rem;
+        max-width: 98vw;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="navbar">
-            <div class="logo"><i class="fa-solid fa-brain"></i> PenseeWeb</div>
-            <nav>
-                <a href="#">About</a>
-                <a href="#">Careers</a>
-                <a href="#">News</a>
-                <a href="#">Contact</a>
-                <button class="cta-btn">Support Our Mission</button>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-title">REDEFINING HOW <span>INDIA STUDIES</span></div>
-            <div class="hero-desc">
-                Ditch the 3 AM panic notes. Our AI turns your “What even is photosynthesis?” into a mindmap so clean, your teacher will suspect cheating.
-            </div>
-            <div class="hero-actions">
-                <button class="cta-btn">Generate Free Mindmap</button>
-                <a href="#features" class="cta-btn" style="background:var(--primary); color:#fff;">Discover PenseeWeb</a>
-            </div>
-        </div>
-        <div class="hero-img">
-            <img src="https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80" alt="Mindmap illustration">
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-            <div class="feature-title">From Chaos to Clarity in 3 Clicks</div>
-            <div class="feature-desc">
-                Upload. Click. Breathe. PenseeWeb turns your 50-page Textbook into a visual cheat code-auto-tagged, syllabus-aligned, and ready to crush exams.
-            </div>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-wallet"></i></div>
-            <div class="feature-title">Student-Friendly, Wallet-Approved</div>
-            <div class="feature-desc">
-                Freemium: 3 free mindmaps on sign-up, then 2 free/month. Pay-per-map, bulk discounts, and flexible subscriptions for every exam crunch.
-            </div>
-        </div>
-        <div class="feature-card">
-            <div class="feature-icon"><i class="fa-solid fa-bolt"></i></div>
-            <div class="feature-title">Exam Crunch? Activate the Panic Button™</div>
-            <div class="feature-desc">
-                Last-minute savior-auto-highlight critical nodes with a 70% pass probability. Your exam-day guardian angel, engineered for high stakes and low time.
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing-section" id="pricing">
-        <div class="pricing-container">
-            <div class="pricing-card">
-                <span class="pricing-badge">Freemium</span>
-                <div class="pricing-title">Starter</div>
-                <div class="pricing-price">Free</div>
-                <div class="pricing-desc">3 mindmaps on sign-up, then 2 free/month.</div>
-                <ul class="pricing-list">
-                    <li><i class="fa-solid fa-check-circle"></i> WhatsApp OTP login</li>
-                    <li><i class="fa-solid fa-check-circle"></i> Syllabus-aligned</li>
-                    <li><i class="fa-solid fa-check-circle"></i> No credit card needed</li>
-                </ul>
-                <button class="pricing-cta">Get Started</button>
-            </div>
-            <div class="pricing-card">
-                <span class="pricing-badge" style="background:var(--accent);color:#222;">Pay-Per-Map</span>
-                <div class="pricing-title">Flexible</div>
-                <div class="pricing-price">₹9–30/map</div>
-                <div class="pricing-desc">User or AI-generated notes, bulk discounts available.</div>
-                <ul class="pricing-list">
-                    <li><i class="fa-solid fa-check-circle"></i> Up to 6 pages/25 mins</li>
-                    <li><i class="fa-solid fa-check-circle"></i> ₹6 per 5 extra pages</li>
-                    <li><i class="fa-solid fa-check-circle"></i> 8-hour video pack (15% off)</li>
-                </ul>
-                <button class="pricing-cta">Buy a Map</button>
-            </div>
-            <div class="pricing-card">
-                <span class="pricing-badge">Subscription</span>
-                <div class="pricing-title">Unlimited</div>
-                <div class="pricing-price">₹100–2,800</div>
-                <div class="pricing-desc">Weekly, monthly, and annual plans for power users.</div>
-                <ul class="pricing-list">
-                    <li><i class="fa-solid fa-check-circle"></i> 10–600 maps</li>
-                    <li><i class="fa-solid fa-check-circle"></i> 20% off annual</li>
-                    <li><i class="fa-solid fa-check-circle"></i> Priority support</li>
-                </ul>
-                <button class="pricing-cta">Subscribe</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Process Section -->
-    <section class="process-section">
-        <div class="process-title">The PenseeWeb Process</div>
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="step-number">1</div>
-                <div class="step-title">Drop Your World</div>
-                <div class="step-desc">
-                    Upload syllabus PDFs, textbook pages, lecture recordings, or even voice notes in your regional language.
-                </div>
-            </div>
-            <div class="process-step">
-                <div class="step-number">2</div>
-                <div class="step-title">Mindmap Reincarnation</div>
-                <div class="step-desc">
-                    Our AI transmutes your content into immersive, syllabus-aligned maps-fractal visuals, semantic icons, regional motifs, and all.
-                </div>
-            </div>
-            <div class="process-step">
-                <div class="step-number">3</div>
-                <div class="step-title">Dominate With Precision</div>
-                <div class="step-desc">
-                    Target “hot” nodes, attack PYQs orbiting key topics, and glide through exams with neuro-optimized memory tools.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- News Section -->
-    <section class="news-section">
-        <div class="news-title">News & Resources</div>
-        <div class="news-card">
-            <div class="news-date">11/17/24</div>
-            <div class="news-content">
-                <div class="news-headline">PenseeWeb Launches AI-Driven Mindmapping Revolution</div>
-                <div class="news-desc">The Future of Visual Learning – Experience the Next Era of Studying.</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter -->
-    <section class="newsletter-section">
-        <div class="newsletter-title">Join our newsletter</div>
-        <div class="newsletter-desc">We’ll send you a nice letter once per week. No spam.</div>
-        <form class="newsletter-form">
-            <input type="email" placeholder="Your email" required>
-            <button type="submit">Subscribe</button>
-        </form>
-        <div class="newsletter-policy">
-            We care about your data in our <a href="#" style="color:var(--accent);text-decoration:underline;">privacy policy</a>.
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div>
-                <div class="footer-logo"><i class="fa-solid fa-brain"></i> PenseeWeb</div>
-                <div class="footer-copy">
-                    © 2025 PenseeWeb AI. All rights reserved.<br>
-                    Made with ❤️ by the PenseeWeb Team
-                </div>
-            </div>
-            <div>
-                <div class="footer-links">
-                    <a href="#">Home</a>
-                    <a href="#">About us</a>
-                    <a href="#">Careers</a>
-                    <a href="#">News</a>
-                    <a href="#">Contact</a>
-                </div>
-                <div class="footer-links">
-                    <a href="#">Privacy Policy</a>
-                </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-x-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Your existing scripts remain unchanged below -->
-    <script>
-        // Your existing JavaScript for carousel, IntersectionObserver, loading overlay, etc.
-        // (Paste your JS code here, as per your original file)
-    </script>
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo"><i class="fa-solid fa-brain"></i> PenseeWeb</div>
+    <nav>
+      <a href="#">About</a>
+      <a href="#">Support</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+  <!-- Main Tool Area -->
+  <main class="main-content">
+    <form class="tool-card" autocomplete="off">
+      <div class="tool-title">Paste a link or enter text to begin</div>
+      <div class="input-group">
+        <label class="input-label" for="input-url">Link (URL)</label>
+        <input type="url" id="input-url" name="input-url" placeholder="https://example.com" autocomplete="off" pattern="https?://.*">
+        <label class="input-label" for="input-text">Or Text</label>
+        <input type="text" id="input-text" name="input-text" placeholder="Type or paste your text here…" autocomplete="off">
+      </div>
+      <div class="tool-actions">
+        <button class="tool-btn" type="submit">Continue</button>
+      </div>
+    </form>
+  </main>
+  <div class="footer">
+    © 2025 PenseeWeb. All rights reserved.
+  </div>
+  <!-- Your existing JavaScript can go here -->
+  <script>
+    // Example: Prevent empty form submission (optional)
+    document.querySelector('.tool-card').addEventListener('submit', function(e) {
+      const url = document.getElementById('input-url').value.trim();
+      const text = document.getElementById('input-text').value.trim();
+      if (!url && !text) {
+        e.preventDefault();
+        alert('Please enter a link or some text to proceed.');
+      }
+      // else: let your backend or JS handle the input as needed
+    });
+  </script>
 </body>
 </html>
