@@ -672,50 +672,59 @@
             }
         }
 
-        #prototypePopup {
+        .glass-popup {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
             background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 10000;
-            backdrop-filter: blur(10px);
         }
 
-        #prototypePopup div {
+        .popup-content {
             background: rgba(255, 255, 255, 0.6);
-            max-width: 600px;
-            max-height: 80%;
-            overflow-y: auto;
+            border-radius: 15px;
             padding: 20px;
-            font-size: 1.1rem;
-            border-radius: 10px;
-            position: relative;
+            max-width: 90vw;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            color: #333;
         }
 
-        @media (max-width: 600px) {
-            #prototypePopup div {
-                font-size: 0.9rem;
-                padding: 10px;
-            }
+        .popup-content h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
         }
 
-        @media (min-width: 601px) and (max-width: 1024px) {
-            #prototypePopup div {
-                font-size: 1rem;
-                padding: 15px;
-            }
+        .popup-content p {
+            margin-bottom: 10px;
         }
 
-        @media (min-width: 1025px) {
-            #prototypePopup div {
-                font-size: 1.1rem;
-                padding: 20px;
-            }
+        .popup-content ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        .popup-content li {
+            margin-bottom: 5px;
+        }
+
+        #closePopup {
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -723,24 +732,23 @@
     <div class="loading-overlay">
         <div class="loading-spinner"></div>
     </div>
-    <div id="prototypePopup">
-        <div>
-            🚧 Prototype in Progress
-            Welcome to PenseeWeb's mindmap lab - you're about to try our early demo.
-            This isn't the final product. It's a raw glimpse of what we're building:
-            
-            🧠 Thematic Intelligence – Every future mindmap will think with your subject.
-            📐 Minimalist Clarity – Designed for brains that hate clutter and love clarity.
-            ⏳ Precision Takes Time – Full mindmaps take ~4 minutes to generate.
-            🔥 High Demand Alert – This demo may or may not complete your request.
-            
-            Our real engine is under wraps for a reason:
-            
-            👉 It's smart. It's culturally tuned. It's syllabus-aware.
-            But this version? A sneak peek - not the symphony.
-            
-            We're glad you're here early. Just don't judge us by the sketch.
-            The masterpiece is loading…
+    <div class="glass-popup" id="prototypePopup">
+        <div class="popup-content">
+            <h2>🚧 Prototype in Progress</h2>
+            <p>Welcome to PenseeWeb's mindmap lab - you're about to try our early demo. This isn't the final product. It's a raw glimpse of what we're building:</p>
+            <ul>
+                <li>🧠 Thematic Intelligence – Every future mindmap will think with your subject.</li>
+                <li>📐 Minimalist Clarity – Designed for brains that hate clutter and love clarity.</li>
+                <li>⏳ Precision Takes Time – Full mindmaps take ~4 minutes to generate.</li>
+                <li>🔥 High Demand Alert – This demo may or may not complete your request.</li>
+            </ul>
+            <p>Our real engine is under wraps for a reason:</p>
+            <ul>
+                <li>👉 It's smart. It's culturally tuned. It's syllabus-aware.</li>
+                <li>But this version? A sneak peek - not the symphony.</li>
+            </ul>
+            <p>We're glad you're here early. Just don't judge us by the sketch. The masterpiece is loading...</p>
+            <button id="closePopup">Close</button>
         </div>
     </div>
     <div class="container">
@@ -1030,29 +1038,14 @@
 
         window.addEventListener('load', () => {
             const popup = document.getElementById('prototypePopup');
-            if (!popup) return;
-
-            // Add close button
-            const closeButton = document.createElement('button');
-            closeButton.textContent = 'Close';
-            closeButton.style.position = 'absolute';
-            closeButton.style.top = '10px';
-            closeButton.style.right = '10px';
-            closeButton.style.padding = '5px 10px';
-            closeButton.style.background = 'rgba(0,0,0,0.3)';
-            closeButton.style.color = 'white';
-            closeButton.style.border = 'none';
-            closeButton.style.borderRadius = '5px';
-            closeButton.style.cursor = 'pointer';
-            closeButton.style.fontSize = '16px';
-            closeButton.style.zIndex = '10001';
-
-            closeButton.addEventListener('click', () => {
+            const closeBtn = document.getElementById('closePopup');
+            
+            if (!popup || !closeBtn) return;
+            
+            closeBtn.addEventListener('click', () => {
                 popup.style.display = 'none';
             });
-
-            popup.appendChild(closeButton);
-
+            
             // Auto close after 10 seconds
             setTimeout(() => {
                 popup.style.display = 'none';
