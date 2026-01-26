@@ -3,43 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenseeWeb - Professional Mindmap Generator</title>
+    <title>PenseeWeb - AI-Powered Mindmap Generator</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #f8f1fc;
-            --accent-color: #6a1b9a;
-            --accent-light: #8e24aa;
-            --text-color: #2c003e;
-            --shadow-soft: rgba(106, 27, 154, 0.15);
-            --gradient-accent: linear-gradient(135deg, #6a1b9a 0%, #4a1269 100%);
-            --gradient-light: linear-gradient(135deg, #8e24aa 0%, #6a1b9a 100%);
-            --glass-effect: rgba(255, 255, 255, 0.1);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --accent: #06b6d4;
+            --accent-dark: #0891b2;
+            --background: #0f172a;
+            --surface: #1e293b;
+            --surface-light: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --border: #334155;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
-            background-color: var(--primary-color);
-            margin: 0;
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--text-color);
-            overflow-x: hidden;
-            position: relative;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #1a2332 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
         }
 
-        body::before {
-            content: '';
+        .header {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top right, rgba(142, 36, 170, 0.05), transparent 70%),
-                        radial-gradient(circle at bottom left, rgba(106, 27, 154, 0.05), transparent 70%);
-            pointer-events: none;
-            animation: backgroundShift 30s linear infinite;
+            right: 0;
+            height: 70px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
         }
 
         .container {
@@ -48,264 +85,208 @@
             padding: 2rem;
         }
 
-        .mysterious-header {
-            height: 100vh;
+        .hero-section {
+            margin-top: 70px;
+            padding: 4rem 2rem;
+            text-align: center;
+            min-height: calc(100vh - 70px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            text-align: center;
-            position: relative;
         }
 
-        .logo {
-            font-size: 5rem;
-            font-family: 'Playfair Display', serif;
-            color: var(--accent-color);
-            position: relative;
-            letter-spacing: 12px;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: revealLogo 2s forwards;
-            text-shadow: 2px 2px 4px rgba(106, 27, 154, 0.2);
-        }
-
-        .logo::before, .logo::after {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 1px;
-            background: var(--accent-color);
-            left: 0;
-            animation: lineExpand 1.5s ease-in-out forwards;
-        }
-
-        .logo::before { top: -20px; }
-        .logo::after { bottom: -20px; }
-
-        .tagline {
-            font-size: 1.8rem;
-            color: var(--accent-color);
-            font-style: italic;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeIn 2s 1s forwards;
-        }
-
-        .platform-carousel-container {
-            margin-top: 0.5rem;
-            padding-top: 0;
-        }
-
-        .platform-carousel {
-            display: flex;
-            overflow-x: auto;
-            gap: 1.5rem;
-            margin: 1.5rem -2rem;
-            padding: 1rem;
-            scroll-behavior: smooth;
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-            position: relative;
-            mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);
-        }
-
-        .platform-card {
-            min-width: 220px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(106, 27, 154, 0.1);
-            cursor: pointer;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .platform-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, var(--glass-effect));
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-        }
-
-        .platform-card:hover::before {
-            transform: translateX(0);
-        }
-
-        .platform-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 30px var(--shadow-soft);
-        }
-
-        .platform-card.active {
-            background: var(--gradient-accent);
-            border: none;
-        }
-
-        .platform-card.active i,
-        .platform-card.active h3 {
-            color: var(--primary-color);
-        }
-
-        .platform-card i {
-            font-size: 2.5rem;
+        .badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: var(--radius-sm);
+            font-size: 0.875rem;
+            color: var(--primary-light);
+            font-weight: 500;
             margin-bottom: 1.5rem;
-            color: var(--accent-color);
-            transition: all 0.3s ease;
         }
 
-        .platform-card .fa-pen {
-            font-size: 2.5rem;
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .platform-card .fa-youtube {
-            font-size: 2.8rem;
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .platform-card .fa-facebook {
-            font-size: 2.8rem;
+        .form-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
         }
 
-        .platform-card .fa-chalkboard-teacher {
-            font-size: 2.5rem;
-        }
-
-        .platform-card .fa-google-drive {
-            font-size: 2.5rem;
-        }
-
-        .platform-card .fa-vimeo {
-            font-size: 2.8rem;
-        }
-
-        .platform-card .fa-theater-masks {
-            font-size: 2.5rem;
-        }
-
-        .platform-card .fa-music {
-            font-size: 2.8rem;
-        }
-
-        .platform-card.active i {
-            color: var(--primary-color);
-            transform: scale(1.1);
-        }
-
-        .platform-card:hover i {
-            transform: scale(1.1);
-        }
-
-        .coming-soon-badge {
-            background-color: #ff4444;
-            color: #fff;
-            padding: 0.3rem 0.6rem;
-            border-radius: 5px;
-            font-size: 0.7rem;
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
-
-        .form-container {
-            background: rgba(255, 255, 255, 0.98);
-            border-radius: 15px;
-            padding: 2.5rem;
-            box-shadow: 0 15px 30px var(--shadow-soft);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(106, 27, 154, 0.1);
-            position: relative;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%);
-            animation: formGlow 10s infinite linear;
-        }
-
-        .input-group {
-            position: relative;
+        .input-tabs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.75rem;
             margin-bottom: 2rem;
+            padding: 0.5rem;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1rem;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            background: rgba(99, 102, 241, 0.05);
+            color: var(--text-primary);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+            border-color: var(--primary);
+            color: var(--primary-light);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+        }
+
+        .coming-soon-tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            background: var(--error);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
+            transform: translateY(10px);
+            animation: slideInUp 0.5s ease forwards;
         }
 
-        .input-group.active {
-            opacity: 1;
-            transform: translateY(0);
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .input-label {
-            font-family: 'Playfair Display', serif;
-            color: var(--text-color);
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
+        .form-group:nth-child(1) { animation-delay: 0s; }
+        .form-group:nth-child(2) { animation-delay: 0.1s; }
+        .form-group:nth-child(3) { animation-delay: 0.2s; }
+
+        .form-label {
             display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-primary);
         }
 
-        .input-field {
+        .form-label .required {
+            color: var(--error);
+            margin-left: 0.25rem;
+        }
+
+        .form-input,
+        .form-textarea {
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 1.2rem;
-            border: none;
-            border-bottom: 1px solid rgba(106, 27, 154, 0.2);
-            color: var(--text-color);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
-        }
-
-        .input-field:focus {
-            border-bottom-color: var(--accent-color);
+            padding: 0.875rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
             outline: none;
         }
 
-        .input-field:invalid {
-            border-bottom-color: #ff4444;
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--text-tertiary);
         }
 
-        .highlight {
-            animation: highlight 1s ease-in-out;
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
         }
 
-        @keyframes highlight {
-            0% { box-shadow: 0 0 10px 5px rgba(106, 27, 154, 0.3); }
-            100% { box-shadow: 0 0 0 0 rgba(106, 27, 154, 0); }
+        .form-textarea {
+            resize: vertical;
+            min-height: 140px;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 0.95rem;
+        }
+
+        .char-count {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            margin-top: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .char-count.warning {
+            color: var(--warning);
+        }
+
+        .char-count.danger {
+            color: var(--error);
         }
 
         .submit-btn {
-            background: var(--gradient-accent);
-            padding: 1.2rem;
-            border-radius: 10px;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Cormorant Garamond', serif;
             width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: var(--radius-md);
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--gold);
-            transition: all 0.4s ease;
+            margin-top: 1rem;
         }
 
         .submit-btn::before {
@@ -315,17 +296,17 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: var(--gold);
-            transition: transform 0.5s ease;
-            z-index: -1;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
         }
 
-        .submit-btn:hover {
-            background: var(--gradient-light);
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
         }
 
-        .submit-btn:hover::before {
-            transform: translateX(100%);
+        .submit-btn:hover:not(:disabled)::before {
+            left: 100%;
         }
 
         .submit-btn:disabled {
@@ -333,634 +314,390 @@
             cursor: not-allowed;
         }
 
-        .submit-btn:disabled::after {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            margin-left: 10px;
-            border: 2px solid var(--pearl-white);
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 1s linear infinite;
-        }
-
-        .privacy-notice {
-            margin-top: 2rem;
-            text-align: center;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .feature-card {
-            background: rgba(255, 255, 255, 0.98);
-            padding: 2rem;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(106, 27, 154, 0.1);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px var(--shadow-soft);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 2px;
-            height: 100%;
-            background: var(--accent-color);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.5s ease;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleY(1);
-        }
-
-        .feature-card h3 {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
-            margin: 1rem 0;
-            color: var(--text-color);
-        }
-
-        .feature-card p {
-            font-size: 0.95rem;
-            color: var(--text-color);
-            opacity: 0.8;
-        }
-
-        .fas {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-color);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes revealLogo {
-            0% { opacity: 0; transform: translateY(50px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes lineExpand {
-            0% { transform: scaleX(0); }
-            100% { transform: scaleX(1); }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        @keyframes backgroundShift {
-            0% { background-position: 0 0; }
-            100% { background-position: 100px 100px; }
-        }
-
-        @keyframes formGlow {
-            0% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.05), transparent 70%); }
-            100% { background: radial-gradient(circle at center, rgba(142, 36, 170, 0.1), transparent 70%); }
-        }
-
         .error-message {
-            color: #ff4444;
-            font-size: 0.9rem;
+            color: var(--error);
+            font-size: 0.875rem;
             margin-top: 0.5rem;
-            display: none;
-        }
-
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 3rem;
-                letter-spacing: 8px;
-            }
-
-            .tagline {
-                font-size: 1.3rem;
-            }
-
-            .platform-card {
-                min-width: 180px;
-                padding: 1.5rem;
-            }
-
-            .form-container {
-                padding: 1.5rem;
-            }
-
-            .mysterious-header {
-                padding: 2rem 1rem;
-            }
-
-            .platform-carousel {
-                padding: 1rem;
-            }
-
-            .carousel-nav {
-                width: 30px;
-                height: 30px;
-            }
-
-            .feature-card {
-                margin: 1rem 0;
-            }
-        }
-
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(248, 241, 252, 0.9);
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
+            gap: 0.5rem;
         }
 
-        .loading-overlay.active {
-            opacity: 1;
-            pointer-events: all;
+        .error-message i {
+            font-size: 0.75rem;
+        }
+
+        .privacy-text {
+            font-size: 0.85rem;
+            color: var(--text-tertiary);
+            text-align: center;
+            margin-top: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .privacy-text a {
+            color: var(--primary-light);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: var(--transition);
+        }
+
+        .privacy-text a:hover {
+            border-bottom-color: var(--primary-light);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+        }
+
+        .feature:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .feature-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
         }
 
         .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--accent-light);
-            border-top-color: transparent;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top-color: white;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
-        .scroll-guide {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            opacity: 0;
-            animation: fadeInGuide 1s ease-out 2s forwards;
-        }
-
-        .guide-text {
-            color: var(--accent-color);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            background: linear-gradient(120deg, var(--accent-color), var(--accent-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
-            padding: 0 20px;
-        }
-
-        .guide-text::before,
-        .guide-text::after {
-            content: '✧';
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-color);
-            opacity: 0.6;
-        }
-
-        .guide-text::before {
-            left: 0;
-        }
-
-        .guide-text::after {
-            right: 0;
-        }
-
-        .guide-arrow {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .guide-arrow span {
-            width: 15px;
-            height: 15px;
-            border-right: 2px solid var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-            transform: rotate(45deg);
-            animation: arrowFloat 2s infinite;
-            opacity: 0;
-        }
-
-        .guide-arrow span:nth-child(1) {
-            animation-delay: 0s;
-        }
-
-        .guide-arrow span:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .guide-arrow span:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-
-        @keyframes arrowFloat {
-            0% {
-                opacity: 0;
-                transform: rotate(45deg) translate(-5px, -5px);
-            }
-            50% {
-                opacity: 1;
-            }
-            100% {
-                opacity: 0;
-                transform: rotate(45deg) translate(5px, 5px);
-            }
-        }
-
-        @keyframes fadeInGuide {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
-        }
-
-        .scroll-guide:hover {
-            cursor: pointer;
-        }
-
-        .scroll-guide:hover .guide-arrow span {
-            border-color: var(--accent-light);
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         @media (max-width: 768px) {
-            .scroll-guide {
-                bottom: 30px;
+            .hero-section {
+                padding: 2rem 1rem;
+                margin-top: 70px;
             }
 
-            .guide-text {
-                font-size: 0.9rem;
+            .form-card {
+                padding: 1.5rem;
             }
 
-            .guide-arrow span {
-                width: 12px;
-                height: 12px;
+            .input-tabs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tab-btn {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
             }
         }
 
         @media (max-width: 480px) {
-            .scroll-guide {
-                bottom: 20px;
+            .header {
+                padding: 0 1rem;
             }
 
-            .guide-text {
-                font-size: 0.8rem;
+            .hero-title {
+                font-size: 1.75rem;
             }
 
-            .guide-arrow span {
-                width: 10px;
-                height: 10px;
+            .form-card {
+                padding: 1rem;
             }
-        }
 
-        .scroll-guide.hidden {
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        @keyframes cardFloat {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
+            .input-tabs {
+                grid-template-columns: 1fr;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="loading-overlay">
-        <div class="loading-spinner"></div>
-    </div>
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-brain"></i>
+            PenseeWeb
+        </div>
+    </header>
+
     <div class="container">
-        <div class="mysterious-header">
-            <div class="logo">PENSEEWEB</div>
-            <div class="tagline">"Transform thoughts Into visual canvas"</div>
-            <div class="scroll-guide">
-                <div class="guide-text">Choose Your Input Method</div>
-                <div class="guide-arrow">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+        <div class="hero-section">
+            <div class="badge">
+                <i class="fas fa-spark"></i> Powered by Advanced AI
+            </div>
+            <h1 class="hero-title">Transform Thoughts Into Visual Maps</h1>
+            <p class="hero-subtitle">Convert text, videos, and content into stunning, interactive mindmaps in seconds</p>
+            
+            <div class="form-wrapper">
+                <div class="input-tabs">
+                    <button class="tab-btn active" onclick="switchTab('text')">
+                        <i class="fas fa-pen-fancy"></i> Text Input
+                    </button>
+                    <button class="tab-btn" onclick="switchTab('youtube')">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </button>
+                    <button class="tab-btn" disabled>
+                        <i class="fab fa-facebook"></i> Facebook
+                        <span class="coming-soon-tag">Soon</span>
+                    </button>
+                    <button class="tab-btn" disabled>
+                        <i class="fas fa-play"></i> Video
+                        <span class="coming-soon-tag">Soon</span>
+                    </button>
                 </div>
+
+                <form id="mindmap-form" onsubmit="handleSubmit(event)">
+                    <div class="form-card">
+                        <div id="text-input" class="form-group">
+                            <label class="form-label">
+                                What's on your mind?
+                                <span class="required">*</span>
+                            </label>
+                            <textarea 
+                                class="form-textarea" 
+                                name="text-content" 
+                                placeholder="Share your ideas, notes, or any text you'd like to visualize..."
+                                maxlength="3200"
+                            ></textarea>
+                            <div class="char-count">
+                                <span><strong>Tip:</strong> Best results with 100-3000 characters</span>
+                                <span><span id="char-display">0</span>/3200</span>
+                            </div>
+                            <div class="error-message" id="text-error" style="display: none;"></div>
+                        </div>
+
+                        <div id="youtube-input" class="form-group" style="display: none;">
+                            <label class="form-label">
+                                YouTube Video URL
+                                <span class="required">*</span>
+                            </label>
+                            <input 
+                                type="url" 
+                                class="form-input" 
+                                name="youtube-url" 
+                                placeholder="https://www.youtube.com/watch?v=..."
+                            >
+                            <p style="font-size: 0.85rem; color: var(--text-tertiary); margin-top: 0.5rem;">
+                                <i class="fas fa-info-circle"></i> Works best with videos under 25 minutes
+                            </p>
+                            <div class="error-message" id="youtube-error" style="display: none;"></div>
+                        </div>
+
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-wand-magic-sparkles"></i> Generate Mindmap
+                        </button>
+
+                        <p class="privacy-text">
+                            Your data is encrypted and automatically deleted after 24 hours. We respect your privacy.
+                        </p>
+                    </div>
+                </form>
             </div>
         </div>
-        <div class="platform-carousel-container">
-            <div class="platform-carousel">
-                <div class="platform-card active" onclick="switchTab('text')">
-                    <i class="fas fa-pen"></i>
-                    <h3>Text Input</h3>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
                 </div>
-                <div class="platform-card" onclick="switchTab('youtube')">
-                    <i class="fab fa-youtube"></i>
-                    <h3>YouTube</h3>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-facebook"></i>
-                    <h3>Facebook</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <h3>TED</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-google-drive"></i>
-                    <h3>Google Drive</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fab fa-vimeo"></i>
-                    <h3>Vimeo</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-theater-masks"></i>
-                    <h3>Metopera</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
-                <div class="platform-card coming-soon">
-                    <i class="fas fa-music"></i>
-                    <h3>Weverse</h3>
-                    <div class="coming-soon-badge">Coming Soon</div>
-                </div>
+                <div class="feature-title">Lightning Fast</div>
+                <div class="feature-desc">Get beautiful mindmaps in seconds, not minutes</div>
             </div>
-        </div>
-        <div class="form-container">
-            <form id="mindmap-form" onsubmit="handleSubmit(event)">
-                <div id="text-input" class="input-group active">
-                    <label class="input-label">Enter Your Text (Max 3000 characters)</label>
-                    <textarea class="input-field" name="text-content" rows="6" maxlength="3200" placeholder="Enter your text here..."></textarea>
-                    <div class="error-message" id="text-error"></div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
                 </div>
-                <div id="youtube-input" class="input-group" style="display: none">
-                    <label class="input-label">YouTube Video URL (Best suited for videos under 25 minutes)</label>
-                    <input type="url" class="input-field" name="youtube-url" placeholder="https://www.youtube.com/watch?v=...">
-                    <div class="error-message" id="youtube-error"></div>
+                <div class="feature-title">100% Private</div>
+                <div class="feature-desc">Auto-delete after 24 hours. No tracking.</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">
+                    <i class="fas fa-crown"></i>
                 </div>
-                <button type="submit" class="submit-btn">Generate Mindmap</button>
-            </form>
-        </div>
-        <div class="feature-grid">
-            <div class="feature-card">
-                <i class="fas fa-brain"></i>
-                <h3>Artistic Intelligence</h3>
-                <p>Transform your thoughts into visually stunning mindmaps with our sophisticated V2 model.</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-clock"></i>
-                <h3>24-Hour Auto-Delete</h3>
-                <p>Your privacy is our priority</p>
-            </div>
-            <div class="feature-card">
-                <i class="fas fa-infinity"></i>
-                <h3>Forever Free</h3>
-                <p>No hidden costs, no credit card required</p>
+                <div class="feature-title">Forever Free</div>
+                <div class="feature-desc">No hidden costs, no credit card required</div>
             </div>
         </div>
     </div>
+
     <script>
         function switchTab(tab) {
-            const cards = document.querySelectorAll(".platform-card");
-            const inputGroups = document.querySelectorAll(".input-group");
-            
-            cards.forEach(card => {
-                card.classList.remove("active");
-                card.style.transform = "scale(0.95)";
+            const buttons = document.querySelectorAll('.tab-btn:not([disabled])');
+            const inputs = document.querySelectorAll('[id$="-input"]');
+
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
             });
-            
-            const activeCard = document.querySelector(`.platform-card[onclick="switchTab('${tab}')"]`);
-            activeCard.classList.add("active");
-            activeCard.style.transform = "scale(1)";
-            
-            inputGroups.forEach(group => {
-                group.classList.remove("active");
-                setTimeout(() => {
-                    group.style.display = "none";
-                }, 300);
+
+            inputs.forEach(input => {
+                input.style.display = 'none';
             });
-            
-            const activeInput = document.getElementById(`${tab}-input`);
-            setTimeout(() => {
-                activeInput.style.display = "block";
-                setTimeout(() => {
-                    activeInput.classList.add("active");
-                    activeInput.querySelector('.input-field').classList.add("highlight");
-                    setTimeout(() => {
-                        activeInput.querySelector('.input-field').classList.remove("highlight");
-                    }, 1000); // Remove highlight after 1 second
-                }, 50);
-            }, 300);
+
+            event.target.closest('.tab-btn').classList.add('active');
+            document.getElementById(`${tab}-input`).style.display = 'block';
+
+            // Clear errors
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
         }
 
-        function showError(e, t) {
-            const n = document.getElementById(e);
-            n.textContent = t;
-            n.style.display = "block";
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            if (errorEl) {
+                errorEl.textContent = message;
+                errorEl.style.display = 'flex';
+            }
+        }
+
+        function hideError(elementId) {
+            const errorEl = document.getElementById(elementId);
+            if (errorEl) {
+                errorEl.style.display = 'none';
+            }
         }
 
         async function handleSubmit(e) {
             e.preventDefault();
-            showLoading();
-            document.querySelectorAll(".error-message").forEach(e => {
-                e.style.display = "none";
-                e.textContent = "";
-            });
 
-            const t = document.querySelector(".platform-card.active h3").textContent.toLowerCase().trim();
-            let content, input_type;
+            const activeTab = document.querySelector('.tab-btn.active');
+            const tabType = activeTab.textContent.toLowerCase().includes('youtube') ? 'youtube' : 'text';
+            
+            let content;
+            let isValid = true;
 
-            if (t === "text input") {
-                content = document.querySelector('textarea[name="text-content"]').value;
-                input_type = "text";
+            if (tabType === 'text') {
+                content = document.querySelector('textarea[name="text-content"]').value.trim();
+                if (!content) {
+                    showError('text-error', '⚠️ Please enter some text');
+                    isValid = false;
+                } else if (content.length < 10) {
+                    showError('text-error', '⚠️ Please enter at least 10 characters');
+                    isValid = false;
+                } else {
+                    hideError('text-error');
+                }
             } else {
-                content = document.querySelector('input[name="youtube-url"]').value;
-                input_type = "youtube";
+                content = document.querySelector('input[name="youtube-url"]').value.trim();
+                const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/;
+                
+                if (!content) {
+                    showError('youtube-error', '⚠️ Please enter a YouTube URL');
+                    isValid = false;
+                } else if (!youtubeRegex.test(content)) {
+                    showError('youtube-error', '⚠️ Please enter a valid YouTube URL');
+                    isValid = false;
+                } else {
+                    hideError('youtube-error');
+                }
             }
 
-            if (!content) {
-                showError(input_type === "text" ? "text-error" : "youtube-error", "This field is required");
-                hideLoading();
-                return;
-            }
+            if (!isValid) return;
 
-            if (input_type === "youtube" && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(content)) {
-                showError("youtube-error", "Please enter a valid YouTube URL");
-                hideLoading();
-                return;
-            }
-
-            const submitButton = e.target.querySelector('button[type="submit"]');
-            const originalButtonText = submitButton.textContent;
-            submitButton.textContent = "Processing...";
-            submitButton.disabled = true;
+            const btn = document.querySelector('.submit-btn');
+            const originalHTML = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
             try {
                 const formData = {
                     content: content,
-                    input_type: input_type,
+                    input_type: tabType,
                     content_length: content.length,
                     timestamp: new Date().toISOString()
                 };
 
                 localStorage.setItem('penseewebFormData', JSON.stringify(formData));
 
-                window.location.href = 'page2.html';
+                // Smooth transition
+                setTimeout(() => {
+                    window.location.href = 'page2.html';
+                }, 500);
 
             } catch (error) {
-                console.error("Error:", error);
-                showError(
-                    input_type === "text" ? "text-error" : "youtube-error",
-                    "There was an error processing your request. Please try again."
-                );
-                submitButton.textContent = originalButtonText;
-                submitButton.disabled = false;
+                console.error('Error:', error);
+                showError(tabType === 'text' ? 'text-error' : 'youtube-error', 
+                    '⚠️ Something went wrong. Please try again.');
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
-            hideLoading();
         }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const textArea = document.querySelector('textarea[name="text-content"]');
-            const textLabel = document.querySelector("#text-input .input-label");
-            const originalLabel = textLabel.textContent;
+        document.addEventListener('DOMContentLoaded', () => {
+            const textarea = document.querySelector('textarea[name="text-content"]');
+            const charDisplay = document.getElementById('char-display');
 
-            textArea.addEventListener("input", () => {
-                const remaining = 3000 - textArea.value.length;
-                textLabel.textContent = `${originalLabel} (${remaining} characters remaining)`;
+            textarea.addEventListener('input', () => {
+                charDisplay.textContent = textarea.value.length;
+                
+                const charCountEl = textarea.parentElement.querySelector('.char-count');
+                if (textarea.value.length > 2800) {
+                    charCountEl.classList.add('danger');
+                } else if (textarea.value.length > 2400) {
+                    charCountEl.classList.add('warning');
+                } else {
+                    charCountEl.classList.remove('warning', 'danger');
+                }
             });
 
             const youtubeInput = document.querySelector('input[name="youtube-url"]');
-            youtubeInput.addEventListener("input", function() {
+            youtubeInput.addEventListener('blur', function() {
                 if (this.value && !/^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+$/.test(this.value)) {
-                    showError("youtube-error", "Please enter a valid YouTube URL");
+                    showError('youtube-error', '⚠️ Invalid YouTube URL');
                 } else {
-                    document.getElementById("youtube-error").style.display = "none";
+                    hideError('youtube-error');
                 }
             });
-
-            const scrollGuide = document.querySelector('.scroll-guide');
-            const carousel = document.querySelector('.platform-carousel-container');
-    
-            scrollGuide.addEventListener('click', () => {
-                carousel.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            });
-
-            let scrollTimeout;
-            window.addEventListener('scroll', () => {
-                clearTimeout(scrollTimeout);
-                
-                if (window.scrollY > window.innerHeight * 0.3) {
-                    scrollGuide.classList.add('hidden');
-                } else {
-                    scrollGuide.classList.remove('hidden');
-                }
-
-                scrollTimeout = setTimeout(() => {
-                    if (window.scrollY <= window.innerHeight * 0.3) {
-                        scrollGuide.classList.remove('hidden');
-                    }
-                }, 1000);
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animation = 'cardFloat 1s ease-out forwards';
-                    }
-                });
-            }, { threshold: 0.1 });
-
-            document.querySelectorAll('.platform-card').forEach(card => {
-                observer.observe(card);
-            });
         });
-
-        const carousel = document.querySelector('.platform-carousel');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
-        carousel.addEventListener('mousedown', (e) => {
-            isDown = true;
-            carousel.style.cursor = 'grabbing';
-            startX = e.pageX - carousel.offsetLeft;
-            scrollLeft = carousel.scrollLeft;
-        });
-
-        carousel.addEventListener('mouseleave', () => {
-            isDown = false;
-            carousel.style.cursor = 'grab';
-        });
-
-        carousel.addEventListener('mouseup', () => {
-            isDown = false;
-            carousel.style.cursor = 'grab';
-        });
-
-        carousel.addEventListener('mousemove', (e) => {
-            if (!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - carousel.offsetLeft;
-            const walk = (x - startX) * 2;
-            carousel.scrollLeft = scrollLeft - walk;
-        });
-
-        function showLoading() {
-            document.querySelector('.loading-overlay').classList.add('active');
-        }
-
-        function hideLoading() {
-            document.querySelector('.loading-overlay').classList.remove('active');
-        }
     </script>
 </body>
 </html>
