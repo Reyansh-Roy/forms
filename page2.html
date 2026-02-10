@@ -2,491 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PenseeWeb - Choose Your Model</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>PenseeWeb - Craft Your Mind's Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --accent: #06b6d4;
-            --accent-dark: #0891b2;
-            --background: #0f172a;
-            --surface: #1e293b;
-            --surface-light: #334155;
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --border: #334155;
-            --success: #10b981;
-            --error: #ef4444;
-            --warning: #f59e0b;
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, var(--background) 0%, #1a2332 100%);
-            color: var(--text-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            padding: 0 2rem;
-            gap: 2rem;
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo i {
-            font-size: 1.8rem;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: var(--surface);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            width: 66%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 2px;
-        }
-
-        .step-indicator {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .hero-section {
-            text-align: center;
-            margin-bottom: 4rem;
-            margin-top: 70px;
-        }
-
-        .step-badge {
-            display: inline-block;
-            padding: 0.5rem 1rem;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            border-radius: var(--radius-sm);
-            font-size: 0.85rem;
-            color: var(--primary-light);
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-secondary) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .models-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .model-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .model-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .model-card:hover::before {
-            left: 100%;
-        }
-
-        .model-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.2);
-            transform: translateY(-4px);
-        }
-
-        .model-card.disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            filter: grayscale(50%);
-        }
-
-        .model-card.disabled:hover {
-            border-color: var(--border);
-            box-shadow: none;
-            transform: none;
-        }
-
-        .badge-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-        }
-
-        .model-label {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .coming-soon-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            padding: 0.4rem 0.8rem;
-            background: var(--error);
-            color: white;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: var(--radius-sm);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .model-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            color: var(--text-primary);
-        }
-
-        .model-description {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            margin-bottom: 1.5rem;
-            flex: 1;
-            line-height: 1.6;
-        }
-
-        .performance-section {
-            margin: 1.5rem 0;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-        }
-
-        .performance-item {
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .performance-label {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        .performance-bar {
-            flex: 1;
-            height: 6px;
-            background: var(--surface-light);
-            border-radius: 3px;
-            margin: 0 1rem;
-            overflow: hidden;
-        }
-
-        .performance-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 3px;
-            transition: width 0.5s ease;
-        }
-
-        .performance-value {
-            font-size: 0.85rem;
-            color: var(--text-tertiary);
-            min-width: 35px;
-            text-align: right;
-        }
-
-        .features-list {
-            list-style: none;
-            margin: 1.5rem 0;
-            padding: 0;
-        }
-
-        .features-list li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem 0;
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            transition: var(--transition);
-        }
-
-        .features-list li:hover {
-            color: var(--text-primary);
-            transform: translateX(4px);
-        }
-
-        .features-list li::before {
-            content: '';
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border-radius: 50%;
-            flex-shrink: 0;
-        }
-
-        .select-btn {
-            width: 100%;
-            padding: 0.875rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            border: none;
-            border-radius: var(--radius-md);
-            color: white;
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition);
-            margin-top: auto;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .select-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .select-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-        }
-
-        .select-btn:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .select-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: var(--surface-light);
-        }
-
-        .select-btn.selected {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-        }
-
-        .action-section {
-            display: flex;
-            justify-content: center;
-            margin-top: 3rem;
-        }
-
-        .continue-btn {
-            padding: 1rem 2rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border: none;
-            border-radius: var(--radius-md);
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: var(--transition);
-            display: inline-flex;
-            align-items: center;
-            gap: 0.75rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .continue-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .continue-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(99, 102, 241, 0.4);
-        }
-
-        .continue-btn:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .continue-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
-        .loading-spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-top-color: white;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .error-message {
-            display: none;
-            padding: 1rem 1.5rem;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: var(--radius-md);
-            color: #fca5a5;
-            font-size: 0.95rem;
-            margin-bottom: 2rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .error-message i {
-            font-size: 1.1rem;
-        }
-
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif}
+        body{background-color:#e5efff;min-height:100vh;display:flex;flex-direction:column}
+        .container{max-width:1200px;margin:40px auto;padding:0 20px}
+        .header{text-align:center;margin-bottom:50px}
+        .header h1{color:#1a1a1a;font-size:2.5em;margin-bottom:15px;font-weight:600;position:relative;display:inline-block}
+        .header h1::after{content:'';position:absolute;bottom:-5px;left:0;width:100%;height:2px;background:linear-gradient(90deg,#0984e3,#00b894);transform:scaleX(0);transform-origin:right;transition:transform .5s ease}
+        .header h1:hover::after{transform:scaleX(1);transform-origin:left}
+        .header p{color:#2d3436;font-size:1.2em;font-style:italic}
+        .model-selection{display:flex;justify-content:center;gap:30px;margin-bottom:40px;perspective:1000px}
+        .model-card{background:linear-gradient(145deg,#ffffff,#f8f9ff);border:1px solid rgba(255,255,255,0.5);backdrop-filter:blur(10px);border-radius:15px;padding:25px;width:400px;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:all .5s ease;position:relative;transform-style:preserve-3d;opacity:0;transform:translateY(20px)}
+        .model-card:hover{transform:translateY(-5px) rotateX(5deg);box-shadow:0 6px 20px rgba(0,0,0,.15)}
+        .model-card.disabled{opacity:.7;pointer-events:none}
+        .coming-soon-badge{position:absolute;top:20px;right:20px;background:#ff4757;color:#fff;padding:5px 15px;border-radius:20px;font-size:.9em;animation:pulse 2s infinite}
+        .model-title{font-size:1.8em;color:#2d3436;margin-bottom:20px;background:linear-gradient(90deg,#0984e3,#00b894);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700}
+        .power-bar{background:rgba(9,132,227,0.1);height:20px;border-radius:10px;margin:15px 0;overflow:hidden;position:relative}
+        .power-indicator{height:100%;border-radius:10px;transition:width .3s ease;position:relative;z-index:1}
+        .power-indicator::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);z-index:2;animation:shimmer 2s infinite}
+        @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+        .power-label{font-size:.9em;color:#636e72;margin-top:5px;text-align:right;font-style:italic}
+        .v2-power{width:40%;background:linear-gradient(90deg,#74b9ff,#0984e3)}
+        .v3-power{width:75%;background:linear-gradient(90deg,#55efc4,#00b894)}
+        .feature-list{list-style:none;margin-bottom:25px}
+        .feature-list li{margin-bottom:12px;color:#636e72;font-size:1.1em;display:flex;align-items:center;line-height:1.4;transform:translateX(0);transition:all .3s ease;padding:8px 0;border-radius:5px}
+        .feature-list li:hover{background:rgba(9,132,227,0.05);padding-left:10px;color:#0984e3}
+        .feature-list li:before{content:"•";color:#0984e3;font-weight:700;margin-right:10px}
+        .select-button{background:linear-gradient(45deg,#0984e3,#00b894);color:#fff;border:none;padding:12px 30px;border-radius:25px;font-size:1.1em;cursor:pointer;width:100%;transition:all .3s ease;position:relative;overflow:hidden;z-index:1}
+        .select-button::before{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(45deg,#00b894,#0984e3);opacity:0;transition:opacity .3s ease;z-index:-1;border-radius:inherit}
+        .select-button:hover::before{opacity:1}
+        .select-button:hover{transform:translateY(-2px);box-shadow:0 4px 15px rgba(9,132,227,.3)}
+        .select-button:active{transform:translateY(0)}
+        .continue-section{text-align:center;margin-top:40px}
+        .continue-btn{background:linear-gradient(45deg,#0984e3,#00b894);color:#fff;border:none;padding:15px 40px;border-radius:30px;font-size:1.2em;cursor:pointer;transition:all .3s ease;position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;z-index:1;box-shadow:0 4px 15px rgba(9,132,227,.3)}
+        .continue-btn::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,#00b894,#0984e3);opacity:0;transition:opacity .3s ease;border-radius:inherit;z-index:-1}
+        .continue-btn:hover::before{opacity:1}
+        .continue-btn:after{content:"→";font-size:1.4em;transition:transform .3s ease;display:inline-block;margin-left:5px}
+        .continue-btn:hover{transform:translateY(-2px)}
+        .continue-btn:hover:after{transform:translateX(5px)}
+        .continue-btn:active{transform:translateY(0)}
+        .footer{text-align:center;margin-top:auto;padding:20px;color:#636e72;font-style:italic}
+        #loadingMessage{display:none;text-align:center;color:#0984e3;font-size:1.1em;margin-top:20px;position:relative;padding:20px;background:rgba(9,132,227,0.05);border-radius:10px;animation:pulse 1.5s infinite}
+        @keyframes pulse{0%,100%{background:rgba(9,132,227,0.05)}50%{background:rgba(9,132,227,0.1)}}
+        .error-message{display:none;text-align:center;color:#ff4757;font-size:1.1em;margin-top:20px;padding:10px;background:rgba(255,71,87,0.1);border-radius:8px}
+        
         @media (max-width: 768px) {
-            .header {
-                padding: 0 1rem;
-                height: 60px;
-                gap: 1rem;
+            .container { padding: 15px; margin: 20px auto; }
+            .header h1 { font-size: 1.8em; }
+            .header p { font-size: 1em; }
+            .model-selection { 
+                flex-direction: column; 
+                gap: 20px;
             }
-
-            .logo {
-                font-size: 1.2rem;
+            .model-card { 
+                width: 100%;
+                padding: 20px;
             }
-
-            .step-indicator {
-                display: none;
-            }
-
-            .container {
-                padding: 1.5rem;
-                margin-top: 60px;
-            }
-
-            .hero-section {
-                margin-bottom: 2rem;
-            }
-
-            .hero-title {
-                font-size: 1.8rem;
-            }
-
-            .models-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
             .continue-btn {
                 width: 100%;
+                padding: 12px 25px;
             }
         }
 
@@ -496,243 +73,175 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(0, 0, 0, 0.5);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 1000;
             backdrop-filter: blur(5px);
         }
 
-        .processing-popup.active {
-            display: flex;
-        }
-
         .popup-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.2);
             animation: popupFade 0.3s ease;
         }
 
         .popup-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(99, 102, 241, 0.2);
-            border-top-color: var(--primary);
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0984e3;
             border-radius: 50%;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 15px;
             animation: spin 1s linear infinite;
         }
 
-        .popup-text {
-            font-size: 1.1rem;
-            color: var(--text-primary);
-            font-weight: 500;
+        @keyframes popupFade {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes popupFade {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="logo" onclick="goHome()">
-            <i class="fas fa-brain"></i>
-            PenseeWeb
-        </div>
-        <div class="progress-bar">
-            <div class="progress-fill"></div>
-        </div>
-        <div class="step-indicator">
-            <span>Step 2 of 3</span>
-        </div>
-    </header>
-
     <div class="container">
-        <div class="hero-section">
-            <div class="step-badge">
-                <i class="fas fa-cog"></i> Choose Your Model
-            </div>
-            <h1 class="hero-title">Select Your AI Model</h1>
-            <p class="hero-subtitle">Choose the AI model that best suits your needs. Each version offers unique capabilities for mindmap generation.</p>
+        <div class="header">
+            <h1>Unleash Your Mind's Potential</h1>
+            <p>Where thoughts transform into masterpieces of clarity</p>
         </div>
-
-        <div id="errorMessage" class="error-message" style="display: none;">
-            <i class="fas fa-exclamation-circle"></i>
-            <span id="errorText"></span>
-        </div>
-
-        <div class="models-grid">
-            <!-- Model V2 -->
-            <div class="model-card" onclick="selectModel('v2')" data-model="v2">
-                <div class="badge-container">
-                    <span class="model-label">Recommended</span>
+        <div class="model-selection">
+            <div class="model-card">
+                <h2 class="model-title">Version 2.0</h2>
+                <div class="power-bar">
+                    <div class="power-indicator v2-power"></div>
                 </div>
-                <h2 class="model-title">V2.0</h2>
-                <p class="model-description">Elegant and reliable. Perfect for most use cases with balanced quality and speed.</p>
-
-                <div class="performance-section">
-                    <div class="performance-item">
-                        <span class="performance-label">Speed</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 85%;"></div>
-                        </div>
-                        <span class="performance-value">Fast</span>
-                    </div>
-                    <div class="performance-item">
-                        <span class="performance-label">Quality</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 75%;"></div>
-                        </div>
-                        <span class="performance-value">High</span>
-                    </div>
-                    <div class="performance-item">
-                        <span class="performance-label">Creativity</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 70%;"></div>
-                        </div>
-                        <span class="performance-value">Great</span>
-                    </div>
-                </div>
-
-                <ul class="features-list">
-                    <li>Precise mindmap generation</li>
-                    <li>Handles various content types</li>
-                    <li>Optimized for clarity</li>
-                    <li>Instant results</li>
+                <div class="power-label">Elegant Simplicity</div>
+                <ul class="feature-list">
+                    <li>Crafts your thoughts with precise elegance</li>
+                    <li>Transforms ideas into structured beauty</li>
+                    <li>Perfect for those who seek clarity in simplicity</li>
+                    <li>Your thoughts, carefully curated</li>
                 </ul>
-                <button class="select-btn" onclick="event.stopPropagation(); selectModel('v2');">Select V2.0</button>
+                <button class="select-button">Selected</button>
             </div>
-
-            <!-- Model V3 -->
-            <div class="model-card disabled" data-model="v3">
-                <div class="badge-container">
-                    <span class="model-label">Advanced</span>
-                    <span class="coming-soon-badge"><i class="fas fa-star"></i> Coming Soon</span>
+            <div class="model-card disabled">
+                <span class="coming-soon-badge">Coming Soon</span>
+                <h2 class="model-title">Version 3.0</h2>
+                <div class="power-bar">
+                    <div class="power-indicator v3-power"></div>
                 </div>
-                <h2 class="model-title">V3.0</h2>
-                <p class="model-description">Advanced generation with enhanced creativity and sophistication. Currently in development.</p>
-
-                <div class="performance-section">
-                    <div class="performance-item">
-                        <span class="performance-label">Speed</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 65%;"></div>
-                        </div>
-                        <span class="performance-value">Moderate</span>
-                    </div>
-                    <div class="performance-item">
-                        <span class="performance-label">Quality</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 95%;"></div>
-                        </div>
-                        <span class="performance-value">Premium</span>
-                    </div>
-                    <div class="performance-item">
-                        <span class="performance-label">Creativity</span>
-                        <div class="performance-bar">
-                            <div class="performance-fill" style="width: 90%;"></div>
-                        </div>
-                        <span class="performance-value">Exceptional</span>
-                    </div>
-                </div>
-
-                <ul class="features-list">
-                    <li>Ultra-detailed mindmaps</li>
-                    <li>Enhanced creativity</li>
-                    <li>Advanced customization</li>
-                    <li>Premium styling</li>
+                <div class="power-label">Intense Sophistication</div>
+                <ul class="feature-list">
+                    <li>Unleashes the full power of your imagination</li>
+                    <li>Creates mindmaps with passionate precision</li>
+                    <li>For those who demand perfection</li>
+                    <li>Your vision, intensely realized</li>
                 </ul>
-                <button class="select-btn" disabled>Coming Soon</button>
+                <button class="select-button" disabled>Select</button>
             </div>
         </div>
-
-        <div class="action-section">
-            <button class="continue-btn" id="continueBtn" onclick="proceedToPage3()" disabled>
-                <i class="fas fa-arrow-right"></i> Continue
-            </button>
+        <div class="continue-section">
+            <button class="continue-btn" onclick="proceedToPage3()">Continue</button>
         </div>
+        <div id="loadingMessage">Processing your request...</div>
+        <div id="errorMessage" class="error-message"></div>
     </div>
-
-    <div class="processing-popup" id="processingPopup">
+    <div class="processing-popup">
         <div class="popup-content">
             <div class="popup-spinner"></div>
-            <p class="popup-text">Generating your mindmap...</p>
+            <p>Processing your request...</p>
         </div>
     </div>
+    <footer class="footer">
+        <p>PenseeWeb - Where Obsession Meets Perfection</p>
+    </footer>
 
     <script>
-        let selectedModel = 'v2';
-
-        window.addEventListener('load', function() {
+        window.onload = function() {
             const formData = localStorage.getItem('penseewebFormData');
             if (!formData) {
                 showError('Please start from the beginning.');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
                 return;
             }
-
-            // Pre-select V2
-            selectModel('v2');
-        });
-
-        function selectModel(model) {
-            selectedModel = model;
             
-            document.querySelectorAll('.model-card').forEach(card => {
-                card.classList.remove('selected');
-                const btn = card.querySelector('.select-btn');
-                if (btn) {
-                    btn.classList.remove('selected');
-                }
+            // Add subtle animation to cards
+            document.querySelectorAll('.model-card').forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
             });
-
-            const selectedCard = document.querySelector(`[data-model="${model}"]`);
-            if (selectedCard && !selectedCard.classList.contains('disabled')) {
-                selectedCard.classList.add('selected');
-                const btn = selectedCard.querySelector('.select-btn');
-                if (btn) {
-                    btn.classList.add('selected');
-                    btn.textContent = '✓ Selected';
-                }
-                document.getElementById('continueBtn').disabled = false;
-            }
-        }
-
-        function goHome() {
-            window.location.href = 'index.html';
         }
 
         function showError(message) {
-            const errorEl = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
-            errorText.textContent = message;
-            errorEl.style.display = 'flex';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+            document.querySelector('.continue-btn').disabled = true;
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000);
+        }
+
+        function showProcessingPopup() {
+            document.querySelector('.processing-popup').style.display = 'flex';
+        }
+
+        function hideProcessingPopup() {
+            document.querySelector('.processing-popup').style.display = 'none';
         }
 
         function proceedToPage3() {
-            if (!selectedModel) {
-                showError('Please select a model before continuing.');
-                return;
+            const formData = localStorage.getItem('penseewebFormData');
+            if (formData) {
+                showProcessingPopup();
+                setTimeout(() => {
+                    window.location.href = 'page3.html';
+                }, 1500);
+            } else {
+                showError('Please complete the first step before continuing.');
             }
+        }
 
-            const formData = JSON.parse(localStorage.getItem('penseewebFormData') || '{}');
-            formData.model = selectedModel;
-            localStorage.setItem('penseewebFormData', JSON.stringify(formData));
+        window.addEventListener('popstate', function(event) {
+            window.location.href = 'index.html';
+        });
 
-            document.getElementById('processingPopup').classList.add('active');
-            setTimeout(() => {
-                window.location.href = 'page3.html';
-            }, 1200);
+        window.onbeforeunload = function() {
+            window.location.href = 'index.html';
+        };
+
+        document.querySelectorAll('.model-card:not(.disabled)').forEach(card => {
+            card.addEventListener('mousemove', handleCardHover);
+            card.addEventListener('mouseleave', resetCard);
+        });
+
+        function handleCardHover(e) {
+            const card = e.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const angleX = (y - centerY) / 20;
+            const angleY = (centerX - x) / 20;
+            
+            card.style.transform = `perspective(1000px) rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+        }
+
+        function resetCard(e) {
+            const card = e.currentTarget;
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
         }
     </script>
 </body>
